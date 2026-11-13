@@ -1,0 +1,23 @@
+{
+  "name": "EasyInteraction.XR.Tests",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyInteraction.XR",
+    "Unity.XR.Interaction.Toolkit"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false,
+  "versionDefines": [
+    {
+      "name": "com.unity.xr.interaction.toolkit",
+      "expression": "3.2.2",
+      "define": "EASY_INTERACTION_XR"
+    }
+  ],
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS",
+    "EASY_INTERACTION_XR"
+  ]
+}

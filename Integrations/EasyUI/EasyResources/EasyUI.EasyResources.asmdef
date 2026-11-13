@@ -1,0 +1,8 @@
+{
+  "name": "EasyUI.EasyResources",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyResources.Runtime",
+    "UnityEngine.UI"
+  ]
+}

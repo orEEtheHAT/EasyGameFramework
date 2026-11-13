@@ -1,0 +1,4 @@
+{
+  "name": "EasyBuilding.Networking.Tests", "references": ["EasyBuilding.Runtime", "EasyBuilding.Networking.Sample"],
+  "excludePlatforms": ["WebGL"], "optionalUnityReferences": ["TestAssemblies"]
+}

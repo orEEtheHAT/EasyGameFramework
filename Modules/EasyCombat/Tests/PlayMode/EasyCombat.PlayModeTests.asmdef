@@ -1,0 +1,14 @@
+{
+  "name": "EasyCombat.PlayModeTests",
+  "rootNamespace": "EasyCombat.Tests",
+  "references": [
+    "EasyCombat.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ]
+}

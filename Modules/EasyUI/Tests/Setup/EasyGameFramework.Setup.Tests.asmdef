@@ -1,0 +1,7 @@
+{
+  "name": "EasyGameFramework.Setup.Tests",
+  "references": ["EasyGameFramework.Editor.Setup", "EasyCombat.Editor", "EasyCombat.Runtime"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

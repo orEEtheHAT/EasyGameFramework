@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="8" result="Passed" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0,0537843">
+  <test-suite type="TestSuite" id="1022" name="CleanProject" fullname="CleanProject" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.053784" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1017" name="EasySettings.PlayModeTests.dll" fullname="C:/Users/LeshaPC/Games Factory/Audits/EasySettings/CleanProject/Library/ScriptAssemblies/EasySettings.PlayModeTests.dll" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.048903" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="74852" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1018" name="EasySettings" fullname="EasySettings" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.048634" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1019" name="Tests" fullname="EasySettings.Tests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.048461" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1008" name="UrpLifetimeTests" fullname="EasySettings.Tests.UrpLifetimeTests" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.047689" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1010" name="CameraAndDeepVolumeCloneRestorePreviousReferences" fullname="EasySettings.Tests.UrpLifetimeTests.CameraAndDeepVolumeCloneRestorePreviousReferences" methodname="CameraAndDeepVolumeCloneRestorePreviousReferences" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="893267720" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.024456" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="DefaultOptInFlagsPreserveCameraPostProcessing" fullname="EasySettings.Tests.UrpLifetimeTests.DefaultOptInFlagsPreserveCameraPostProcessing" methodname="DefaultOptInFlagsPreserveCameraPostProcessing" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="161625777" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.005820" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1014" name="DestroyedTargetsCanBeReleased" fullname="EasySettings.Tests.UrpLifetimeTests.DestroyedTargetsCanBeReleased" methodname="DestroyedTargetsCanBeReleased" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="1804361584" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.001465" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1013" name="DuplicateOwnerRejectedWithoutChangingExistingOverride" fullname="EasySettings.Tests.UrpLifetimeTests.DuplicateOwnerRejectedWithoutChangingExistingOverride" methodname="DuplicateOwnerRejectedWithoutChangingExistingOverride" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="1049348479" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.001958" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1015" name="EditorDoesNotOfferScreenMutation" fullname="EasySettings.Tests.UrpLifetimeTests.EditorDoesNotOfferScreenMutation" methodname="EditorDoesNotOfferScreenMutation" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="481779293" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.000542" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1009" name="PipelineIsClonedAndRestored" fullname="EasySettings.Tests.UrpLifetimeTests.PipelineIsClonedAndRestored" methodname="PipelineIsClonedAndRestored" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="143420953" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.001380" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="RepeatedControllerEnableDisableReleasesOwnership" fullname="EasySettings.Tests.UrpLifetimeTests.RepeatedControllerEnableDisableReleasesOwnership" methodname="RepeatedControllerEnableDisableReleasesOwnership" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="461159645" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.004273" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1011" name="TargetReplacementRestoresOldCameraAndVolume" fullname="EasySettings.Tests.UrpLifetimeTests.TargetReplacementRestoresOldCameraAndVolume" methodname="TargetReplacementRestoresOldCameraAndVolume" classname="EasySettings.Tests.UrpLifetimeTests" runstate="Runnable" seed="217941891" result="Passed" start-time="2026-11-12 21:47:43Z" end-time="2026-11-12 21:47:43Z" duration="0.001306" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/LeshaPC/AppData/LocalLow/DefaultCompany/CleanProject\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

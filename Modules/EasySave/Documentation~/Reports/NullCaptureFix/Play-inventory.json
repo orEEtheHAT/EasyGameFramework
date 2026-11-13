@@ -1,0 +1,18 @@
+{
+  "output": null,
+  "diagnostics": [],
+  "success": true,
+  "result": {
+    "failed": false,
+    "playing": false,
+    "regressionLoaded": true,
+    "scenes": [
+      {
+        "path": "Assets/PackageTests/EasySuite/EasySuiteLab.unity",
+        "isLoaded": true,
+        "isActive": true,
+        "isSubScene": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "EasyInput.Player.Editor",
+  "includePlatforms": [
+    "Editor"
+  ],
+  "rootNamespace": "EasyGameFramework.Editor",
+  "references": [
+    "EasyInput.Runtime",
+    "EasyInput.EasyMovement",
+    "EasyInput.EasyInteraction",
+    "EasyInput.EasyFeedbacks",
+    "EasyInteraction.Runtime",
+    "EasyMovement.FirstPerson",
+    "ECM2",
+    "EasyFootsteps.Runtime"
+  ]
+}

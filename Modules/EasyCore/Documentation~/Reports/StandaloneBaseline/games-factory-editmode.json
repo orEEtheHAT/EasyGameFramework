@@ -1,0 +1,286 @@
+{
+  "status": "completed",
+  "duration": 0.11,
+  "summary": {
+    "total": 39,
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasyCore.Tests.DisposableScopeTests.DisposalIsReentrantAndClosedBeforeCallbacks",
+      "Status": "Passed",
+      "Duration": 0.0411639,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.DisposableScopeTests.EmptyScopeClosesPermanently",
+      "Status": "Passed",
+      "Duration": 0.000298,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.DisposableScopeTests.FailuresDoNotSkipOtherResourcesAndAreNotRetried",
+      "Status": "Passed",
+      "Duration": 0.0013584,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.DisposableScopeTests.NestedScopesReleaseOnlyTheirOwnedResources",
+      "Status": "Passed",
+      "Duration": 0.0001368,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.DisposableScopeTests.RejectsNullSelfAndDuplicateReferencesWithoutUsingValueEquality",
+      "Status": "Passed",
+      "Duration": 0.0003458,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.DisposableScopeTests.ReleasesInReverseOrderAndReturnsOriginalReference",
+      "Status": "Passed",
+      "Duration": 0.0007121,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.DisposableScopeTests.RepeatedLifetimesUnsubscribeExactlyTheirOwnHandlers",
+      "Status": "Passed",
+      "Duration": 0.0003371,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.ExplicitSecondsAndIndependentTimelines",
+      "Status": "Passed",
+      "Duration": 0.0008471,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.FinitePrecisionMayLeaveTimeUnchangedButNeverGoBack",
+      "Status": "Passed",
+      "Duration": 0.0001176,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.OverflowDoesNotPoisonClockAndZeroStillWorks",
+      "Status": "Passed",
+      "Duration": 0.0001803,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(-1.0d)",
+      "Status": "Passed",
+      "Duration": 0.000225,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(double.NaN)",
+      "Status": "Passed",
+      "Duration": 8.51E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(double.PositiveInfinity)",
+      "Status": "Passed",
+      "Duration": 6.76E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(double.NegativeInfinity)",
+      "Status": "Passed",
+      "Duration": 4.99E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(-1.0d)",
+      "Status": "Passed",
+      "Duration": 0.0001663,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(double.NaN)",
+      "Status": "Passed",
+      "Duration": 5.44E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(double.PositiveInfinity)",
+      "Status": "Passed",
+      "Duration": 4.28E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(double.NegativeInfinity)",
+      "Status": "Passed",
+      "Duration": 3.96E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.EveryVectorComponentIsValidated(0)",
+      "Status": "Passed",
+      "Duration": 0.0003978,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.EveryVectorComponentIsValidated(1)",
+      "Status": "Passed",
+      "Duration": 5.34E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.EveryVectorComponentIsValidated(2)",
+      "Status": "Passed",
+      "Duration": 3.94E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(double.MaxValue,True,True)",
+      "Status": "Passed",
+      "Duration": 0.0005029,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(double.MinValue,False,False)",
+      "Status": "Passed",
+      "Duration": 6E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(4.94065645841247E-324d,True,True)",
+      "Status": "Passed",
+      "Duration": 4.71E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(-4.94065645841247E-324d,False,False)",
+      "Status": "Passed",
+      "Duration": 4.28E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(0.0d,False,True)",
+      "Status": "Passed",
+      "Duration": 4.19E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(float.MaxValue,True,True)",
+      "Status": "Passed",
+      "Duration": 0.0002381,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(float.MinValue,False,False)",
+      "Status": "Passed",
+      "Duration": 5.44E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(1.401298E-45f,True,True)",
+      "Status": "Passed",
+      "Duration": 4.61E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(-1.401298E-45f,False,False)",
+      "Status": "Passed",
+      "Duration": 4.17E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(0.0f,False,True)",
+      "Status": "Passed",
+      "Duration": 4.11E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.LargeVectorWithOverflowingLengthStillHasFiniteComponents",
+      "Status": "Passed",
+      "Duration": 0.0001728,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.NegativeZeroIsNonNegativeButNotPositive",
+      "Status": "Passed",
+      "Duration": 0.0001458,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.NonFiniteDoublesFailEveryPredicate(double.NaN)",
+      "Status": "Passed",
+      "Duration": 0.0001032,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.NonFiniteDoublesFailEveryPredicate(double.PositiveInfinity)",
+      "Status": "Passed",
+      "Duration": 3.94E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.NonFiniteDoublesFailEveryPredicate(double.NegativeInfinity)",
+      "Status": "Passed",
+      "Duration": 3.42E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.NonFiniteFloatsFailEveryPredicate(float.NaN)",
+      "Status": "Passed",
+      "Duration": 0.0001722,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.NonFiniteFloatsFailEveryPredicate(float.PositiveInfinity)",
+      "Status": "Passed",
+      "Duration": 3.88E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasyCore.Tests.NumericTests.NonFiniteFloatsFailEveryPredicate(float.NegativeInfinity)",
+      "Status": "Passed",
+      "Duration": 3.35E-05,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

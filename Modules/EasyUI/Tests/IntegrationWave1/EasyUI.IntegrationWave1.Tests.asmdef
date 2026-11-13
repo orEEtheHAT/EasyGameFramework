@@ -1,0 +1,41 @@
+{
+  "name": "EasyUI.IntegrationWave1.Tests",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyUI.EasyInput",
+    "EasyUI.EasyInteraction",
+    "EasyUI.EasyBuilding",
+    "EasyUI.EasyResources",
+    "EasyUI.EasyFeedbacks",
+    "EasyUI.IntegrationWindows",
+    "EasyInput.Runtime",
+    "EasyInput.EasyInteraction",
+    "EasyInput.EasyMovement",
+    "EasyInput.EasyFeedbacks",
+    "EasyInteraction.Runtime",
+    "EasyInteraction.EasyMovement",
+    "EasyInteraction.EasyCombat",
+    "EasyInteraction.EasyBuilding",
+    "EasyMovement.FirstPerson",
+    "ECM2",
+    "EasyBuilding.Runtime",
+    "EasyBuilding.EasyResources",
+    "EasyResources.Runtime",
+    "EasyCombat.Runtime",
+    "EasyFeedbacks.Runtime",
+    "EasyLocalization.Runtime",
+    "Unity.Localization",
+    "Unity.Addressables",
+    "Unity.ResourceManager",
+    "Unity.InputSystem",
+    "UnityEngine.UI",
+    "EasyInput.EasyBuilding",
+    "EasySettings.Runtime",
+    "EasySettings.UI",
+    "Unity.RenderPipelines.Universal.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

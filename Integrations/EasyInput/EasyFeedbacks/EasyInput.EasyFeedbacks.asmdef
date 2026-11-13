@@ -1,0 +1,8 @@
+{
+  "name": "EasyInput.EasyFeedbacks",
+  "references": [
+    "EasyInput.Runtime",
+    "Unity.InputSystem",
+    "EasyFeedbacks.Runtime"
+  ]
+}

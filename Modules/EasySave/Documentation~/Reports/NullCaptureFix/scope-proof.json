@@ -1,0 +1,30 @@
+{
+  "originalAuditFixtureFiles": 5,
+  "originalAuditFixtureChanges": 0,
+  "unchangedBoundaries": [
+    {
+      "path": "Runtime/SaveService.cs",
+      "unchanged": true
+    },
+    {
+      "path": "Runtime/SaveFormat.cs",
+      "unchanged": true
+    },
+    {
+      "path": "Runtime/LocalFileStorage.cs",
+      "unchanged": true
+    },
+    {
+      "path": "Runtime/SaveContracts.cs",
+      "unchanged": true
+    },
+    {
+      "path": "package.json",
+      "unchanged": true
+    },
+    {
+      "path": "Samples~/EasySettings/SettingsSaveAdapter.cs",
+      "unchanged": true
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+    "Success": true,
+    "UnityVersion": "6000.3.22f1",
+    "Platform": "WindowsPlayer",
+    "StorageRoot": "C:\\Users\\LeshaPC\\Games Factory\\Audits\\EasySave\\IsolatedStorage",
+    "Error": "",
+    "Checks": 30,
+    "Measurements": [
+        {
+            "Participants": 4,
+            "PayloadCharacters": 32,
+            "Iteration": 1,
+            "Save": {
+                "CaptureMilliseconds": 0.0135,
+                "SerializationMilliseconds": 0.0227,
+                "StorageMilliseconds": 15.4626,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 370,
+                "Participants": 4
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 0.031,
+                "StorageMilliseconds": 5.391900000000001,
+                "ValidationMilliseconds": 0.0285,
+                "RestoreMilliseconds": 0.0098,
+                "Bytes": 370,
+                "Participants": 4
+            }
+        },
+        {
+            "Participants": 4,
+            "PayloadCharacters": 32,
+            "Iteration": 2,
+            "Save": {
+                "CaptureMilliseconds": 0.0128,
+                "SerializationMilliseconds": 0.0219,
+                "StorageMilliseconds": 15.985000000000002,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 370,
+                "Participants": 4
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 0.029900000000000004,
+                "StorageMilliseconds": 5.388800000000001,
+                "ValidationMilliseconds": 0.028,
+                "RestoreMilliseconds": 0.0098,
+                "Bytes": 370,
+                "Participants": 4
+            }
+        },
+        {
+            "Participants": 4,
+            "PayloadCharacters": 32,
+            "Iteration": 3,
+            "Save": {
+                "CaptureMilliseconds": 0.0129,
+                "SerializationMilliseconds": 0.0213,
+                "StorageMilliseconds": 14.826500000000002,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 370,
+                "Participants": 4
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 0.028300000000000003,
+                "StorageMilliseconds": 5.4817,
+                "ValidationMilliseconds": 0.031400000000000007,
+                "RestoreMilliseconds": 0.0098,
+                "Bytes": 370,
+                "Participants": 4
+            }
+        },
+        {
+            "Participants": 128,
+            "PayloadCharacters": 1024,
+            "Iteration": 1,
+            "Save": {
+                "CaptureMilliseconds": 2.7787,
+                "SerializationMilliseconds": 4.1285,
+                "StorageMilliseconds": 19.356,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 136420,
+                "Participants": 128
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 3.6435,
+                "StorageMilliseconds": 6.3889000000000009,
+                "ValidationMilliseconds": 3.5574000000000005,
+                "RestoreMilliseconds": 2.8088,
+                "Bytes": 136420,
+                "Participants": 128
+            }
+        },
+        {
+            "Participants": 128,
+            "PayloadCharacters": 1024,
+            "Iteration": 2,
+            "Save": {
+                "CaptureMilliseconds": 2.2629,
+                "SerializationMilliseconds": 4.6536,
+                "StorageMilliseconds": 45.1739,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 136420,
+                "Participants": 128
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 3.5579,
+                "StorageMilliseconds": 5.7786,
+                "ValidationMilliseconds": 3.7095000000000004,
+                "RestoreMilliseconds": 2.9056,
+                "Bytes": 136420,
+                "Participants": 128
+            }
+        },
+        {
+            "Participants": 128,
+            "PayloadCharacters": 1024,
+            "Iteration": 3,
+            "Save": {
+                "CaptureMilliseconds": 2.2714000000000005,
+                "SerializationMilliseconds": 4.4184,
+                "StorageMilliseconds": 19.587500000000003,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 136420,
+                "Participants": 128
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 3.9228,
+                "StorageMilliseconds": 5.6092,
+                "ValidationMilliseconds": 3.2866,
+                "RestoreMilliseconds": 2.8179000000000005,
+                "Bytes": 136420,
+                "Participants": 128
+            }
+        },
+        {
+            "Participants": 512,
+            "PayloadCharacters": 8192,
+            "Iteration": 1,
+            "Save": {
+                "CaptureMilliseconds": 58.568200000000008,
+                "SerializationMilliseconds": 89.8097,
+                "StorageMilliseconds": 187.35580000000003,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 4215780,
+                "Participants": 512
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 90.2074,
+                "StorageMilliseconds": 6.256600000000001,
+                "ValidationMilliseconds": 80.3223,
+                "RestoreMilliseconds": 58.3952,
+                "Bytes": 4215780,
+                "Participants": 512
+            }
+        },
+        {
+            "Participants": 512,
+            "PayloadCharacters": 8192,
+            "Iteration": 2,
+            "Save": {
+                "CaptureMilliseconds": 56.8663,
+                "SerializationMilliseconds": 89.05340000000001,
+                "StorageMilliseconds": 187.1629,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 4215780,
+                "Participants": 512
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 89.8117,
+                "StorageMilliseconds": 6.2917000000000009,
+                "ValidationMilliseconds": 78.2445,
+                "RestoreMilliseconds": 54.137,
+                "Bytes": 4215780,
+                "Participants": 512
+            }
+        },
+        {
+            "Participants": 512,
+            "PayloadCharacters": 8192,
+            "Iteration": 3,
+            "Save": {
+                "CaptureMilliseconds": 50.9636,
+                "SerializationMilliseconds": 88.3546,
+                "StorageMilliseconds": 184.4956,
+                "ValidationMilliseconds": 0.0,
+                "RestoreMilliseconds": 0.0,
+                "Bytes": 4215780,
+                "Participants": 512
+            },
+            "Load": {
+                "CaptureMilliseconds": 0.0,
+                "SerializationMilliseconds": 91.9444,
+                "StorageMilliseconds": 6.2948,
+                "ValidationMilliseconds": 80.57000000000001,
+                "RestoreMilliseconds": 65.4221,
+                "Bytes": 4215780,
+                "Participants": 512
+            }
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "EasyInteraction.Setup.Tests.Editor",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyInteraction.Editor",
+    "EasyInteraction.FrameworkSetup.Editor",
+    "EasyInteraction.EasyMovement",
+    "EasyMovement.FirstPerson",
+    "EasyInput.Runtime",
+    "EasyInput.EasyInteraction",
+    "EasyInput.EasyMovement",
+    "ECM2",
+    "Unity.Cinemachine",
+    "EasyFootsteps.Runtime",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "autoReferenced": false
+}

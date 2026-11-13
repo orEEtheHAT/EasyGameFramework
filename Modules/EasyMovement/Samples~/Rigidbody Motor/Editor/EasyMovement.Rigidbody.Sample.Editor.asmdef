@@ -1,0 +1,6 @@
+{
+  "name": "EasyMovement.Rigidbody.Sample.Editor",
+  "rootNamespace": "EasyMovement.Samples.Editor",
+  "references": ["EasyMovement.Rigidbody", "EasyMovement.Rigidbody.Sample"],
+  "includePlatforms": ["Editor"]
+}

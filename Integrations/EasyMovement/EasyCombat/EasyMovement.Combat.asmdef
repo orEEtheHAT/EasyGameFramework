@@ -1,0 +1,5 @@
+{
+  "name": "EasyMovement.Combat",
+  "rootNamespace": "EasyMovement.Integrations",
+  "references": ["EasyMovement.Rigidbody", "EasyCombat.Runtime"]
+}

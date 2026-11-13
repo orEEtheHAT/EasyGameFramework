@@ -1,0 +1,4 @@
+{
+  "name": "EasyBuilding.Cells.Tests", "references": ["EasyBuilding.Runtime", "EasyBuilding.Cells", "EasyBuilding.Paths"],
+  "includePlatforms": ["Editor"], "optionalUnityReferences": ["TestAssemblies"]
+}

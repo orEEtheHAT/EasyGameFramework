@@ -1,0 +1,17 @@
+{
+  "name": "EasyUI.IntegrationWindows.Editor",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyUI.IntegrationWindows",
+    "EasyUI.EasyInteraction",
+    "EasyUI.EasyBuilding",
+    "EasyUI.EasyInput",
+    "EasyUI.EasyFeedbacks",
+    "UnityEngine.UI",
+    "EasySettings.UI",
+    "EasySettings.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

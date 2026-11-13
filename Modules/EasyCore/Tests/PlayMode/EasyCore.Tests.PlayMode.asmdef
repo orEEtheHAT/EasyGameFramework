@@ -1,0 +1,6 @@
+{
+  "name": "EasyCore.Tests.PlayMode",
+  "rootNamespace": "EasyCore.Tests",
+  "references": ["EasyCore.Runtime"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

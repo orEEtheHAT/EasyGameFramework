@@ -1,0 +1,9 @@
+{
+  "name": "EasyInteraction.EasyBuilding",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyBuilding.Runtime"
+  ],
+  "versionDefines": [],
+  "defineConstraints": []
+}

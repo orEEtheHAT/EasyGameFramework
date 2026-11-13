@@ -1,0 +1,22 @@
+{
+  "name": "EasyInteraction.NetworkSmoke.Editor",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyInteraction.Netcode",
+    "EasyInteraction.NetworkSmoke",
+    "Unity.Netcode.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "versionDefines": [
+    {
+      "name": "com.unity.netcode.gameobjects",
+      "expression": "2.7.0",
+      "define": "EASY_INTERACTION_NETCODE"
+    }
+  ],
+  "defineConstraints": [
+    "EASY_INTERACTION_NETCODE"
+  ]
+}

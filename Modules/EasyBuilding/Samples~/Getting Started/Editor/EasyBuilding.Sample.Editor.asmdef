@@ -1,0 +1,6 @@
+{
+  "name": "EasyBuilding.Sample.Editor",
+  "rootNamespace": "EasyBuilding.Samples.Editor",
+  "references": ["EasyBuilding.Runtime", "EasyBuilding.Sample", "EasyBuilding.EasyResources", "EasyResources.Runtime"],
+  "includePlatforms": ["Editor"]
+}

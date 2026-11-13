@@ -1,0 +1,5 @@
+{
+  "name": "EasyMovement.Rigidbody.Sample",
+  "rootNamespace": "EasyMovement.Samples",
+  "references": ["EasyMovement.Rigidbody", "Unity.InputSystem"]
+}

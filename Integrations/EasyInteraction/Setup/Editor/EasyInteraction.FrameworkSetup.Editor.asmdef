@@ -1,0 +1,17 @@
+{
+  "name": "EasyInteraction.FrameworkSetup.Editor",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyInteraction.Editor",
+    "EasyInteraction.EasyMovement",
+    "EasyMovement.FirstPerson",
+    "EasyInput.Runtime",
+    "EasyInput.EasyInteraction",
+    "EasyInput.Player.Editor",
+    "ECM2",
+    "Unity.Cinemachine",
+    "EasyFootsteps.Runtime",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": ["Editor"]
+}

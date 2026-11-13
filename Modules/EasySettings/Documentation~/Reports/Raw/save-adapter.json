@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "duration": 0.82,
+  "summary": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySave.Integration.Tests.SettingsAdapterTests.ExternalDisplayChangeRejectsBeforeAnyRestoreMutation",
+      "Status": "Passed",
+      "Duration": 0.0513979,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.SettingsAdapterTests.PendingPreviewAndFutureVersionRejectWithoutBackendMutation",
+      "Status": "Passed",
+      "Duration": 0.0026267,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.SettingsAdapterTests.SavesConfirmedGraphicsAndNeverRestoresDisplay",
+      "Status": "Passed",
+      "Duration": 0.4360342,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

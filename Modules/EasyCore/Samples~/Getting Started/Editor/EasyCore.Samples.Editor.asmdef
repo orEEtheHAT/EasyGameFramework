@@ -1,0 +1,6 @@
+{
+  "name": "EasyCore.Samples.Editor",
+  "rootNamespace": "EasyGameFramework.Editor",
+  "references": ["EasyCore.Samples"],
+  "includePlatforms": ["Editor"]
+}

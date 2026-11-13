@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="33" result="Passed" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:09Z" duration="6,0661642">
+  <test-suite type="TestSuite" id="1000" name="EasySaveCleanVerification" fullname="EasySaveCleanVerification" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:09Z" duration="6.066164" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1035" name="EasySave.Tests.dll" fullname="C:/Users/LeshaPC/Games Factory/Audits/EasySave/CleanProject/Library/ScriptAssemblies/EasySave.Tests.dll" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:09Z" duration="6.057023" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="37916" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1036" name="EasySave" fullname="EasySave" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:09Z" duration="6.056716" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1037" name="Tests" fullname="EasySave.Tests" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:09Z" duration="6.056600" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="SaveTests" fullname="EasySave.Tests.SaveTests" classname="EasySave.Tests.SaveTests" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:09Z" duration="6.055386" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1032" name="AggregateCaptureBudgetStopsBeforeAllParticipantsAreCaptured" fullname="EasySave.Tests.SaveTests.AggregateCaptureBudgetStopsBeforeAllParticipantsAreCaptured" methodname="AggregateCaptureBudgetStopsBeforeAllParticipantsAreCaptured" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1565510093" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:03Z" duration="0.033032" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1015" name="AwaitedRestoreReturnsToMainThread" fullname="EasySave.Tests.SaveTests.AwaitedRestoreReturnsToMainThread" methodname="AwaitedRestoreReturnsToMainThread" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="565156114" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:03Z" duration="0.150671" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1013" name="CancelDuringRestoreStopsLaterParticipants" fullname="EasySave.Tests.SaveTests.CancelDuringRestoreStopsLaterParticipants" methodname="CancelDuringRestoreStopsLaterParticipants" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="770930800" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:03Z" duration="0.101912" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="CancellationAfterCommitReportsSuccess" fullname="EasySave.Tests.SaveTests.CancellationAfterCommitReportsSuccess" methodname="CancellationAfterCommitReportsSuccess" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="570341807" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:03Z" duration="0.047837" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1031" name="CancellationInValidatorDoesNotMutateWorld" fullname="EasySave.Tests.SaveTests.CancellationInValidatorDoesNotMutateWorld" methodname="CancellationInValidatorDoesNotMutateWorld" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1535108161" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:03Z" duration="0.100230" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1009" name="ConcurrentRequestsReturnBusyAndCancelBeforeCommit" fullname="EasySave.Tests.SaveTests.ConcurrentRequestsReturnBusyAndCancelBeforeCommit" methodname="ConcurrentRequestsReturnBusyAndCancelBeforeCommit" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1188010834" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:03Z" duration="0.100041" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1019" name="CorruptAndTruncatedPrimaryRecoverBackupWithoutRewrite" fullname="EasySave.Tests.SaveTests.CorruptAndTruncatedPrimaryRecoverBackupWithoutRewrite" methodname="CorruptAndTruncatedPrimaryRecoverBackupWithoutRewrite" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1237438493" result="Passed" start-time="2026-11-12 22:01:03Z" end-time="2026-11-12 22:01:04Z" duration="0.606433" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1030" name="CorruptSlotAppearsInListingWithError" fullname="EasySave.Tests.SaveTests.CorruptSlotAppearsInListingWithError" methodname="CorruptSlotAppearsInListingWithError" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="566355555" result="Passed" start-time="2026-11-12 22:01:04Z" end-time="2026-11-12 22:01:04Z" duration="0.295022" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="DisposeAndUnregisterCancelPendingOperation" fullname="EasySave.Tests.SaveTests.DisposeAndUnregisterCancelPendingOperation" methodname="DisposeAndUnregisterCancelPendingOperation" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="899522883" result="Passed" start-time="2026-11-12 22:01:04Z" end-time="2026-11-12 22:01:05Z" duration="0.149158" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1026" name="DuplicateKeyRejectedWithinScopeOnly" fullname="EasySave.Tests.SaveTests.DuplicateKeyRejectedWithinScopeOnly" methodname="DuplicateKeyRejectedWithinScopeOnly" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1717149367" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.004285" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1034" name="FailedOverwriteKeepsPreviouslyCommittedSlot" fullname="EasySave.Tests.SaveTests.FailedOverwriteKeepsPreviouslyCommittedSlot" methodname="FailedOverwriteKeepsPreviouslyCommittedSlot" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="640537061" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.195675" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1027" name="FileBackendRequiresFullyQualifiedApplicationDirectory" fullname="EasySave.Tests.SaveTests.FileBackendRequiresFullyQualifiedApplicationDirectory" methodname="FileBackendRequiresFullyQualifiedApplicationDirectory" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="973155719" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.000542" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1028" name="FormatRejectsCrossSlotAndCrossScopeDocuments" fullname="EasySave.Tests.SaveTests.FormatRejectsCrossSlotAndCrossScopeDocuments" methodname="FormatRejectsCrossSlotAndCrossScopeDocuments" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1262027250" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.000684" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1029" name="FormatRejectsDuplicateKeysAndInvalidVersions" fullname="EasySave.Tests.SaveTests.FormatRejectsDuplicateKeysAndInvalidVersions" methodname="FormatRejectsDuplicateKeysAndInvalidVersions" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1814517853" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.000771" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1023" name="IncompatiblePrimaryNeverFallsBack" fullname="EasySave.Tests.SaveTests.IncompatiblePrimaryNeverFallsBack" methodname="IncompatiblePrimaryNeverFallsBack" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1930290205" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.298547" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1025" name="InvalidSlotAndScopeNeverReachStorage" fullname="EasySave.Tests.SaveTests.InvalidSlotAndScopeNeverReachStorage" methodname="InvalidSlotAndScopeNeverReachStorage" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1061536956" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.001668" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="LastValidatorRejectsBeforeAnyRestore" fullname="EasySave.Tests.SaveTests.LastValidatorRejectsBeforeAnyRestore" methodname="LastValidatorRejectsBeforeAnyRestore" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1437109103" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:05Z" duration="0.097423" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1018" name="ListMetadataAndDeleteOnlySelectedSlot" fullname="EasySave.Tests.SaveTests.ListMetadataAndDeleteOnlySelectedSlot" methodname="ListMetadataAndDeleteOnlySelectedSlot" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1650204976" result="Passed" start-time="2026-11-12 22:01:05Z" end-time="2026-11-12 22:01:06Z" duration="1.053439" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1024" name="LocalStorageHonorsCrossInstanceLock" fullname="EasySave.Tests.SaveTests.LocalStorageHonorsCrossInstanceLock" methodname="LocalStorageHonorsCrossInstanceLock" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1665988459" result="Passed" start-time="2026-11-12 22:01:06Z" end-time="2026-11-12 22:01:06Z" duration="0.099158" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1006" name="MigrationChainDoesNotRewriteSource" fullname="EasySave.Tests.SaveTests.MigrationChainDoesNotRewriteSource" methodname="MigrationChainDoesNotRewriteSource" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1144096860" result="Passed" start-time="2026-11-12 22:01:06Z" end-time="2026-11-12 22:01:06Z" duration="0.100432" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="NewerPayloadAndMissingMigrationRejectBeforeMutation" fullname="EasySave.Tests.SaveTests.NewerPayloadAndMissingMigrationRejectBeforeMutation" methodname="NewerPayloadAndMissingMigrationRejectBeforeMutation" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1903262441" result="Passed" start-time="2026-11-12 22:01:06Z" end-time="2026-11-12 22:01:07Z" duration="0.149003" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="OptionsAndDefaultsAreCopied" fullname="EasySave.Tests.SaveTests.OptionsAndDefaultsAreCopied" methodname="OptionsAndDefaultsAreCopied" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="420114195" result="Passed" start-time="2026-11-12 22:01:07Z" end-time="2026-11-12 22:01:07Z" duration="0.100138" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1033" name="OversizedFileAndBackupDisabledRejectWithoutRestore" fullname="EasySave.Tests.SaveTests.OversizedFileAndBackupDisabledRejectWithoutRestore" methodname="OversizedFileAndBackupDisabledRejectWithoutRestore" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="517003265" result="Passed" start-time="2026-11-12 22:01:07Z" end-time="2026-11-12 22:01:07Z" duration="0.250695" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1017" name="PayloadLimitAndCaptureFailureDoNotCommit" fullname="EasySave.Tests.SaveTests.PayloadLimitAndCaptureFailureDoNotCommit" methodname="PayloadLimitAndCaptureFailureDoNotCommit" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1169852538" result="Passed" start-time="2026-11-12 22:01:07Z" end-time="2026-11-12 22:01:07Z" duration="0.001008" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1021" name="PendingTempIsNeverPromotedAndMissingPrimaryUsesBackup" fullname="EasySave.Tests.SaveTests.PendingTempIsNeverPromotedAndMissingPrimaryUsesBackup" methodname="PendingTempIsNeverPromotedAndMissingPrimaryUsesBackup" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1602252285" result="Passed" start-time="2026-11-12 22:01:07Z" end-time="2026-11-12 22:01:07Z" duration="0.498632" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1011" name="PreCancelledRequestDoesNotCapture" fullname="EasySave.Tests.SaveTests.PreCancelledRequestDoesNotCapture" methodname="PreCancelledRequestDoesNotCapture" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1548084914" result="Passed" start-time="2026-11-12 22:01:07Z" end-time="2026-11-12 22:01:07Z" duration="0.001233" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1003" name="ProgressNeverAppliesPreferences" fullname="EasySave.Tests.SaveTests.ProgressNeverAppliesPreferences" methodname="ProgressNeverAppliesPreferences" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="131601891" result="Passed" start-time="2026-11-12 22:01:07Z" end-time="2026-11-12 22:01:08Z" duration="0.198167" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1008" name="RestoreOrderAndPartialFailureAreReported" fullname="EasySave.Tests.SaveTests.RestoreOrderAndPartialFailureAreReported" methodname="RestoreOrderAndPartialFailureAreReported" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1051833130" result="Passed" start-time="2026-11-12 22:01:08Z" end-time="2026-11-12 22:01:08Z" duration="0.100268" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="RoundTripAndRepeatedRestore" fullname="EasySave.Tests.SaveTests.RoundTripAndRepeatedRestore" methodname="RoundTripAndRepeatedRestore" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1827847788" result="Passed" start-time="2026-11-12 22:01:08Z" end-time="2026-11-12 22:01:08Z" duration="0.149462" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1020" name="SaveAfterCorruptionPreservesLastValidBackup" fullname="EasySave.Tests.SaveTests.SaveAfterCorruptionPreservesLastValidBackup" methodname="SaveAfterCorruptionPreservesLastValidBackup" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="1437047663" result="Passed" start-time="2026-11-12 22:01:08Z" end-time="2026-11-12 22:01:08Z" duration="0.550953" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="UnknownOrMissingParticipantsRejectBeforeMutation" fullname="EasySave.Tests.SaveTests.UnknownOrMissingParticipantsRejectBeforeMutation" methodname="UnknownOrMissingParticipantsRejectBeforeMutation" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="687785699" result="Passed" start-time="2026-11-12 22:01:08Z" end-time="2026-11-12 22:01:09Z" duration="0.149053" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1022" name="UnsupportedContainerNeverFallsBack" fullname="EasySave.Tests.SaveTests.UnsupportedContainerNeverFallsBack" methodname="UnsupportedContainerNeverFallsBack" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="261149640" result="Passed" start-time="2026-11-12 22:01:09Z" end-time="2026-11-12 22:01:09Z" duration="0.451061" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1014" name="WrongThreadDoesNotInvokeParticipants" fullname="EasySave.Tests.SaveTests.WrongThreadDoesNotInvokeParticipants" methodname="WrongThreadDoesNotInvokeParticipants" classname="EasySave.Tests.SaveTests" runstate="Runnable" seed="2083876428" result="Passed" start-time="2026-11-12 22:01:09Z" end-time="2026-11-12 22:01:09Z" duration="0.002041" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:\Users\LeshaPC\Games Factory\Audits\EasySave\TestEdit.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

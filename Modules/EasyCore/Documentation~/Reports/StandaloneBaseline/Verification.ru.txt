@@ -1,0 +1,91 @@
+EasyCore 0.1.0 — локальная проверка 13 ноября 2026 (Europe/Moscow)
+
+Результат
+Реализован самостоятельный UPM-пакет com.oreethehat.easy-core, namespace EasyCore,
+assembly EasyCore.Runtime. Нет зависимостей от других Easy-пакетов, обязательного
+объекта в сцене, исходных SO, Editor-кода в Runtime или фонового игрового цикла.
+Публичный состав: Numeric, IClock, ScaledClock, UnscaledClock, ManualClock,
+DisposableScope. Версия 0.1.0 локальная, не опубликована.
+
+Основания состава и перенос
+Аудит Combat/Building/Interaction/Input/UI/Resources и потребностей Save/Settings
+описан в ../Consumers.ru.md. Для каждого механизма указаны конкретные потребители,
+совпадающая семантика и поэтапные адаптации. Исходники, GUID, API и сохранения
+других модулей не изменялись. В общем manifest добавлен только собственный ID
+в testables, с сохранением остальных записей.
+Clamp с fallback, общие IDs, authority/reservation scopes, save-specific типы,
+UTC, event bus, DI и Jobs scheduler не включены без доказанной общей потребности.
+
+Проверки
+1. Games Factory / Unity 6000.3.22f1:
+   - EasyCore.Runtime и обе тестовые сборки импортированы/скомпилированы.
+   - 39/39 EditMode, 3/3 PlayMode. Всего 42, skipped=0, failed=0.
+   - До/после шагов сохранена исходная EasySuiteLab.unity, isDirty=false,
+     playing=false, compilationFailed=false после успешного build.
+   - Локальная сцена: Assets/PackageTests/EasyCore/EasyCoreFirstRun.unity.
+   - Windows x64 Mono Development build: Succeeded, errors=0, warnings=1.
+     Единственное build warning — URP Hidden/Core/DebugOccluder shader:
+     implicit truncation of vector type; к EasyCore не относится.
+   - Автономный headless Player: first-run 8/8, scaled pause/unscaled advance
+     и resume прошли, процесс завершился с кодом 0.
+2. Чистая установка:
+   - Audits/EasyCore/CleanProject, новый проект Unity 6000.3.22f1.
+   - EasyCore установлен из локального tgz (source=local-tarball).
+   - В manifest только Core, Test Framework 1.6.0, JSON/IMGUI для проверок;
+     транзитивно ext.nunit 2.0.5. Других Easy-пакетов и ECM2 нет.
+   - 39/39 EditMode + 3/3 PlayMode, failed=0, skipped=0.
+   - Sample скопирован из содержимого установленного архивного пакета;
+     создана сцена с CoreFirstRun, как в краткой инструкции.
+   - Windows x64 Mono Development build: Succeeded, errors=0, warnings=0.
+   - Самостоятельный headless Player: 8/8 first-run, pause/resume, exit=0.
+   - SHA256 всех Runtime файлов совпал с проверенным архивным снимком.
+
+Значимые сценарии тестов
+NaN, обе Infinity, экстремумы, subnormal, signed zero, все компоненты Vector3,
+finite-компоненты при overflow длины. Ручное время: nonnegative seconds,
+invalid delta/start и overflow без мутации, независимые timeline, точность double.
+Lifetime: LIFO, повторный/reentrant Dispose, cleanup после исключения,
+AggregateException в порядке освобождения, rejected ownership, null/self/duplicate,
+сравнение ссылок вместо Equals, независимые подписки, вложенные scopes,
+disable/re-enable/destroy. Unity clocks: frame consistency, timeScale=0, resume.
+
+Измерения
+Windows x64 Mono Development, Intel Core i7-14700KF. Нагрузки 32 и 100000 элементов,
+4 warmup + 16 timing repeats, отдельный синхронный GC.Alloc scope на основном потоке.
+В обоих Players positive control new byte[512] = 1 событие, warmed empty control = 0.
+Во всех проверенных Numeric/ManualClock/Unity-clock loops = 0 событий GC.Alloc.
+Это счётчик событий, не измеритель положительного числа байтов; per-thread .NET
+byte counter не использован. Setup, Own/Defer, exceptions, JSON и I/O не zero-GC.
+
+Пример на 100000 элементов, нс на итерацию (включая цикл/вызовы, не FPS):
+                          Games Factory Player   Clean Player
+Numeric predicates                 22.31              24.07
+Inline equivalent baseline         11.63              11.97
+ManualClock Advance/read            6.89               7.43
+Unity scaled+unscaled reads         14.38              17.81
+Это локальный замер, не обещание скорости на других backend/платформах.
+Обёртки не объявлены быстрее inline baseline. Jobs/Burst не внедрены:
+обоснованной массовой задачи самого Core нет; диспетчеризация не нужна.
+
+Ограничения
+- Проверены Windows x64 Mono и Unity 6000.3.22f1. IL2CPP, WebGL, mobile,
+  другие версии Unity и вызов Numeric из Burst здесь не проверялись.
+- GUI-нажатия Package Manager и визуальный вид пустой сцены не автоматизированы;
+  проверены содержимое tarball, компиляция, компонент sample и standalone выполнение.
+- Unity clocks — main-thread frame time в PlayMode, scaled после Awake.
+  Не смешивать FixedUpdate/Update; не сохранять timestamps между сессиями.
+  UnscaledClock не является realtime/UTC и не идёт во время Editor pause.
+- DisposableScope не thread-safe, без async cleanup, удаления отдельных элементов,
+  финализатора и обнаружения циклов; ошибку AggregateException обрабатывает владелец.
+- Адаптация существующих модулей только спроектирована; текущие их сценарии не
+  переключены на Core. Финальная интеграция/публикация EasyGameFramework — отдельный этап.
+
+Доказательства
+Рядом: games-factory-editmode.json, games-factory-playmode.json,
+clean-editmode.xml, clean-playmode.xml, player.json, clean-player.json,
+build.json, clean-build.json, runtime-source-hashes.json.
+Полные рабочие JSON/XML/logs/Players и чистый проект: Audits/EasyCore.
+Вспомогательные reproducible harness исходники: Tools~/Verification.
+PowerShell orchestration и staging: Library/EasyCoreWork (вне Unity импорта).
+Пакет имеет собственный локальный Git repo; remote/push/tag не создавались,
+лицензия не приписывалась.

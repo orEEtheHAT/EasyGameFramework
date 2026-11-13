@@ -1,0 +1,6 @@
+{
+  "name": "EasyBuilding.Editor",
+  "rootNamespace": "EasyBuilding.Editor",
+  "references": ["EasyBuilding.Runtime"],
+  "includePlatforms": ["Editor"]
+}

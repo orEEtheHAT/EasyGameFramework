@@ -1,0 +1,15 @@
+{
+  "name": "EasyCombat.EasyResources.Editor",
+  "rootNamespace": "EasyCombat.Integrations.Editor",
+  "references": [
+    "EasyCombat.Runtime",
+    "EasyCombat.EasyResources",
+    "EasyResources.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true,
+  "versionDefines": [],
+  "defineConstraints": []
+}

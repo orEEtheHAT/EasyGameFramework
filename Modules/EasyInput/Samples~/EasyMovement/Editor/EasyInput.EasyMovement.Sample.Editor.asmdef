@@ -1,0 +1,12 @@
+{
+  "name": "EasyInput.EasyMovement.Sample.Editor",
+  "includePlatforms": [
+    "Editor"
+  ],
+  "references": [
+    "EasyInput.Runtime",
+    "EasyInput.EasyMovement",
+    "EasyMovement.FirstPerson",
+    "ECM2"
+  ]
+}

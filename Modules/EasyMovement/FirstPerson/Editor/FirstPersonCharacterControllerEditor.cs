@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+namespace EasyMovement.FirstPerson.Editor
+{
+    [CustomEditor(typeof(FirstPersonCharacterController), true)]
+    public sealed class FirstPersonCharacterControllerEditor : UnityEditor.Editor
+    {
+        private bool showMotor;
+        private static readonly string[] ShownFields =
+        {
+            "m_Script", "_maxWalkSpeed", "_maxWalkSpeedCrouched", "_canEverCrouch", "_camera",
+            "lookPivot", "defaultCamera", "crouchedCamera", "sprintCamera",
+            "allowSprint", "_maxSprintSpeed", "_minSprintInput", "walkState", "sprintState",
+            "crouchState", "customStates", "groundProbeDepth", "allowNoclip", "_maxFlySpeed", "noclipBoostMultiplier"
+        };
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            DrawLookPivot();
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Movement States", EditorStyles.boldLabel);
+
+            EditorGUILayout.LabelField("Walk", EditorStyles.boldLabel);
+            GaitFields("_maxWalkSpeed", "defaultCamera", "walkState");
+            if (Toggle("allowSprint", "Sprint"))
+            {
+                GaitFields("_maxSprintSpeed", "sprintCamera", "sprintState");
+                Field("_minSprintInput", "Minimum Move Input");
+            }
+            if (Toggle("_canEverCrouch", "Crouch"))
+                GaitFields("_maxWalkSpeedCrouched", "crouchedCamera", "crouchState");
+
+            EditorGUILayout.Space();
+            var custom = serializedObject.FindProperty("customStates");
+            EditorGUILayout.PropertyField(custom, new GUIContent("Custom States", "Activate these states from gameplay using TrySetCustomState."), true);
+            if (custom.isExpanded)
+            {
+                var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                for (int i = 0; i < custom.arraySize; i++)
+                {
+                    string id = custom.GetArrayElementAtIndex(i).FindPropertyRelative("stateId").stringValue;
+                    if (string.IsNullOrWhiteSpace(id) || !names.Add(id))
+                    {
+                        EditorGUILayout.HelpBox("Choose a unique step state for each custom movement state.", MessageType.Warning);
+                        break;
+                    }
+                }
+            }
+
+            EditorGUILayout.Space();
+            bool noclipAllowed = Toggle("allowNoclip", "Allow NoClip");
+            if (noclipAllowed)
+            {
+                EditorGUI.indentLevel++;
+                Field("_maxFlySpeed", "Flight Speed (m/s)");
+                Field("noclipBoostMultiplier", "Boost Multiplier");
+                EditorGUI.indentLevel--;
+            }
+
+            if (Application.isPlaying)
+            {
+                var player = (FirstPersonCharacterController)target;
+                EditorGUILayout.LabelField("Active State", player.ActiveStateId);
+                if (custom.arraySize > 0 && GUILayout.Button("Test State in Play Mode"))
+                {
+                    var menu = new GenericMenu();
+                    menu.AddItem(new GUIContent("Automatic"), false, player.ClearCustomState);
+                    for (int i = 0; i < custom.arraySize; i++)
+                    {
+                        string id = custom.GetArrayElementAtIndex(i).FindPropertyRelative("stateId").stringValue;
+                        if (!string.IsNullOrWhiteSpace(id))
+                            menu.AddItem(new GUIContent(id), player.ActiveStateId == id, () => player.SetCustomState(id));
+                    }
+                    menu.ShowAsContext();
+                }
+            }
+            EditorGUILayout.Space();
+            showMotor = EditorGUILayout.Foldout(showMotor, "ECM2 Motor and Ground Settings", true);
+            if (showMotor)
+            {
+                if (!noclipAllowed) Field("_maxFlySpeed", "ECM2 Flight Speed (m/s)");
+                Field("groundProbeDepth", "Footstep Ground Probe Depth");
+                DrawPropertiesExcluding(serializedObject, ShownFields);
+            }
+            serializedObject.ApplyModifiedProperties();
+            var controller = (FirstPersonCharacterController)target;
+            if (!controller.GetComponent<FirstPersonFov>())
+            {
+                EditorGUILayout.HelpBox("Add First Person FOV to support user FOV settings and temporary gameplay zoom while preserving gait camera differences.", MessageType.Info);
+                using (new EditorGUI.DisabledScope(Application.isPlaying || EditorUtility.IsPersistent(controller)))
+                    if (GUILayout.Button("Add First Person FOV")) Undo.AddComponent<FirstPersonFov>(controller.gameObject);
+            }
+        }
+
+        private void GaitFields(string speed, string view, string steps)
+        {
+            EditorGUI.indentLevel++;
+            Field(speed, "Speed (m/s)");
+            Field(view, "Camera");
+            Field(steps, "Step State");
+            EditorGUI.indentLevel--;
+        }
+
+        private void DrawLookPivot()
+        {
+            var pivot = serializedObject.FindProperty("lookPivot");
+            var current = pivot.objectReferenceValue as GameObject;
+            var rect = EditorGUILayout.GetControlRect();
+            var label = EditorGUI.BeginProperty(rect, new GUIContent("Look Pivot", pivot.tooltip), pivot);
+            EditorGUI.BeginChangeCheck();
+            var selected = (Transform)EditorGUI.ObjectField(rect, label, current ? current.transform : null, typeof(Transform), true);
+            if (EditorGUI.EndChangeCheck()) pivot.objectReferenceValue = selected ? selected.gameObject : null;
+            EditorGUI.EndProperty();
+        }
+
+        private bool Toggle(string path, string label)
+        {
+            Field(path, label);
+            return serializedObject.FindProperty(path).boolValue;
+        }
+
+        private void Field(string path, string label)
+        {
+            var property = serializedObject.FindProperty(path);
+            EditorGUILayout.PropertyField(property, new GUIContent(label, property.tooltip), true);
+        }
+    }
+}

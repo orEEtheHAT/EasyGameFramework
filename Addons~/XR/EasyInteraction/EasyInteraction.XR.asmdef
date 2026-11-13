@@ -1,0 +1,17 @@
+{
+  "name": "EasyInteraction.XR",
+  "references": [
+    "EasyInteraction.Runtime",
+    "Unity.XR.Interaction.Toolkit"
+  ],
+  "versionDefines": [
+    {
+      "name": "com.unity.xr.interaction.toolkit",
+      "expression": "3.2.2",
+      "define": "EASY_INTERACTION_XR"
+    }
+  ],
+  "defineConstraints": [
+    "EASY_INTERACTION_XR"
+  ]
+}

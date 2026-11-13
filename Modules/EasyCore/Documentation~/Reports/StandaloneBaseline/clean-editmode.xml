@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="39" result="Passed" total="39" passed="39" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0,0549501">
+  <test-suite type="TestSuite" id="1000" name="CleanProject" fullname="CleanProject" runstate="Runnable" testcasecount="39" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.054950" total="39" passed="39" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1050" name="EasyCore.Tests.EditMode.dll" fullname="C:/Users/LeshaPC/Games Factory/Audits/EasyCore/CleanProject/Library/ScriptAssemblies/EasyCore.Tests.EditMode.dll" runstate="Runnable" testcasecount="39" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.046416" total="39" passed="39" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="62668" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1051" name="EasyCore" fullname="EasyCore" runstate="Runnable" testcasecount="39" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.046164" total="39" passed="39" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1052" name="Tests" fullname="EasyCore.Tests" runstate="Runnable" testcasecount="39" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.046043" total="39" passed="39" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="DisposableScopeTests" fullname="EasyCore.Tests.DisposableScopeTests" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.033045" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1004" name="DisposalIsReentrantAndClosedBeforeCallbacks" fullname="EasyCore.Tests.DisposableScopeTests.DisposalIsReentrantAndClosedBeforeCallbacks" methodname="DisposalIsReentrantAndClosedBeforeCallbacks" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" seed="1554711866" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.016894" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1008" name="EmptyScopeClosesPermanently" fullname="EasyCore.Tests.DisposableScopeTests.EmptyScopeClosesPermanently" methodname="EmptyScopeClosesPermanently" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" seed="1540030185" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000383" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1003" name="FailuresDoNotSkipOtherResourcesAndAreNotRetried" fullname="EasyCore.Tests.DisposableScopeTests.FailuresDoNotSkipOtherResourcesAndAreNotRetried" methodname="FailuresDoNotSkipOtherResourcesAndAreNotRetried" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" seed="689288511" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.001931" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1006" name="NestedScopesReleaseOnlyTheirOwnedResources" fullname="EasyCore.Tests.DisposableScopeTests.NestedScopesReleaseOnlyTheirOwnedResources" methodname="NestedScopesReleaseOnlyTheirOwnedResources" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" seed="1084670441" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000176" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="RejectsNullSelfAndDuplicateReferencesWithoutUsingValueEquality" fullname="EasyCore.Tests.DisposableScopeTests.RejectsNullSelfAndDuplicateReferencesWithoutUsingValueEquality" methodname="RejectsNullSelfAndDuplicateReferencesWithoutUsingValueEquality" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" seed="387202064" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000580" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="ReleasesInReverseOrderAndReturnsOriginalReference" fullname="EasyCore.Tests.DisposableScopeTests.ReleasesInReverseOrderAndReturnsOriginalReference" methodname="ReleasesInReverseOrderAndReturnsOriginalReference" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" seed="1349332424" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000875" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="RepeatedLifetimesUnsubscribeExactlyTheirOwnHandlers" fullname="EasyCore.Tests.DisposableScopeTests.RepeatedLifetimesUnsubscribeExactlyTheirOwnHandlers" methodname="RepeatedLifetimesUnsubscribeExactlyTheirOwnHandlers" classname="EasyCore.Tests.DisposableScopeTests" runstate="Runnable" seed="1239847358" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000471" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1009" name="ManualClockTests" fullname="EasyCore.Tests.ManualClockTests" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.003689" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1010" name="ExplicitSecondsAndIndependentTimelines" fullname="EasyCore.Tests.ManualClockTests.ExplicitSecondsAndIndependentTimelines" methodname="ExplicitSecondsAndIndependentTimelines" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="1353254600" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000867" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1022" name="FinitePrecisionMayLeaveTimeUnchangedButNeverGoBack" fullname="EasyCore.Tests.ManualClockTests.FinitePrecisionMayLeaveTimeUnchangedButNeverGoBack" methodname="FinitePrecisionMayLeaveTimeUnchangedButNeverGoBack" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="70416338" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000111" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1021" name="OverflowDoesNotPoisonClockAndZeroStillWorks" fullname="EasyCore.Tests.ManualClockTests.OverflowDoesNotPoisonClockAndZeroStillWorks" methodname="OverflowDoesNotPoisonClockAndZeroStillWorks" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="748628123" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000230" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1020" name="RejectsInvalidAdvanceWithoutMutation" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000936" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1016" name="RejectsInvalidAdvanceWithoutMutation(-1.0d)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(-1.0d)" methodname="RejectsInvalidAdvanceWithoutMutation" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="171843796" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000286" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="RejectsInvalidAdvanceWithoutMutation(double.NaN)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(double.NaN)" methodname="RejectsInvalidAdvanceWithoutMutation" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="1977814407" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000055" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="RejectsInvalidAdvanceWithoutMutation(double.PositiveInfinity)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(double.PositiveInfinity)" methodname="RejectsInvalidAdvanceWithoutMutation" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="575021144" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000047" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="RejectsInvalidAdvanceWithoutMutation(double.NegativeInfinity)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidAdvanceWithoutMutation(double.NegativeInfinity)" methodname="RejectsInvalidAdvanceWithoutMutation" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="682674911" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000047" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1015" name="RejectsInvalidStartingPoint" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000686" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1011" name="RejectsInvalidStartingPoint(-1.0d)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(-1.0d)" methodname="RejectsInvalidStartingPoint" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="230449732" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000156" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="RejectsInvalidStartingPoint(double.NaN)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(double.NaN)" methodname="RejectsInvalidStartingPoint" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="789865218" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000053" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="RejectsInvalidStartingPoint(double.PositiveInfinity)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(double.PositiveInfinity)" methodname="RejectsInvalidStartingPoint" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="2145783022" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000045" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1014" name="RejectsInvalidStartingPoint(double.NegativeInfinity)" fullname="EasyCore.Tests.ManualClockTests.RejectsInvalidStartingPoint(double.NegativeInfinity)" methodname="RejectsInvalidStartingPoint" classname="EasyCore.Tests.ManualClockTests" runstate="Runnable" seed="1731740497" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000043" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestFixture" id="1023" name="NumericTests" fullname="EasyCore.Tests.NumericTests" classname="EasyCore.Tests.NumericTests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.008255" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1048" name="EveryVectorComponentIsValidated" fullname="EasyCore.Tests.NumericTests.EveryVectorComponentIsValidated" classname="EasyCore.Tests.NumericTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000966" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1045" name="EveryVectorComponentIsValidated(0)" fullname="EasyCore.Tests.NumericTests.EveryVectorComponentIsValidated(0)" methodname="EveryVectorComponentIsValidated" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1377649450" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000578" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1046" name="EveryVectorComponentIsValidated(1)" fullname="EasyCore.Tests.NumericTests.EveryVectorComponentIsValidated(1)" methodname="EveryVectorComponentIsValidated" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="94709658" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000048" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1047" name="EveryVectorComponentIsValidated(2)" fullname="EasyCore.Tests.NumericTests.EveryVectorComponentIsValidated(2)" methodname="EveryVectorComponentIsValidated" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="310859973" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000037" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1043" name="FiniteDoubleBoundariesHaveNoHiddenEpsilon" fullname="EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.001404" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1038" name="FiniteDoubleBoundariesHaveNoHiddenEpsilon(double.MaxValue,True,True)" fullname="EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(double.MaxValue,True,True)" methodname="FiniteDoubleBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1954887384" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000712" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1039" name="FiniteDoubleBoundariesHaveNoHiddenEpsilon(double.MinValue,False,False)" fullname="EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(double.MinValue,False,False)" methodname="FiniteDoubleBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="617291920" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000062" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1040" name="FiniteDoubleBoundariesHaveNoHiddenEpsilon(4.94065645841247E-324d,True,True)" fullname="EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(4.94065645841247E-324d,True,True)" methodname="FiniteDoubleBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1817818453" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000052" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1041" name="FiniteDoubleBoundariesHaveNoHiddenEpsilon(-4.94065645841247E-324d,False,False)" fullname="EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(-4.94065645841247E-324d,False,False)" methodname="FiniteDoubleBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1156932392" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000048" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1042" name="FiniteDoubleBoundariesHaveNoHiddenEpsilon(0.0d,False,True)" fullname="EasyCore.Tests.NumericTests.FiniteDoubleBoundariesHaveNoHiddenEpsilon(0.0d,False,True)" methodname="FiniteDoubleBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="967525693" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000050" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1037" name="FiniteFloatBoundariesHaveNoHiddenEpsilon" fullname="EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.001084" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1032" name="FiniteFloatBoundariesHaveNoHiddenEpsilon(float.MaxValue,True,True)" fullname="EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(float.MaxValue,True,True)" methodname="FiniteFloatBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="904413927" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000333" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1033" name="FiniteFloatBoundariesHaveNoHiddenEpsilon(float.MinValue,False,False)" fullname="EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(float.MinValue,False,False)" methodname="FiniteFloatBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="512664954" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000057" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1034" name="FiniteFloatBoundariesHaveNoHiddenEpsilon(1.401298E-45f,True,True)" fullname="EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(1.401298E-45f,True,True)" methodname="FiniteFloatBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1814568540" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000049" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1035" name="FiniteFloatBoundariesHaveNoHiddenEpsilon(-1.401298E-45f,False,False)" fullname="EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(-1.401298E-45f,False,False)" methodname="FiniteFloatBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="564314719" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000075" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1036" name="FiniteFloatBoundariesHaveNoHiddenEpsilon(0.0f,False,True)" fullname="EasyCore.Tests.NumericTests.FiniteFloatBoundariesHaveNoHiddenEpsilon(0.0f,False,True)" methodname="FiniteFloatBoundariesHaveNoHiddenEpsilon" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="325401677" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000071" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1049" name="LargeVectorWithOverflowingLengthStillHasFiniteComponents" fullname="EasyCore.Tests.NumericTests.LargeVectorWithOverflowingLengthStillHasFiniteComponents" methodname="LargeVectorWithOverflowingLengthStillHasFiniteComponents" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="2085049069" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000240" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1044" name="NegativeZeroIsNonNegativeButNotPositive" fullname="EasyCore.Tests.NumericTests.NegativeZeroIsNonNegativeButNotPositive" methodname="NegativeZeroIsNonNegativeButNotPositive" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="929091325" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000325" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1031" name="NonFiniteDoublesFailEveryPredicate" fullname="EasyCore.Tests.NumericTests.NonFiniteDoublesFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.002644" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1028" name="NonFiniteDoublesFailEveryPredicate(double.NaN)" fullname="EasyCore.Tests.NumericTests.NonFiniteDoublesFailEveryPredicate(double.NaN)" methodname="NonFiniteDoublesFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1158686784" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000157" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="NonFiniteDoublesFailEveryPredicate(double.PositiveInfinity)" fullname="EasyCore.Tests.NumericTests.NonFiniteDoublesFailEveryPredicate(double.PositiveInfinity)" methodname="NonFiniteDoublesFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1261551773" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000041" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1030" name="NonFiniteDoublesFailEveryPredicate(double.NegativeInfinity)" fullname="EasyCore.Tests.NumericTests.NonFiniteDoublesFailEveryPredicate(double.NegativeInfinity)" methodname="NonFiniteDoublesFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1194051523" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000035" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1027" name="NonFiniteFloatsFailEveryPredicate" fullname="EasyCore.Tests.NumericTests.NonFiniteFloatsFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000623" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1024" name="NonFiniteFloatsFailEveryPredicate(float.NaN)" fullname="EasyCore.Tests.NumericTests.NonFiniteFloatsFailEveryPredicate(float.NaN)" methodname="NonFiniteFloatsFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1205093756" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000239" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1025" name="NonFiniteFloatsFailEveryPredicate(float.PositiveInfinity)" fullname="EasyCore.Tests.NumericTests.NonFiniteFloatsFailEveryPredicate(float.PositiveInfinity)" methodname="NonFiniteFloatsFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1428407145" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000041" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1026" name="NonFiniteFloatsFailEveryPredicate(float.NegativeInfinity)" fullname="EasyCore.Tests.NumericTests.NonFiniteFloatsFailEveryPredicate(float.NegativeInfinity)" methodname="NonFiniteFloatsFailEveryPredicate" classname="EasyCore.Tests.NumericTests" runstate="Runnable" seed="1962138842" result="Passed" start-time="2026-11-12 21:35:11Z" end-time="2026-11-12 21:35:11Z" duration="0.000037" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:\Users\LeshaPC\Games Factory\Audits\EasyCore\CleanProject\Reports\EditMode.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

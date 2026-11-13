@@ -1,0 +1,43 @@
+{
+  "phase": "STAGING_STATIC_ONLY",
+  "assemblies": [
+    "EasyGameFramework.Editor.Setup",
+    "EasyGameFramework.Setup.Tests",
+    "EasyUI.ControllerTests",
+    "EasyUI.EasyBuilding",
+    "EasyUI.EasyFeedbacks",
+    "EasyUI.EasyInput",
+    "EasyUI.EasyInput.Tests",
+    "EasyUI.EasyInteraction",
+    "EasyUI.EasyLocalization",
+    "EasyUI.EasyLocalization.Tests",
+    "EasyUI.EasyResources",
+    "EasyUI.Editor",
+    "EasyUI.IntegrationWave1.Tests",
+    "EasyUI.IntegrationWindows",
+    "EasyUI.IntegrationWindows.Editor",
+    "EasyUI.Runtime",
+    "EasyUI.Tests.PlayMode"
+  ],
+  "testAssemblies": [
+    "EasyGameFramework.Setup.Tests",
+    "EasyUI.ControllerTests",
+    "EasyUI.EasyInput.Tests",
+    "EasyUI.EasyLocalization.Tests",
+    "EasyUI.IntegrationWave1.Tests",
+    "EasyUI.Tests.PlayMode"
+  ],
+  "issues": [],
+  "productionIntegrations": [
+    "EasyBuilding",
+    "EasyFeedbacks",
+    "EasyInput",
+    "EasyInteraction",
+    "EasyLocalization",
+    "EasyResources",
+    "IntegrationWindows"
+  ],
+  "samples": [
+    "Getting Started"
+  ]
+}

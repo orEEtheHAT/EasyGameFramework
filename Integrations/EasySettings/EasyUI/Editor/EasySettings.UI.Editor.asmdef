@@ -1,0 +1,1 @@
+{"name":"EasySettings.UI.Editor","references":["EasySettings.Runtime","EasySettings.UI","EasyUI.Runtime"] ,"includePlatforms":["Editor"]}

@@ -1,0 +1,7 @@
+{
+  "name": "EasyLocalization.EasyBuilding",
+  "references": [
+    "EasyLocalization.Runtime",
+    "EasyBuilding.Runtime"
+  ]
+}

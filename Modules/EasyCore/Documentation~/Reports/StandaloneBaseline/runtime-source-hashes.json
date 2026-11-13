@@ -1,0 +1,72 @@
+[
+  {
+    "file": "DisposableScope.cs",
+    "sha256": "6F44A6ECE6896C4AAB0FD832C523407DA9090B6BD62C031434667A864BC43BC8",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "DisposableScope.cs.meta",
+    "sha256": "E0640062D3520DBD7355B38965DCC61FA2D6AD2844C59ACB0B0A989D609FC6B3",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "EasyCore.Runtime.asmdef",
+    "sha256": "20DEBF729F5AB868F892EAF830531B284150C6C9D8DFDDD3F13F10FDAD13B48C",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "EasyCore.Runtime.asmdef.meta",
+    "sha256": "55AD1360A52D489601E0FB2E953FD9177AA4217C5DB334F361F20A890C07C80A",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "IClock.cs",
+    "sha256": "2923A00AAFA0F005DC57A7677D860A17EEB9D80DA39A8DDD6F95AD6CECC6D9EE",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "IClock.cs.meta",
+    "sha256": "D86685A496AAC008472CA15D7288ACC92DCC13BC7F18E5747A022077A1041F52",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "ManualClock.cs",
+    "sha256": "429125E6B8245E588ECF4D4BE8326F20C7FA66A43AEE2ABD5B58F3169A4A1D25",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "ManualClock.cs.meta",
+    "sha256": "B4EBEE9BC6984AF243ACDCD4B8462C60E18BC2DEC3BC6C27B513212658222E9D",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "Numeric.cs",
+    "sha256": "1DBACD0CAF8696D354B6373716B3230C9A05466A35C2CDD3D7331A1702383EAB",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "Numeric.cs.meta",
+    "sha256": "D0ED8F49E41D64E0BBB993BFAEF1D95251BB6338270DD9D1BB4BCA0666E1AE87",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "ScaledClock.cs",
+    "sha256": "C0764DB6AD6F6359A2508DA0AE23D4D3A1C3B98F087FAAB7484E7C09A26881D5",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "ScaledClock.cs.meta",
+    "sha256": "DD64405CE218DA288FFC8C81769696A9B788792FB7E9A6F4AC8E48BC086665C7",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "UnscaledClock.cs",
+    "sha256": "A744015ED53DFDE848D902615A42E1BD1D6003018698C9EE3311C227946D24FC",
+    "matchesCleanInstall": true
+  },
+  {
+    "file": "UnscaledClock.cs.meta",
+    "sha256": "22310CC5D181784023FD09584CCAA1DF29F36A77FB5EDAD6C069617EB267A4F3",
+    "matchesCleanInstall": true
+  }
+]

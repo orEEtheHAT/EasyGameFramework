@@ -1,0 +1,1 @@
+{ "name": "EasySave.FirstRun.Editor", "rootNamespace": "EasySave.Samples.Editor", "references": ["EasySave.FirstRun", "EasySave.Runtime"], "includePlatforms": ["Editor"] }

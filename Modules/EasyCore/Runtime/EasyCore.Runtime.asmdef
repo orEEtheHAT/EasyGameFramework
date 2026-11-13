@@ -1,0 +1,6 @@
+{
+  "name": "EasyCore.Runtime",
+  "rootNamespace": "EasyCore",
+  "references": [],
+  "autoReferenced": true
+}

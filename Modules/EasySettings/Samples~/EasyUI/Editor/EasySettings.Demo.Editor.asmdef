@@ -1,0 +1,15 @@
+{
+  "name": "EasySettings.Demo.Editor",
+  "references": [
+    "EasySettings.Runtime",
+    "EasySettings.UI",
+    "EasyUI.Runtime",
+    "UnityEngine.UI",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "EasySettings.Demo"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

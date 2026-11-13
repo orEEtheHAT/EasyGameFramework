@@ -1,0 +1,10 @@
+{
+  "name": "EasyBuilding.EasyFeedbacks",
+  "rootNamespace": "EasyBuilding.Integrations",
+  "references": [
+    "EasyBuilding.Runtime",
+    "EasyFeedbacks.Runtime"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}

@@ -1,0 +1,5 @@
+{
+  "name": "EasyBuilding.Sample",
+  "rootNamespace": "EasyBuilding.Samples",
+  "references": ["EasyBuilding.Runtime", "EasyResources.Runtime", "Unity.InputSystem"]
+}

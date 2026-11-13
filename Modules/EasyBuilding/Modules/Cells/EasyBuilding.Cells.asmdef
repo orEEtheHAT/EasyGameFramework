@@ -1,0 +1,5 @@
+{
+  "name": "EasyBuilding.Cells",
+  "rootNamespace": "EasyBuilding.Cells",
+  "references": ["EasyBuilding.Runtime"]
+}

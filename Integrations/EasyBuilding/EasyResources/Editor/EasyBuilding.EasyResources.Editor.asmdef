@@ -1,0 +1,12 @@
+{
+  "name": "EasyBuilding.EasyResources.Editor",
+  "references": [
+    "EasyBuilding.Runtime",
+    "EasyResources.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}

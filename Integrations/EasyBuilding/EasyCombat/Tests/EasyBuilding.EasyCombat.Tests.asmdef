@@ -1,0 +1,16 @@
+{
+  "name": "EasyBuilding.EasyCombat.Tests",
+  "references": [
+    "EasyBuilding.Runtime",
+    "EasyBuilding.EasyCombat",
+    "EasyCombat.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}

@@ -1,0 +1,16 @@
+{
+  "name": "EasyUI.EasyLocalization.Tests",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyUI.EasyLocalization",
+    "EasyLocalization.Runtime",
+    "Unity.Localization",
+    "Unity.Addressables",
+    "Unity.ResourceManager",
+    "UnityEngine.UI"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

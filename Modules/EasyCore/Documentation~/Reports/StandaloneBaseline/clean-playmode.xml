@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0,0421882">
+  <test-suite type="TestSuite" id="1009" name="CleanProject" fullname="CleanProject" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.042188" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1005" name="EasyCore.Tests.PlayMode.dll" fullname="C:/Users/LeshaPC/Games Factory/Audits/EasyCore/CleanProject/Library/ScriptAssemblies/EasyCore.Tests.PlayMode.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.034080" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="42060" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1006" name="EasyCore" fullname="EasyCore" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.033736" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1007" name="Tests" fullname="EasyCore.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.033534" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="UnityClockAndLifetimeTests" fullname="EasyCore.Tests.UnityClockAndLifetimeTests" classname="EasyCore.Tests.UnityClockAndLifetimeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.032644" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1003" name="ClockReadsAreStableWithinAFrameAndProgressAfterResume" fullname="EasyCore.Tests.UnityClockAndLifetimeTests.ClockReadsAreStableWithinAFrameAndProgressAfterResume" methodname="ClockReadsAreStableWithinAFrameAndProgressAfterResume" classname="EasyCore.Tests.UnityClockAndLifetimeTests" runstate="Runnable" seed="1313011825" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.019210" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="DisableReenableAndDestroyReleaseResourcesAndSubscriptions" fullname="EasyCore.Tests.UnityClockAndLifetimeTests.DisableReenableAndDestroyReleaseResourcesAndSubscriptions" methodname="DisableReenableAndDestroyReleaseResourcesAndSubscriptions" classname="EasyCore.Tests.UnityClockAndLifetimeTests" runstate="Runnable" seed="2067633461" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.002864" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="ScaledClockPausesWhileUnscaledClockContinues" fullname="EasyCore.Tests.UnityClockAndLifetimeTests.ScaledClockPausesWhileUnscaledClockContinues" methodname="ScaledClockPausesWhileUnscaledClockContinues" classname="EasyCore.Tests.UnityClockAndLifetimeTests" runstate="Runnable" seed="1535554173" result="Passed" start-time="2026-11-12 21:36:25Z" end-time="2026-11-12 21:36:25Z" duration="0.000808" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:\Users\LeshaPC\Games Factory\Audits\EasyCore\CleanProject\Reports\PlayMode.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

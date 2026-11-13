@@ -1,0 +1,254 @@
+{
+  "output": null,
+  "diagnostics": [],
+  "success": true,
+  "result": [
+    {
+      "guid": "73a13919d81fb7444849bae8b5c812a2",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Contexts/Implementations/VFXBasicSpawner.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXBasicSpawner"
+    },
+    {
+      "guid": "a0b9e6b9139e58d4c957ec54595da7d3",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Contexts/Implementations/VFXPlanarPrimitiveOutput.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXPlanarPrimitiveOutput"
+    },
+    {
+      "guid": "70a331b1d86cc8d4aa106ccbe0da5852",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotTexture2D.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotTexture2D"
+    },
+    {
+      "guid": "1b605c022ee79394a8a776c0869b3f9a",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/VFXSlot.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlot"
+    },
+    {
+      "guid": "d01270efd3285ea4a9d6c555cb0a8027",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/VFXUI.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXUI"
+    },
+    {
+      "guid": "7d4c867f6b72b714dbb5fd1780afe208",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/VFXGraph.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXGraph"
+    },
+    {
+      "guid": "f780aa281814f9842a7c076d436932e7",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotFloat.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotFloat"
+    },
+    {
+      "guid": "d78581a96eae8bf4398c282eb0b098bd",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Data/VFXDataParticle.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXDataParticle"
+    },
+    {
+      "guid": "2dc095764ededfa4bb32fa602511ea4b",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Contexts/Implementations/VFXBasicUpdate.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXBasicUpdate"
+    },
+    {
+      "guid": "9dfea48843f53fc438eabc12a3a30abc",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Contexts/Implementations/VFXBasicInitialize.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXBasicInitialize"
+    },
+    {
+      "guid": "ac39bd03fca81b849929b9c966f1836a",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotFloat3.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotFloat3"
+    },
+    {
+      "guid": "081ffb0090424ba4cb05370a42ead6b9",
+      "path": "",
+      "scriptFound": false,
+      "type": null
+    },
+    {
+      "guid": "f68759077adc0b143b6e1c101e82065e",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Data/VFXDataSpawner.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXDataSpawner"
+    },
+    {
+      "guid": "388ad3b1dc9c6ae45b630f914fab638f",
+      "path": "Packages/com.unity.render-pipelines.universal/Editor/VFXGraph/VFXURPSubOutput.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.URP.VFXURPSubOutput"
+    },
+    {
+      "guid": "f05c6884b705ce14d82ae720f0ec209f",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Spawn/VFXSpawnerConstantRate.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSpawnerConstantRate"
+    },
+    {
+      "guid": "b4c11ff25089a324daf359f4b0629b33",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotBool.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotBool"
+    },
+    {
+      "guid": "a971fa2e110a0ac42ac1d8dae408704b",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/SetAttribute.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.SetAttribute"
+    },
+    {
+      "guid": "d16c6aeaef944094b9a1633041804207",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Orientation/Orient.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.Orient"
+    },
+    {
+      "guid": "01ec2c1930009b04ea08905b47262415",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Attribute/AttributeFromCurve.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.AttributeFromCurve"
+    },
+    {
+      "guid": "76f778ff57c4e8145b9681fe3268d8e9",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotGradient.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotGradient"
+    },
+    {
+      "guid": "26096dfac7c062b4b94c293605ba085e",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Velocity/VelocityDirection.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.VelocityDirection"
+    },
+    {
+      "guid": "e8f2b4a846fd4c14a893cde576ad172b",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotDirection.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotDirection"
+    },
+    {
+      "guid": "e5dce54ae3368c042b26ab1f305e15b2",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Forces/Gravity.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.Gravity"
+    },
+    {
+      "guid": "a9f9544b71b7dab44a4644b6807e8bf6",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotVector.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotVector"
+    },
+    {
+      "guid": "b294673e879f9cf449cc9de536818ea9",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Forces/Drag.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.Drag"
+    },
+    {
+      "guid": "c117b74c5c58db542bffe25c78fe92db",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotAnimationCurve.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotAnimationCurve"
+    },
+    {
+      "guid": "fb1f6794ace8b0c4592af9c5604cddbf",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Position/PositionShape.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.PositionShape"
+    },
+    {
+      "guid": "3e3f628d80ffceb489beac74258f9cf7",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotTransform.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotTransform"
+    },
+    {
+      "guid": "5e382412bb691334bb79457a6c127924",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Spawn/VFXSpawnerBurst.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSpawnerBurst"
+    },
+    {
+      "guid": "3ab9b05052599f344a6b1ae204834e10",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Position/PositionSequential.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.PositionSequential"
+    },
+    {
+      "guid": "4d246e354feb93041a837a9ef59437cb",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotInt.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotInt"
+    },
+    {
+      "guid": "c52d920e7fff73b498050a6b3c4404ca",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotUint.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotUint"
+    },
+    {
+      "guid": "5265657162cc1a241bba03a3b0476d99",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Slots/Implementations/VFXSlotPosition.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXSlotPosition"
+    },
+    {
+      "guid": "756b42789c29cb74085def1da319fa0b",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Contexts/Implementations/VFXQuadStripOutput.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXQuadStripOutput"
+    },
+    {
+      "guid": "f42a6449da2296343af0d8536de8588a",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Contexts/Implementations/VFXBasicGPUEvent.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXBasicGPUEvent"
+    },
+    {
+      "guid": "d03231f387e7ed54d888c74e4e13228e",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/Output/SubpixelAA.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.SubpixelAA"
+    },
+    {
+      "guid": "1e3ae21a3e79373418239098293debe3",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Operators/Implementations/Maximum.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Operator.Maximum"
+    },
+    {
+      "guid": "486e063e1ed58c843942ea4122829ab1",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Parameters/VFXAttributeParameter.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.VFXAttributeParameter"
+    },
+    {
+      "guid": "0155ae97d9a75e3449c6d0603b79c2f4",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Operators/Implementations/Subtract.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Operator.Subtract"
+    },
+    {
+      "guid": "39201e37c9a341c45bace12065f0cb90",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Operators/Implementations/Divide.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Operator.Divide"
+    },
+    {
+      "guid": "9a7ad767f61018d4d951e205b5b51a56",
+      "path": "Packages/com.unity.visualeffectgraph/Editor/Models/Blocks/Implementations/GPUEvent/TriggerEvent.cs",
+      "scriptFound": true,
+      "type": "UnityEditor.VFX.Block.TriggerEvent"
+    }
+  ]
+}
+

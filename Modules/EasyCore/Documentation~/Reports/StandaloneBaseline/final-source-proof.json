@@ -1,0 +1,197 @@
+[
+  {
+    "file": "Runtime\\DisposableScope.cs",
+    "matchesTested": true,
+    "sha256": "6F44A6ECE6896C4AAB0FD832C523407DA9090B6BD62C031434667A864BC43BC8"
+  },
+  {
+    "file": "Runtime\\DisposableScope.cs.meta",
+    "matchesTested": true,
+    "sha256": "E0640062D3520DBD7355B38965DCC61FA2D6AD2844C59ACB0B0A989D609FC6B3"
+  },
+  {
+    "file": "Runtime\\EasyCore.Runtime.asmdef",
+    "matchesTested": true,
+    "sha256": "20DEBF729F5AB868F892EAF830531B284150C6C9D8DFDDD3F13F10FDAD13B48C"
+  },
+  {
+    "file": "Runtime\\EasyCore.Runtime.asmdef.meta",
+    "matchesTested": true,
+    "sha256": "55AD1360A52D489601E0FB2E953FD9177AA4217C5DB334F361F20A890C07C80A"
+  },
+  {
+    "file": "Runtime\\IClock.cs",
+    "matchesTested": true,
+    "sha256": "2923A00AAFA0F005DC57A7677D860A17EEB9D80DA39A8DDD6F95AD6CECC6D9EE"
+  },
+  {
+    "file": "Runtime\\IClock.cs.meta",
+    "matchesTested": true,
+    "sha256": "D86685A496AAC008472CA15D7288ACC92DCC13BC7F18E5747A022077A1041F52"
+  },
+  {
+    "file": "Runtime\\ManualClock.cs",
+    "matchesTested": true,
+    "sha256": "429125E6B8245E588ECF4D4BE8326F20C7FA66A43AEE2ABD5B58F3169A4A1D25"
+  },
+  {
+    "file": "Runtime\\ManualClock.cs.meta",
+    "matchesTested": true,
+    "sha256": "B4EBEE9BC6984AF243ACDCD4B8462C60E18BC2DEC3BC6C27B513212658222E9D"
+  },
+  {
+    "file": "Runtime\\Numeric.cs",
+    "matchesTested": true,
+    "sha256": "1DBACD0CAF8696D354B6373716B3230C9A05466A35C2CDD3D7331A1702383EAB"
+  },
+  {
+    "file": "Runtime\\Numeric.cs.meta",
+    "matchesTested": true,
+    "sha256": "D0ED8F49E41D64E0BBB993BFAEF1D95251BB6338270DD9D1BB4BCA0666E1AE87"
+  },
+  {
+    "file": "Runtime\\ScaledClock.cs",
+    "matchesTested": true,
+    "sha256": "C0764DB6AD6F6359A2508DA0AE23D4D3A1C3B98F087FAAB7484E7C09A26881D5"
+  },
+  {
+    "file": "Runtime\\ScaledClock.cs.meta",
+    "matchesTested": true,
+    "sha256": "DD64405CE218DA288FFC8C81769696A9B788792FB7E9A6F4AC8E48BC086665C7"
+  },
+  {
+    "file": "Runtime\\UnscaledClock.cs",
+    "matchesTested": true,
+    "sha256": "A744015ED53DFDE848D902615A42E1BD1D6003018698C9EE3311C227946D24FC"
+  },
+  {
+    "file": "Runtime\\UnscaledClock.cs.meta",
+    "matchesTested": true,
+    "sha256": "22310CC5D181784023FD09584CCAA1DF29F36A77FB5EDAD6C069617EB267A4F3"
+  },
+  {
+    "file": "Tests\\EditMode.meta",
+    "matchesTested": true,
+    "sha256": "A4AF56977A85CF58E32723EBCFB3E72EC52680200FD233D8FCE3B124591BEC8F"
+  },
+  {
+    "file": "Tests\\PlayMode.meta",
+    "matchesTested": true,
+    "sha256": "DD7784A0E9724FB7A10BB8C043FF4350ECCBD9E0E3735BBD022439F556C37A4D"
+  },
+  {
+    "file": "Tests\\EditMode\\DisposableScopeTests.cs",
+    "matchesTested": true,
+    "sha256": "E341D2F5FFF65DF5E9CDE4437D2B1A6C625A0E73AD811A3045FF00533307C809"
+  },
+  {
+    "file": "Tests\\EditMode\\DisposableScopeTests.cs.meta",
+    "matchesTested": true,
+    "sha256": "D3C1D32F7C5523A7956CDA4EDD241799B4102A29B2F8F1EF7A98BEBBA400B809"
+  },
+  {
+    "file": "Tests\\EditMode\\EasyCore.Tests.EditMode.asmdef",
+    "matchesTested": true,
+    "sha256": "D45D307B4FECE41603EB9282E1F3A5E94EB836943DFAC5D8F307E71D9F671787"
+  },
+  {
+    "file": "Tests\\EditMode\\EasyCore.Tests.EditMode.asmdef.meta",
+    "matchesTested": true,
+    "sha256": "59567F6CDB95F6C72D645608C4D85C1F1668D85D6E29C7BEBBB8C72BC3F39092"
+  },
+  {
+    "file": "Tests\\EditMode\\ManualClockTests.cs",
+    "matchesTested": true,
+    "sha256": "725E083DD79AA6431B22D1AD2F9E41FA69BF656AF6E385FBC1FD86702906A2F9"
+  },
+  {
+    "file": "Tests\\EditMode\\ManualClockTests.cs.meta",
+    "matchesTested": true,
+    "sha256": "AE90A07D56CA4EB973B1BC1B802397B3907FD66FA62C56272EA9A7434F05E26A"
+  },
+  {
+    "file": "Tests\\EditMode\\NumericTests.cs",
+    "matchesTested": true,
+    "sha256": "EB9E28FCD3F8743CEA14F8ECE7D16DD6D71E0C32FF3BD78F73C4DD22D59F1DC0"
+  },
+  {
+    "file": "Tests\\EditMode\\NumericTests.cs.meta",
+    "matchesTested": true,
+    "sha256": "7430E6AA5C0B9246895723CEBE8B538DB7C5D7D00CA6AC1C9369844D6E87310A"
+  },
+  {
+    "file": "Tests\\PlayMode\\EasyCore.Tests.PlayMode.asmdef",
+    "matchesTested": true,
+    "sha256": "2DEF1DE139E789254659C25D472FC025D9CB0EE3B9977E422E8711A9D1EDC898"
+  },
+  {
+    "file": "Tests\\PlayMode\\EasyCore.Tests.PlayMode.asmdef.meta",
+    "matchesTested": true,
+    "sha256": "1C596414E81B85EA8DC36E90F01FEEA625C94D690D0BB45CB2260E6548FA1230"
+  },
+  {
+    "file": "Tests\\PlayMode\\ScopeOwnerProbe.cs",
+    "matchesTested": true,
+    "sha256": "ABB766A4E3ADEF110E1C33890B1E77B88B1862529F499EA45040CC06AFAB888B"
+  },
+  {
+    "file": "Tests\\PlayMode\\ScopeOwnerProbe.cs.meta",
+    "matchesTested": true,
+    "sha256": "3067B02CF5E7C16B45671AC4289241DC5273232A20881BA174B3512E27C27C86"
+  },
+  {
+    "file": "Tests\\PlayMode\\UnityClockAndLifetimeTests.cs",
+    "matchesTested": true,
+    "sha256": "C9DD5460D39EC008CCDCE3E0296290E8414691BF6A9122934F59B7B57E9A38C5"
+  },
+  {
+    "file": "Tests\\PlayMode\\UnityClockAndLifetimeTests.cs.meta",
+    "matchesTested": true,
+    "sha256": "A9FCF4762B25A0071C54EED6DB977626BDCED623A40CC418073092FDFB243BC3"
+  },
+  {
+    "file": "Samples~\\Getting Started\\CoreFirstRun.cs",
+    "matchesTested": true,
+    "sha256": "A8868D08BEFB53B3A6760A4E3A0F7A008524B462DDEF787FDCC7232A713AC0C0"
+  },
+  {
+    "file": "Samples~\\Getting Started\\CoreFirstRun.cs.meta",
+    "matchesTested": true,
+    "sha256": "482108DC71E08DE68EBA5E7A42364EC81651401B09C1EA49C4EBE607DB455395"
+  },
+  {
+    "file": "Samples~\\Getting Started\\EasyCore.Samples.asmdef",
+    "matchesTested": true,
+    "sha256": "EDBE1829B4D41ABB25E4EE2FA905725FED9A00C76B54015FF2321A09499AFAC7"
+  },
+  {
+    "file": "Samples~\\Getting Started\\EasyCore.Samples.asmdef.meta",
+    "matchesTested": true,
+    "sha256": "7C5D4548B2BF53D9A4ECC00872665CF366C3962052484E8325153D900FCA17D8"
+  },
+  {
+    "file": "Samples~\\Getting Started\\README.md.meta",
+    "matchesTested": true,
+    "sha256": "8279CEB7FC3F8DC897C4F5CED98ADCEA5AE41D3B6A172D6CC47A9E041D8ED5E6"
+  },
+  {
+    "file": "Tools~/Verification/CoreVerification.cs",
+    "matchesTested": true,
+    "sha256": "505E33B6BD8EF91DC1986AFF732C27C42EE97F1627F25D7167188423AA6A9713"
+  },
+  {
+    "file": "Tools~/Verification/EasyCore.Verification.asmdef",
+    "matchesTested": true,
+    "sha256": "4E6D69CC7703B1079E9BD2C4BBFF2F9D93CE130CCF2C1008826623A2ABD2435A"
+  },
+  {
+    "file": "Tools~/Verification/Editor\\CoreVerificationBuild.cs",
+    "matchesTested": true,
+    "sha256": "D5DF6919A25155CC54B74EAA46FD8DA030E014840C7B8BCC0E75F0D1D65B57B4"
+  },
+  {
+    "file": "Tools~/Verification/Editor\\EasyCore.Verification.Editor.asmdef",
+    "matchesTested": true,
+    "sha256": "173F8D91D07DC536B74C72680D5F32CD4E78A75304CBDFAE8629AB5014A45452"
+  }
+]

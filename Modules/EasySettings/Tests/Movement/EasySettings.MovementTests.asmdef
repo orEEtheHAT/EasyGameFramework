@@ -1,0 +1,1 @@
+{"name":"EasySettings.MovementTests","references":["EasySettings.Runtime","EasySettings.EasyMovement","EasyMovement.FirstPerson","ECM2","Unity.Cinemachine","Unity.RenderPipelines.Core.Runtime","Unity.RenderPipelines.Universal.Runtime","EasySave.Runtime","EasySave.EasySettings"],"optionalUnityReferences":["TestAssemblies"],"autoReferenced":false}

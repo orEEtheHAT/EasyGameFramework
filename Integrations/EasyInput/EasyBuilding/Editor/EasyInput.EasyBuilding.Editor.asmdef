@@ -1,0 +1,13 @@
+{
+  "references": [
+    "EasyInput.Runtime",
+    "EasyInput.Editor",
+    "EasyInput.EasyBuilding",
+    "EasyBuilding.Runtime",
+    "Unity.InputSystem"
+  ],
+  "name": "EasyInput.EasyBuilding.Editor",
+  "includePlatforms": [
+    "Editor"
+  ]
+}

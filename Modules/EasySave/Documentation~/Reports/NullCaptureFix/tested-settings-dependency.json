@@ -1,0 +1,22 @@
+[
+  {
+    "path": "Packages/com.oreethehat.easy-settings/Runtime/SettingsSession.cs",
+    "sha256": "69237AF523906D434A180F4DC5702797545002E35AC928D7620508E19AD101AC"
+  },
+  {
+    "path": "Packages/com.oreethehat.easy-settings/Runtime/SettingsController.cs",
+    "sha256": "993E036D21E9FDE68C8FCABE60D12579E3C8EE7A4A29D69B65CA870BD08AFB57"
+  },
+  {
+    "path": "Packages/com.oreethehat.easy-settings/Runtime/EasySettings.Runtime.asmdef",
+    "sha256": "84119955FF3B8A811F6EB32DEE85F137AD2A92CFA782BD5E2A045C49EF51DE87"
+  },
+  {
+    "path": "Packages/com.oreethehat.easy-save/Samples~/EasySettings/SettingsSaveAdapter.cs",
+    "sha256": "2C107877F432F564E61FFC96CB62F214D4D9684910B170B70F416553C531B5D5"
+  },
+  {
+    "path": "Library/ScriptAssemblies/EasySettings.Runtime.dll",
+    "sha256": "883A9118F077831C802AB84FA0F98CCDDDDF960AA43DBD42FB8BAB3500F40A6C"
+  }
+]

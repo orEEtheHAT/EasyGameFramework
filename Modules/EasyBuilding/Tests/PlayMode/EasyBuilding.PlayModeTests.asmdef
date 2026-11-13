@@ -1,0 +1,7 @@
+{
+  "name": "EasyBuilding.PlayModeTests",
+  "rootNamespace": "EasyBuilding.PlayModeTests",
+  "references": ["EasyBuilding.Runtime", "Unity.InputSystem"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

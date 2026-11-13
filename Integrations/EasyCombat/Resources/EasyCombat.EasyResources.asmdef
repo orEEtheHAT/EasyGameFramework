@@ -1,0 +1,11 @@
+{
+  "name": "EasyCombat.EasyResources",
+  "rootNamespace": "EasyCombat.Integrations",
+  "references": [
+    "EasyCombat.Runtime",
+    "EasyResources.Runtime"
+  ],
+  "autoReferenced": true,
+  "versionDefines": [],
+  "defineConstraints": []
+}

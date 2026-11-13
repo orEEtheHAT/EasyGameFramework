@@ -1,0 +1,9 @@
+{
+  "name": "EasyInput.Localization",
+  "references": [
+    "EasyInput.Runtime",
+    "Unity.InputSystem",
+    "EasyLocalization.Runtime",
+    "Unity.Localization"
+  ]
+}

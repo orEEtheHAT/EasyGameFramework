@@ -1,0 +1,186 @@
+{
+  "type": "source/static checks, not Unity import or executed tests",
+  "dateUtc": "2026-11-13T12:16:01.7789865Z",
+  "assemblies": [
+    {
+      "name": "EasyResources.Editor",
+      "references": [
+        "EasyResources.Runtime",
+        "EasyResources.Inventory"
+      ],
+      "editorOnly": true,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Runtime",
+      "references": [],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Inventory",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.LargeNumbers",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Networking",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Production",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Progression",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Trading",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.UI",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Samples.Basics",
+      "references": [
+        "EasyResources.Runtime"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Samples.Basics.Editor",
+      "references": [
+        "EasyResources.Runtime",
+        "EasyResources.Samples.Basics"
+      ],
+      "editorOnly": true,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Samples.Benchmarks",
+      "references": [
+        "EasyResources.Runtime",
+        "EasyResources.Production",
+        "EasyResources.Trading",
+        "EasyResources.Inventory",
+        "EasyResources.Progression",
+        "EasyResources.Networking",
+        "EasyResources.LargeNumbers"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Samples.Workflows",
+      "references": [
+        "EasyResources.Runtime",
+        "EasyResources.Production",
+        "EasyResources.Trading",
+        "EasyResources.Inventory",
+        "EasyResources.Progression",
+        "EasyResources.Networking",
+        "EasyResources.LargeNumbers",
+        "EasyResources.UI"
+      ],
+      "editorOnly": false,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Samples.Workflows.Editor",
+      "references": [
+        "EasyResources.Samples.Workflows"
+      ],
+      "editorOnly": true,
+      "testOnly": false
+    },
+    {
+      "name": "EasyResources.Tests.EditMode",
+      "references": [
+        "EasyResources.Runtime",
+        "EasyResources.Editor",
+        "EasyResources.Production",
+        "EasyResources.Trading",
+        "EasyResources.Inventory",
+        "EasyResources.Progression",
+        "EasyResources.LargeNumbers",
+        "EasyResources.Networking"
+      ],
+      "editorOnly": true,
+      "testOnly": true
+    },
+    {
+      "name": "EasyResources.Tests.PlayMode",
+      "references": [
+        "EasyResources.Runtime",
+        "EasyResources.Inventory",
+        "EasyResources.Production",
+        "EasyResources.Progression"
+      ],
+      "editorOnly": false,
+      "testOnly": true
+    },
+    {
+      "name": "EasyResources.Tests.UI",
+      "references": [
+        "EasyResources.Runtime",
+        "EasyResources.UI"
+      ],
+      "editorOnly": false,
+      "testOnly": true
+    }
+  ],
+  "compiledAssemblies": 17,
+  "compilerFailures": 0,
+  "sourceFiles": 95,
+  "uniqueMetaFiles": 121,
+  "baselineCaseCount": {
+    "playMode": 10,
+    "editMode": 118
+  },
+  "expectedCaseCountAfterCutover": {
+    "playMode": 11,
+    "editMode": 138
+  },
+  "legacyPackageGuards": 0,
+  "legacyActivePaths": 0,
+  "nestedPackageManifest": false,
+  "nestedGit": false,
+  "benchmarkWorkloadsPreserved": true,
+  "unityImportPerformed": false,
+  "unityTestsRun": false,
+  "playerBuildRun": false
+}

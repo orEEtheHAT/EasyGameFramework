@@ -1,0 +1,8 @@
+Source: com.unity.visualeffectgraph 17.3.0 Editor/Templates/01_Minimal_System.vfx:640.
+Missing GUID: 081ffb0090424ba4cb05370a42ead6b9.
+Official matching script: VFXHDRPSubOutput.cs.meta in com.unity.render-pipelines.high-definition.
+https://raw.githubusercontent.com/Unity-Technologies/Graphics/master/Packages/com.unity.render-pipelines.high-definition/Editor/VFXGraph/VFXHDRPSubOutput.cs.meta
+Read-only AssetDatabase diagnostic: all other template script GUIDs resolved; HDRP path absent.
+Read-only GameObject diagnostic: 0 missing components, selection null.
+Stack: VisualEffectResource.get_graph -> VFXGraphPreprocessor.OnPostprocessAllAssets -> VFXAssetManager.Build -> VFXLibrary.SRPChanged -> RenderPipelineManager.OnActiveRenderPipelineAssetChanged -> GameView.OnGUI.
+No logger suppression, no package/template edit, no expectation filter used in recorded failed runs.

@@ -1,0 +1,10 @@
+{
+  "name": "EasyUI.Verification.Editor",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyUI.Verification"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

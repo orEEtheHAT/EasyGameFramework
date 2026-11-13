@@ -1,0 +1,10 @@
+{
+  "name": "EasyBuilding.EasyResources",
+  "rootNamespace": "EasyBuilding.Integrations",
+  "references": [
+    "EasyBuilding.Runtime",
+    "EasyResources.Runtime"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}

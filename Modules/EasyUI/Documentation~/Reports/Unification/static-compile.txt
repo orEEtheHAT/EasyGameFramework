@@ -1,0 +1,25 @@
+EasyUI.Runtime PASS 13 sources
+EasyUI.EasyInput PASS 3 sources
+EasyUI.EasyBuilding PASS 3 sources
+EasyUI.EasyResources PASS 2 sources
+EasyUI.EasyInteraction PASS 2 sources
+EasyUI.EasyLocalization PASS 1 sources
+EasyUI.EasyFeedbacks PASS 1 sources
+EasyUI.IntegrationWindows PASS 7 sources
+EasyUI.Editor PASS 1 sources
+EasyUI.IntegrationWindows.Editor PASS 2 sources
+EasyCombat.Runtime PASS 138 sources
+EasyCombat.Editor PASS 40 sources
+EasyGameFramework.Editor.Setup PASS 5 sources
+EasyUI.ControllerTests PASS 1 sources
+EasyUI.EasyInput.Tests PASS 1 sources
+EasyUI.EasyLocalization.Tests PASS 1 sources
+EasyUI.IntegrationWave1.Tests PASS 2 sources
+EasyUI.Tests.PlayMode PASS 2 sources
+EasyGameFramework.Setup.Tests PASS 1 sources
+EasyUI.Sample PASS 4 sources
+EasyUI.Sample.Editor PASS 1 sources
+EasyUI.Verification PASS 3 sources
+EasyUI.Verification.Editor PASS 1 sources
+STATIC ONLY. Current Unity libraries + actual staged Combat public API; no Editor/import/test run.
+EasyGameFramework.Editor.Setup PASS (explicit GUI change guard recompiled)

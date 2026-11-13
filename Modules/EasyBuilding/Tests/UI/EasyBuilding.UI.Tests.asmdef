@@ -1,0 +1,7 @@
+{
+  "name": "EasyBuilding.UI.Tests",
+  "references": ["EasyBuilding.Runtime", "EasyBuilding.UI", "Unity.InputSystem", "UnityEngine.UI"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["EASYBUILDING_UGUI"],
+  "versionDefines": [{ "name": "com.unity.ugui", "expression": "0.0.0", "define": "EASYBUILDING_UGUI" }]
+}

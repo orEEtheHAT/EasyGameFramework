@@ -1,0 +1,5 @@
+{
+  "name": "EasyMovement.Rigidbody.Sample.Tests",
+  "references": ["EasyMovement.Rigidbody", "EasyMovement.Rigidbody.Sample", "Unity.InputSystem"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

@@ -1,0 +1,121 @@
+[
+  {
+    "assembly": "EasyResources.Runtime",
+    "sourceCount": 24,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Runtime.rsp"
+  },
+  {
+    "assembly": "EasyResources.Samples.Basics",
+    "sourceCount": 1,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Samples.Basics.rsp"
+  },
+  {
+    "assembly": "EasyResources.Samples.Basics.Editor",
+    "sourceCount": 1,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Samples.Basics.Editor.rsp"
+  },
+  {
+    "assembly": "EasyResources.Trading",
+    "sourceCount": 4,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Trading.rsp"
+  },
+  {
+    "assembly": "EasyResources.UI",
+    "sourceCount": 1,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.UI.rsp"
+  },
+  {
+    "assembly": "EasyResources.Inventory",
+    "sourceCount": 3,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Inventory.rsp"
+  },
+  {
+    "assembly": "EasyResources.LargeNumbers",
+    "sourceCount": 1,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.LargeNumbers.rsp"
+  },
+  {
+    "assembly": "EasyResources.Networking",
+    "sourceCount": 2,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Networking.rsp"
+  },
+  {
+    "assembly": "EasyResources.Production",
+    "sourceCount": 6,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Production.rsp"
+  },
+  {
+    "assembly": "EasyResources.Progression",
+    "sourceCount": 4,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Progression.rsp"
+  },
+  {
+    "assembly": "EasyResources.Samples.Benchmarks",
+    "sourceCount": 3,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Samples.Benchmarks.rsp"
+  },
+  {
+    "assembly": "EasyResources.Samples.Workflows",
+    "sourceCount": 1,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Samples.Workflows.rsp"
+  },
+  {
+    "assembly": "EasyResources.Samples.Workflows.Editor",
+    "sourceCount": 1,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Samples.Workflows.Editor.rsp"
+  },
+  {
+    "assembly": "EasyResources.Tests.PlayMode",
+    "sourceCount": 4,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Tests.PlayMode.rsp"
+  },
+  {
+    "assembly": "EasyResources.Tests.UI",
+    "sourceCount": 1,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Tests.UI.rsp"
+  },
+  {
+    "assembly": "EasyResources.Editor",
+    "sourceCount": 3,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Editor.rsp"
+  },
+  {
+    "assembly": "EasyResources.Tests.EditMode",
+    "sourceCount": 11,
+    "exitCode": 0,
+    "diagnostics": "",
+    "responseFile": "C:\\Users\\LeshaPC\\Games Factory\\Library\\EasyResourcesWork\\Unification\\Compile\\EasyResources.Tests.EditMode.rsp"
+  }
+]

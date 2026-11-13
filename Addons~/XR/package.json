@@ -1,0 +1,15 @@
+{
+  "name": "com.oreethehat.easy-game-framework.xr",
+  "displayName": "EasyGameFramework - XR Interaction Extensions",
+  "version": "0.1.0",
+  "unity": "6000.3",
+  "description": "Optional SDK-specific extensions. See README for the supported module scope and validation limits.",
+  "author": {
+    "name": "orEEtheHAT"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "com.oreethehat.easy-game-framework": "0.1.0",
+    "com.unity.xr.interaction.toolkit": "3.3.0"
+  }
+}

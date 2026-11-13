@@ -1,0 +1,7 @@
+{
+  "name": "EasyCore.Tests.EditMode",
+  "rootNamespace": "EasyCore.Tests",
+  "references": ["EasyCore.Runtime"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

@@ -1,0 +1,24 @@
+using UnityEngine;
+
+namespace EasyCombat
+{
+    [DisallowMultipleComponent, AddComponentMenu("EasyGameFramework/Combat/Stats/Damage Modifiers")]
+    public sealed class CombatDamageModifiers : MonoBehaviour
+    {
+        public DamageModifierProfile Outgoing;
+        public DamageModifierProfile Incoming;
+        private void OnEnable()
+        {
+            if (TryGetComponent<Health>(out var target)) target.Attach(this);
+        }
+        private void OnDestroy()
+        {
+            if (TryGetComponent<Health>(out var target)) target.Detach(this);
+        }
+        public static DamageInfo CaptureOutgoing(DamageInfo damage)
+        {
+            return damage.Source!=null && damage.Source.TryGetComponent<CombatDamageModifiers>(out var component) && component.isActiveAndEnabled
+                ? damage.Adjust(component.Outgoing) : damage;
+        }
+    }
+}

@@ -1,0 +1,1 @@
+{"name":"EasyBuilding.XR","rootNamespace":"EasyBuilding.XR","references":["EasyBuilding.Runtime","Unity.XR.Interaction.Toolkit"],"defineConstraints":["EASYBUILDING_XRI"],"versionDefines":[{"name":"com.unity.xr.interaction.toolkit","expression":"[3.3,4.0)","define":"EASYBUILDING_XRI"}]}

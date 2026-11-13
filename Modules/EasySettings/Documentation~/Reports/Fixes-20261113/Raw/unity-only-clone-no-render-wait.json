@@ -1,0 +1,17 @@
+{
+  "output": null,
+  "diagnostics": [],
+  "success": true,
+  "result": {
+    "scope": "Unity-only URP Instantiate/QualitySettings swap, empty scene; no EasySettings, EasyMovement or EasySave objects/APIs",
+    "reproduced": false,
+    "totalLogs": 0,
+    "provenVfxWarnings": 0,
+    "onlyProvenVfxWarnings": true,
+    "missingBefore": 0,
+    "missingAfter": 0,
+    "pipelineRestored": true,
+    "sourceUnchanged": true,
+    "logs": []
+  }
+}

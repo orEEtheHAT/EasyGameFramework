@@ -1,0 +1,15 @@
+# Первое подключение EasyGameFramework
+
+1. Используйте Unity 6.3 и URP. Импортируйте лицензированный **ECM2** до установки фреймворка: его коммерческий код в пакет не включён. Остальные обязательные Unity-пакеты разрешает корневой UPM manifest.
+2. После установки откройте **Tools → EasyGameFramework → Setup**. Один welcome показывается для каждой версии в этом проекте. Повторное открытие всегда доступно через меню.
+3. На **Get started** проверьте Input System, uGUI, URP, Cinemachine, VFX Graph, Localization, Burst и ECM2. Назначьте URP asset в Graphics/Quality. В Player → Other Settings используйте **Input System Package (New)**; при запросе Unity перезапустите Editor. Кнопки Settings открывают соответствующий раздел, настройки автоматически не переписываются.
+4. **Modules** показывает наличие сборок всех 12 модулей и открывает их инструкции. Это диагностика, а не переключатели служб. Компоненты начинают работать при использовании в сцене.
+5. На **Samples** импортируйте нужный пример, нажмите **Reveal**, прочитайте README в его папке и откройте сцену. Production-интеграции уже поставляются в `Integrations` и отдельно не импортируются. Уже импортированный пример остаётся редактируемой копией в Assets; Setup не перезаписывает его молча.
+
+**Combat:** default — Parallel. Изменение Requested mode вызывает публичный `CombatProjectileSetup.SetMode`; Effective mode отражает текущую среду выполнения. Данные для Player сохраняет сам Combat. Открытие/обновление/закрытие Setup не создаёт настройки Combat и не меняет выбор. Диагностика объясняет отсутствие доступных workers и конфликты настроек.
+
+Welcome помечается показанным в `UserSettings/EasyGameFrameworkSetup.asset`, отдельно для проекта/версии. Он не показывается в batchmode, import worker и во время Play/компиляции. Закрытие окна безопасно: импорт примеров, выбор Combat и изменение Project Settings происходят только после соответствующего действия пользователя. Runtime-менеджер, игровые циклы или глобальное состояние модулей Setup не создаёт.
+
+Ошибки компиляции проверяйте в Console: наличие ранее загруженной сборки не доказывает успешность последней компиляции. В одном проекте не устанавливайте одновременно объединённый фреймворк и прежние самостоятельные модули с теми же assemblies. Существующий самостоятельный продукт EasyFeedbacks сохраняется для своих проектов.
+
+Импорт реализован публичными Unity APIs: [Sample.FindByPackage](https://docs.unity.com/en-us/engine/6000.7/script-reference/unityeditor/packagemanager/ui/sample/findbypackage) и [Sample.Import](https://docs.unity.com/en-us/engine/6000.7/script-reference/unityeditor/packagemanager/ui/sample/import), с обычными защитами UPM от перезаписи.

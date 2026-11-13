@@ -1,0 +1,8 @@
+{
+  "name": "EasyBuilding.Tests",
+  "rootNamespace": "EasyBuilding.Tests",
+  "references": ["EasyBuilding.Runtime", "EasyBuilding.TestSupport"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

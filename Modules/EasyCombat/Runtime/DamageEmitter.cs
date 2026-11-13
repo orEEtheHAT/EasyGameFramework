@@ -1,0 +1,106 @@
+using System;
+using UnityEngine;
+
+namespace EasyCombat
+{
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, "GamesFactory.Combat", "GamesFactory.Combat")]
+    public readonly struct ShotInfo
+    {
+        public readonly Vector3 Origin, End;
+        public readonly DamageDelivery Delivery;
+        public readonly float Radius;
+        public readonly AttackDefinition Attack;
+        public readonly DamageOrigin DamageOrigin;
+        public readonly bool Critical;
+        public readonly GameObject Source;
+        public ShotInfo(Vector3 origin, Vector3 end, DamageDelivery delivery, float radius = 0,AttackDefinition attack=null,DamageOrigin damageOrigin=default,bool critical=false,GameObject source=null)
+        { Origin = origin; End = end; Delivery = delivery; Radius = radius; Attack=attack; DamageOrigin=damageOrigin; Critical=critical; Source=source; }
+    }
+
+    [AddComponentMenu("EasyGameFramework/Combat/Damage Emitter")]
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, "GamesFactory.Combat", "GamesFactory.Combat")]
+    public sealed class DamageEmitter : MonoBehaviour
+    {
+        [SerializeField] private AttackDefinition attack;
+        [Tooltip("All colliders under this transform are excluded. Assign the character root, not a common scene parent.")]
+        [SerializeField] private Transform ownerRoot;
+        [SerializeField] private ProjectilePool projectilePool;
+        [SerializeField] private DamageAreaPool areaPool;
+        private readonly AttackTrace trace = new AttackTrace();
+        private double nextShotTime = double.NegativeInfinity;
+        private Transform resolvedOwner;
+        private StatusController ownerStatuses;
+        private Action<DamageImpact> impactCallback;
+        private bool firing;
+        public AttackDefinition Attack { get => attack; set => attack = value; }
+        public Transform OwnerRoot { get => ownerRoot != null ? ownerRoot : transform; set => ownerRoot = value; }
+        public ProjectilePool Pool { get => projectilePool; set => projectilePool = value; }
+        public DamageAreaPool AreaPool { get => areaPool; set => areaPool = value; }
+        private readonly CombatSignal<ShotInfo> fired=new CombatSignal<ShotInfo>();
+        private readonly CombatSignal<DamageImpact> impacted=new CombatSignal<DamageImpact>();
+        public event Action<ShotInfo> Fired { add=>fired.Add(value); remove=>fired.Remove(value); }
+        public event Action<DamageImpact> Impacted { add=>impacted.Add(value); remove=>impacted.Remove(value); }
+
+        public bool TryFire(Vector3 origin, Vector3 direction)
+        {
+            // A callback may request another shot with zero cooldown. Keep the current trace atomic.
+            if (firing) return false;
+            firing = true;
+            CombatReactionQueue.Enter();
+            try { return Fire(origin, direction); }
+            finally { trace.Clear(); firing = false; CombatReactionQueue.Exit(); }
+        }
+
+        private bool Fire(Vector3 origin, Vector3 direction)
+        {
+            var definition=attack;
+            if (!isActiveAndEnabled || definition == null || !definition.IsValid || CombatClock.Now < nextShotTime
+                || !CombatMath.Finite(origin) || !CombatMath.Finite(direction) || direction.sqrMagnitude < 0.000001f) return false;
+            if (definition.ImpactArea != null && (areaPool == null || !areaPool.isActiveAndEnabled)) return false;
+            direction.Normalize();
+            var sourceRoot = OwnerRoot;
+            if (!CombatControl.IsAllowed(sourceRoot.gameObject,CombatRestriction.Attack)) return false;
+            if (resolvedOwner != sourceRoot)
+            {
+                resolvedOwner = sourceRoot;
+                sourceRoot.TryGetComponent(out ownerStatuses);
+            }
+            var damageMultiplier = ownerStatuses != null ? ownerStatuses.GetStatMultiplier(definition.DamageModifierStat) : 1f;
+            var rateMultiplier = ownerStatuses != null ? ownerStatuses.GetStatMultiplier(definition.FireRateModifierStat) : 1f;
+            if (!CombatMath.Positive(damageMultiplier) || !CombatMath.Positive(rateMultiplier)) return false;
+            var delivery = definition.Delivery;
+            var radius = delivery == DamageDelivery.Area ? 0 : definition.HitRadius;
+            var damage = definition.RollRandom(sourceRoot.gameObject, origin, direction, damageMultiplier);
+            if (!damage.IsValid) return false;
+            if (impactCallback == null) impactCallback = ReportImpact;
+            var end = origin + direction * definition.Range;
+            // Reserve cooldown before invoking any damage/event callbacks.
+            nextShotTime = CombatClock.Now + definition.Cooldown / rateMultiplier;
+            if (delivery == DamageDelivery.Area)
+            {
+                end = origin;
+                AreaDamageQuery.ApplyTransient(origin, direction, damage, new AreaSettings(definition.Area), sourceRoot, impactCallback);
+            }
+            else if (delivery == DamageDelivery.Projectile)
+            {
+                if (projectilePool == null || projectilePool.Spawn(origin, direction, damage, sourceRoot, definition, impactCallback, areaPool) == null)
+                {
+                    nextShotTime = double.NegativeInfinity;
+                    return false;
+                }
+            }
+            else
+            {
+                trace.Begin(definition, damage, sourceRoot, direction, areaPool);
+                trace.Advance(origin, definition.Range, impactCallback, out end);
+                trace.CompleteHitscan(end, impactCallback);
+            }
+            fired.Publish(new ShotInfo(origin,end,delivery,radius,definition,damage.Origin,damage.IsCritical,damage.Source));
+            return true;
+        }
+
+        private void ReportImpact(DamageImpact impact) => impacted.Publish(impact);
+        public void ResetCooldown() => nextShotTime = double.NegativeInfinity;
+        public void RefreshOwner() => resolvedOwner = null;
+    }
+}

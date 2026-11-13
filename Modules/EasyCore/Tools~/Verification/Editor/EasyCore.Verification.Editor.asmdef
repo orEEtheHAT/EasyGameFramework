@@ -1,0 +1,6 @@
+{
+  "name": "EasyCore.Verification.Editor",
+  "rootNamespace": "EasyCore.Verification.Editor",
+  "references": ["EasyCore.Runtime", "EasyCore.Samples", "EasyCore.Verification"],
+  "includePlatforms": ["Editor"]
+}

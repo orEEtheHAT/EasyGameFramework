@@ -1,0 +1,19 @@
+{
+  "name": "EasyLocalization.Gameplay.Editor",
+  "includePlatforms": [
+    "Editor"
+  ],
+  "references": [
+    "EasyLocalization.Runtime",
+    "EasyLocalization.Editor",
+    "EasyLocalization.Gameplay",
+    "Unity.Localization",
+    "Unity.Localization.Editor",
+    "EasyResources.Runtime",
+    "EasyBuilding.Runtime",
+    "EasyInteraction.Runtime",
+    "EasyLocalization.EasyResources",
+    "EasyLocalization.EasyBuilding",
+    "EasyLocalization.EasyInteraction"
+  ]
+}

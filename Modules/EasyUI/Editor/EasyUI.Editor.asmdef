@@ -1,0 +1,11 @@
+{
+  "name": "EasyUI.Editor",
+  "references": [
+    "EasyUI.Runtime",
+    "UnityEngine.UI",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

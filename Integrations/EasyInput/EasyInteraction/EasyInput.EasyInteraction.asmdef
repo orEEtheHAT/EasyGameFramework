@@ -1,0 +1,8 @@
+{
+  "name": "EasyInput.EasyInteraction",
+  "references": [
+    "EasyInput.Runtime",
+    "Unity.InputSystem",
+    "EasyInteraction.Runtime"
+  ]
+}

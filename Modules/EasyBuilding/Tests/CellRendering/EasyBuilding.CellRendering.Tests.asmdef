@@ -1,0 +1,5 @@
+{
+  "name": "EasyBuilding.CellRendering.Tests", "references": ["EasyBuilding.Runtime", "EasyBuilding.Cells", "EasyBuilding.Voxels", "EasyBuilding.Tilemap"],
+  "optionalUnityReferences": ["TestAssemblies"], "defineConstraints": ["EASYBUILDING_TILEMAP"],
+  "versionDefines": [{ "name": "com.unity.modules.tilemap", "expression": "0.0.0", "define": "EASYBUILDING_TILEMAP" }]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "EasySettings.EasyMovement.Editor",
+  "references": [
+    "EasySettings.Runtime",
+    "EasySettings.EasyMovement",
+    "EasyMovement.FirstPerson"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

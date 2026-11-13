@@ -1,0 +1,11 @@
+{
+  "name": "EasyBuilding.EasyFeedbacks.Editor",
+  "references": [
+    "EasyBuilding.EasyFeedbacks"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}

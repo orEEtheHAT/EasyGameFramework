@@ -1,0 +1,10 @@
+{
+  "name": "EasyBuilding.Terrain.Tests",
+  "references": ["EasyBuilding.Runtime", "EasyBuilding.Terrain"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["EASYBUILDING_TERRAIN", "EASYBUILDING_TERRAIN_PHYSICS"],
+  "versionDefines": [
+    { "name": "com.unity.modules.terrain", "expression": "0.0.0", "define": "EASYBUILDING_TERRAIN" },
+    { "name": "com.unity.modules.terrainphysics", "expression": "0.0.0", "define": "EASYBUILDING_TERRAIN_PHYSICS" }
+  ]
+}

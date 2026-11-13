@@ -1,0 +1,48 @@
+{
+  "status": "completed",
+  "duration": 0.46,
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySave.Tests.ControllerTests.AutosaveUsesUnscaledTimeAndProgressOnly",
+      "Status": "Passed",
+      "Duration": 0.0987653,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.DestroyCancelsOwnedSession",
+      "Status": "Passed",
+      "Duration": 0.1248191,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.DisableCancelsRestoreAndSuppressesLateNotification",
+      "Status": "Passed",
+      "Duration": 0.054838,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.InspectorExplainsDuplicateParticipantKeys",
+      "Status": "Passed",
+      "Duration": 0.0054856,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.ReenableCreatesIndependentSessionAndKeepsDefaults",
+      "Status": "Passed",
+      "Duration": 0.0660141,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "EasyUI.EasyFeedbacks",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyFeedbacks.Runtime",
+    "UnityEngine.UI"
+  ]
+}

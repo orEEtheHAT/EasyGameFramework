@@ -1,0 +1,290 @@
+diff --git a/Documentation~/Contracts.md b/Documentation~/Contracts.md
+index 8898498..691b44b 100644
+--- a/Documentation~/Contracts.md
++++ b/Documentation~/Contracts.md
+@@ -12,6 +12,8 @@ Capture и Validate не меняют живое состояние и не от
+ 
+ `JsonSaveParticipant<T>` вызывает JsonUtility на главном потоке. Поддерживаются его DTO-правила: сериализуемые fields, без UnityEngine.Object references, полиморфного произвольного графа и Dictionary. Владелец задаёт версию и проверяет свой DTO. Есть синхронный Action<T> и асинхронный Func<T,CancellationToken,Task> Restore. Асинхронный Restore должен уважать token и оставаться на Unity main thread для Unity API. Сервис не может отменить побочные эффекты чужого callback, игнорирующего token.
+ 
++JSON Capture вызывает provider ровно один раз. Отсутствующий DTO (`null`), ошибка сериализации или неподходящий JSON object envelope отклоняются в фазе Capture до обращения к storage: `CaptureFailed`, `Committed=false`, ключ в `FailedParticipant`; прежние primary и backup сохраняются. Непустой marker DTO с `{}` и допустимый default serializable struct разрешены. Игровой Validate при Save не вызывается. Это правило JSON-адаптера: собственный строковый формат обычного `ISaveParticipant`, включая допустимый пустой payload, сохраняет прежнюю семантику.
++
+ ## Миграции
+ 
+ `RegisterMigration(scope, key, fromVersion, Func<string,string>)` задаёт чистый переход N → N+1. Все необходимые звенья должны существовать; предел 256 переходов на payload. Мигрированный payload снова ограничивается размером и проходит Validate. Более новая версия отвергается. Файл-источник не переписывается; новый формат сохраняется только отдельным Save после успешной загрузки.
+diff --git a/Runtime/JsonSaveParticipant.cs b/Runtime/JsonSaveParticipant.cs
+index 1e3f4cc..783524a 100644
+--- a/Runtime/JsonSaveParticipant.cs
++++ b/Runtime/JsonSaveParticipant.cs
+@@ -31,16 +31,28 @@ namespace EasySave
+             this.validate = validate ?? throw new ArgumentNullException(nameof(validate));
+             this.restore = restore ?? throw new ArgumentNullException(nameof(restore));
+         }
+-        public string Capture() => JsonUtility.ToJson(capture());
++        public string Capture()
++        {
++            var value = capture();
++            if (ReferenceEquals(value, null))
++                throw new InvalidOperationException("Participant '" + Key + "' returned a missing snapshot.");
++            var payload = JsonUtility.ToJson(value);
++            RequireJsonObjectPayload(payload);
++            return payload;
++        }
+         public SaveValidation Validate(string payload) => validate(Parse(payload));
+         public Task RestoreAsync(string payload, CancellationToken cancellation) => restore(Parse(payload), cancellation);
+         private static T Parse(string payload)
+         {
+-            if (string.IsNullOrWhiteSpace(payload) || !payload.TrimStart().StartsWith("{", StringComparison.Ordinal))
+-                throw new ArgumentException("Expected a JSON object payload.");
++            RequireJsonObjectPayload(payload);
+             var value = JsonUtility.FromJson<T>(payload);
+             if (ReferenceEquals(value, null)) throw new ArgumentException("Missing snapshot payload.");
+             return value;
+         }
++        private static void RequireJsonObjectPayload(string payload)
++        {
++            if (string.IsNullOrWhiteSpace(payload) || !payload.TrimStart().StartsWith("{", StringComparison.Ordinal))
++                throw new ArgumentException("Expected a JSON object payload.");
++        }
+     }
+ }
+diff --git a/Tests/Editor/JsonCaptureTests.cs b/Tests/Editor/JsonCaptureTests.cs
+new file mode 100644
+index 0000000..34c6097
+--- /dev/null
++++ b/Tests/Editor/JsonCaptureTests.cs
+@@ -0,0 +1,173 @@
++using System;
++using System.Collections;
++using System.Collections.Generic;
++using System.IO;
++using System.Threading;
++using System.Threading.Tasks;
++using NUnit.Framework;
++using UnityEngine;
++using UnityEngine.TestTools;
++
++namespace EasySave.Tests
++{
++    public sealed class JsonCaptureTests
++    {
++        [Serializable] public sealed class Snapshot { public int Value; }
++        [Serializable] public sealed class Marker { }
++        [Serializable] public struct ValueSnapshot { public int Value; }
++
++        private sealed class RecordingStorage : ISaveStorage
++        {
++            private readonly LocalFileStorage files;
++            internal int Writes;
++            internal RecordingStorage(string directory) { files = new LocalFileStorage(directory); }
++            public Task<byte[]> ReadAsync(SaveAddress address, bool backup, int maximumBytes, CancellationToken cancellation) => files.ReadAsync(address, backup, maximumBytes, cancellation);
++            public Task<StorageCommit> WriteAsync(SaveAddress address, byte[] data, CancellationToken cancellation)
++            { Writes++; return files.WriteAsync(address, data, cancellation); }
++            public Task<IReadOnlyList<string>> ListAsync(SaveScope scope, CancellationToken cancellation) => files.ListAsync(scope, cancellation);
++            public Task<StorageCommit> DeleteAsync(SaveAddress address, CancellationToken cancellation) => files.DeleteAsync(address, cancellation);
++        }
++        private sealed class EmptyRawParticipant : ISaveParticipant
++        {
++            public string Key => "raw";
++            public SaveScope Scope => SaveScope.Progress;
++            public int Version => 1;
++            public int RestoreOrder => 0;
++            internal int Restores;
++            public string Capture() => string.Empty;
++            public SaveValidation Validate(string payload) => payload == string.Empty ? SaveValidation.Valid : SaveValidation.Invalid("Expected an empty raw snapshot.");
++            public Task RestoreAsync(string payload, CancellationToken cancellation)
++            { cancellation.ThrowIfCancellationRequested(); Assert.AreEqual(string.Empty, payload); Restores++; return Task.CompletedTask; }
++        }
++        private readonly List<SaveService> sessions = new List<SaveService>();
++        private string directory;
++        private RecordingStorage storage;
++        [SetUp] public void Setup()
++        {
++            directory = Path.Combine(Path.GetTempPath(), "EasySaveNullCapture-" + Guid.NewGuid().ToString("N"));
++            storage = new RecordingStorage(directory);
++        }
++        [TearDown] public void Cleanup()
++        {
++            foreach (var session in sessions) session.Dispose(); sessions.Clear();
++            if (Directory.Exists(directory)) Directory.Delete(directory, true);
++        }
++        private SaveService Session()
++        { var session = new SaveService(storage); sessions.Add(session); return session; }
++        private static IEnumerator Check(Func<Task> body)
++        {
++            var task = body(); var deadline = DateTime.UtcNow.AddSeconds(30);
++            while (!task.IsCompleted && DateTime.UtcNow < deadline) yield return null;
++            Assert.IsTrue(task.IsCompleted, "Async test timed out."); task.GetAwaiter().GetResult();
++        }
++        private static void Ok(SaveResult result) => Assert.IsTrue(result.Success, result.ToString());
++        private static void Rejected(SaveResult result, string key)
++        {
++            Assert.AreEqual(SaveError.CaptureFailed, result.Error, result.ToString());
++            Assert.IsFalse(result.Success); Assert.IsFalse(result.Committed); Assert.IsFalse(result.WorldMayHaveChanged);
++            Assert.AreEqual(key, result.FailedParticipant); Assert.IsEmpty(result.RestoredParticipants);
++        }
++
++        [UnityTest] public IEnumerator NullDtoFailsBeforeStorageAndInvokesCaptureOnce() => Check(async () =>
++        {
++            int captures = 0, validations = 0, restores = 0;
++            var session = Session();
++            session.Register(new JsonSaveParticipant<Snapshot>("player", SaveScope.Progress, 1,
++                () => { captures++; return null; },
++                _ => { validations++; return SaveValidation.Valid; }, _ => restores++));
++            var result = await session.QuickSaveAsync(); Rejected(result, "player");
++            StringAssert.Contains("player", result.Message);
++            Assert.AreEqual(1, captures); Assert.Zero(validations); Assert.Zero(restores); Assert.Zero(storage.Writes);
++            Assert.IsFalse(Directory.Exists(directory)); Assert.IsFalse(session.IsBusy);
++        });
++
++        [UnityTest] public IEnumerator UnserializableCaptureCannotReachStorage() => Check(async () =>
++        {
++            // JsonUtility rejects this engine object rather than producing a DTO JSON object.
++            var texture = new Texture2D(1, 1); int captures = 0, validations = 0;
++            try
++            {
++                var session = Session();
++                session.Register(new JsonSaveParticipant<Texture2D>("texture", SaveScope.Progress, 1,
++                    () => { captures++; return texture; }, _ => { validations++; return SaveValidation.Valid; }, _ => Assert.Fail("Restore must not run.")));
++                Rejected(await session.QuickSaveAsync(), "texture");
++                Assert.AreEqual(1, captures); Assert.Zero(validations); Assert.Zero(storage.Writes); Assert.IsFalse(Directory.Exists(directory));
++            }
++            finally { UnityEngine.Object.DestroyImmediate(texture); }
++        });
++
++        [UnityTest] public IEnumerator TwoNullSavesPreservePrimaryBackupAndRecovery() => Check(async () =>
++        {
++            Snapshot current = new Snapshot { Value = 7 }; int captures = 0, restored = -1;
++            var session = Session();
++            session.Register(new JsonSaveParticipant<Snapshot>("player", SaveScope.Progress, 1,
++                () => { captures++; return current; }, _ => SaveValidation.Valid, state => restored = state.Value));
++            Ok(await session.QuickSaveAsync()); current = new Snapshot { Value = 9 }; Ok(await session.QuickSaveAsync());
++            string slot = Path.Combine(directory, "progress", "quick"), primary = Path.Combine(slot, "save.bin"), backup = Path.Combine(slot, "backup.bin");
++            byte[] primaryBefore = File.ReadAllBytes(primary), backupBefore = File.ReadAllBytes(backup);
++            current = null;
++            for (int i = 0; i < 2; i++)
++            {
++                Rejected(await session.QuickSaveAsync(), "player");
++                CollectionAssert.AreEqual(primaryBefore, File.ReadAllBytes(primary));
++                CollectionAssert.AreEqual(backupBefore, File.ReadAllBytes(backup));
++            }
++            Assert.AreEqual(4, captures); Assert.AreEqual(2, storage.Writes);
++            Assert.IsEmpty(Directory.GetFiles(slot, "pending-*.bin"));
++            var loaded = await session.QuickLoadAsync(); Ok(loaded); Assert.IsFalse(loaded.RecoveredFromBackup); Assert.AreEqual(9, restored);
++            // Damage only this test's unique primary to prove the preserved A backup is still usable.
++            File.WriteAllBytes(primary, new byte[] { 1, 2 });
++            loaded = await session.QuickLoadAsync(); Ok(loaded); Assert.IsTrue(loaded.RecoveredFromBackup); Assert.AreEqual(7, restored);
++            Assert.AreEqual(2, storage.Writes);
++        });
++
++        [UnityTest] public IEnumerator ValidCaptureIsEvaluatedOnceWithoutRunningLoadValidator() => Check(async () =>
++        {
++            int captures = 0, validations = 0, restored = -1;
++            var writer = Session();
++            writer.Register(new JsonSaveParticipant<Snapshot>("player", SaveScope.Progress, 1,
++                () => new Snapshot { Value = ++captures },
++                _ => { validations++; return SaveValidation.Invalid("This validator is for the later load boundary."); }, _ => Assert.Fail("Writer restore must not run.")));
++            Ok(await writer.QuickSaveAsync()); Assert.AreEqual(1, captures); Assert.Zero(validations);
++            var reader = Session();
++            reader.Register(new JsonSaveParticipant<Snapshot>("player", SaveScope.Progress, 1,
++                () => throw new InvalidOperationException("Loading must not recapture."), _ => SaveValidation.Valid, state => restored = state.Value));
++            Ok(await reader.QuickLoadAsync()); Assert.AreEqual(1, restored); Assert.AreEqual(1, captures); Assert.Zero(validations);
++        });
++
++        [UnityTest] public IEnumerator EmptyObjectAndDefaultStructStillRoundTrip() => Check(async () =>
++        {
++            int markers = 0, values = 0;
++            var session = Session();
++            session.Register(new JsonSaveParticipant<Marker>("marker", SaveScope.Progress, 1,
++                () => new Marker(), _ => SaveValidation.Valid, state => { Assert.IsNotNull(state); markers++; }));
++            session.Register(new JsonSaveParticipant<ValueSnapshot>("value", SaveScope.Progress, 1,
++                () => default, _ => SaveValidation.Valid, state => { Assert.Zero(state.Value); values++; }));
++            Ok(await session.QuickSaveAsync()); Ok(await session.QuickLoadAsync());
++            Assert.AreEqual(1, markers); Assert.AreEqual(1, values);
++        });
++
++        [UnityTest] public IEnumerator LastNullPreferenceRejectsWholeDocument() => Check(async () =>
++        {
++            Snapshot current = new Snapshot { Value = 3 }; int first = 0, last = 0;
++            var session = Session();
++            session.Register(new JsonSaveParticipant<Snapshot>("a", SaveScope.Preferences, 1,
++                () => { first++; return new Snapshot { Value = 1 }; }, _ => SaveValidation.Valid, _ => { }));
++            session.Register(new JsonSaveParticipant<Snapshot>("z", SaveScope.Preferences, 1,
++                () => { last++; return current; }, _ => SaveValidation.Valid, _ => { }));
++            Ok(await session.SavePreferencesAsync());
++            string primary = Path.Combine(directory, "preferences", "user", "save.bin"); byte[] before = File.ReadAllBytes(primary);
++            current = null; first = last = 0;
++            Rejected(await session.SavePreferencesAsync(), "z");
++            Assert.AreEqual(1, first); Assert.AreEqual(1, last); Assert.AreEqual(1, storage.Writes);
++            CollectionAssert.AreEqual(before, File.ReadAllBytes(primary));
++        });
++
++        [UnityTest] public IEnumerator CustomParticipantCanStillStoreEmptyRawPayload() => Check(async () =>
++        {
++            var participant = new EmptyRawParticipant(); var session = Session(); session.Register(participant);
++            Ok(await session.QuickSaveAsync()); Ok(await session.QuickLoadAsync());
++            Assert.AreEqual(1, storage.Writes); Assert.AreEqual(1, participant.Restores);
++        });
++    }
++}
+diff --git a/Tests/Editor/JsonCaptureTests.cs.meta b/Tests/Editor/JsonCaptureTests.cs.meta
+new file mode 100644
+index 0000000..f4869f7
+--- /dev/null
++++ b/Tests/Editor/JsonCaptureTests.cs.meta
+@@ -0,0 +1,2 @@
++fileFormatVersion: 2
++guid: d638bc9b91cf4c3d9e9dbd117c9ade3b
+diff --git a/Tests/PlayMode/JsonCapturePlayTests.cs b/Tests/PlayMode/JsonCapturePlayTests.cs
+new file mode 100644
+index 0000000..06a9752
+--- /dev/null
++++ b/Tests/PlayMode/JsonCapturePlayTests.cs
+@@ -0,0 +1,40 @@
++using System;
++using System.Collections;
++using System.IO;
++using System.Threading.Tasks;
++using NUnit.Framework;
++using UnityEngine.TestTools;
++
++namespace EasySave.Tests
++{
++    public sealed class JsonCapturePlayTests
++    {
++        [Serializable] public sealed class Snapshot { public int Value; }
++        [UnityTest] public IEnumerator NullJsonCaptureCannotDisplaceGoodSlotInPlayMode()
++        {
++            string root = Path.Combine(Path.GetTempPath(), "EasySaveNullCapturePlay-" + Guid.NewGuid().ToString("N"));
++            Task exercise = Exercise(root); var deadline = DateTime.UtcNow.AddSeconds(20);
++            while (!exercise.IsCompleted && DateTime.UtcNow < deadline) yield return null;
++            Assert.IsTrue(exercise.IsCompleted, "PlayMode capture regression timed out."); exercise.GetAwaiter().GetResult();
++        }
++        private static async Task Exercise(string root)
++        {
++            try
++            {
++                using var saves = new SaveService(new LocalFileStorage(root));
++                Snapshot value = new Snapshot { Value = 42 }; int captures = 0, restores = 0;
++                saves.Register(new JsonSaveParticipant<Snapshot>("data", SaveScope.Progress, 1,
++                    () => { captures++; return value; }, _ => SaveValidation.Valid, state => { Assert.AreEqual(42, state.Value); restores++; }));
++                var good = await saves.SaveAsync("slot"); Assert.IsTrue(good.Success, good.ToString());
++                string path = Path.Combine(root, "progress", "slot", "save.bin"); byte[] before = File.ReadAllBytes(path);
++                value = null; var rejected = await saves.SaveAsync("slot");
++                Assert.AreEqual(SaveError.CaptureFailed, rejected.Error); Assert.IsFalse(rejected.Committed); Assert.IsFalse(rejected.WorldMayHaveChanged);
++                Assert.AreEqual("data", rejected.FailedParticipant); Assert.AreEqual(2, captures);
++                CollectionAssert.AreEqual(before, File.ReadAllBytes(path));
++                var loaded = await saves.LoadAsync("slot"); Assert.IsTrue(loaded.Success, loaded.ToString()); Assert.IsFalse(loaded.RecoveredFromBackup);
++                Assert.AreEqual(1, restores);
++            }
++            finally { if (Directory.Exists(root)) Directory.Delete(root, true); }
++        }
++    }
++}
+diff --git a/Tests/PlayMode/JsonCapturePlayTests.cs.meta b/Tests/PlayMode/JsonCapturePlayTests.cs.meta
+new file mode 100644
+index 0000000..129c41a
+--- /dev/null
++++ b/Tests/PlayMode/JsonCapturePlayTests.cs.meta
+@@ -0,0 +1,2 @@
++fileFormatVersion: 2
++guid: 82e04eba44024559a6dcfb902ebff7b6

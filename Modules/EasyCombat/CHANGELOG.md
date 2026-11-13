@@ -1,0 +1,108 @@
+# Changelog
+
+## 0.7.0 — 2026-11-12
+
+- Added an optional `CombatCostProvider`/`CombatCostTransaction` hook for abilities, beam pulses and paid block layers. No provider preserves CombatResources behavior; a present invalid/disabled provider rejects payment rather than falling back to another balance.
+- Added the optional EasyResources adapter with exact whole-unit to fixed-point conversion, atomic reservations, nested synchronous payment scopes and coherent deferred notifications. Windup/cancellation remains unpaid; irreversible execution retains its admitted cost even if delivery later fails.
+- Outstanding payments remain bound to their original wallet generation across provider disable, destruction and rebinding; restored/destroyed stores cannot be charged by stale handles.
+- Added optional player-aware context providers to health/presentation feedback and documented storage-independent combined snapshots. Core gains no mandatory Easy-package dependency.
+
+## 0.6.0 — 2026-11-10
+
+- Added the optional Attack Gallery sample with a playable range and ten named attack presets, including a swept sword and an explosive fireball that leaves burning ground.
+
+## 0.5.0 — 2026-11-10
+
+- Removed the standalone ECM2 Adapter and consolidated player movement integration into the EasyMovement Adapter sample. Its FPS controller handles gait scaling, combat restrictions and knockback/pull. See the [sample README](Samples~/EasyMovement/README.md) when migrating previously imported adapter components.
+
+## 0.4.1 — 2026-11-10
+
+- Mixed projectile batches can probe a contiguous run of straight 3D shots after older guided shots have resolved. Launch order, callback-driven movement and target recycling still use live contacts.
+- Hit resolution reuses channel totals, resolves common health-based formula terms directly and tracks optional target components during play. Status resistance lookups rebuild independently of movement and control modifiers.
+- Skip side-effect-free status captures when stacking rules reject a repeat. Randomized formulas, custom capture hooks and applications queued during a tick keep their original execution order.
+- Remove expired overlap-field registrations in one stable compaction pass. Winner selection and expiry callbacks keep their previous order.
+- Reuse query buffers during 3D splash, field and guided target selection, and 2D sweeps and blasts. Nested hits lease independent buffers. Idle explosive projectiles no longer retain their own area-query buffers.
+- Avoid repeated target-life checks, status-stack searches and large hit-record copies on common delivery and tick paths. Control-only statuses skip periodic-effect capture. Existing attack and status assets require no migration.
+
+## 0.4.0 — 2026-11-10
+
+- Resolve arriving projectiles before issuing speculative 3D sweeps for the rest of a volley. Recent contacts guide the batch boundary; hit order and live collision checks stay intact.
+- Build a single positioned damage request per AOE recipient, including distance falloff in 3D and 2D.
+
+- Batch automatic straight 3D and 2D projectile flight through Jobs and Burst. Parallel is the default, with a single-thread fallback for Unity 6.3 Web and players without job workers.
+- Parallel straight 3D volleys can discard empty swept capsules using batched physics queries. Ordered live queries take over when gameplay or moving colliders can change later results.
+- First-import projectile settings offer English mode explanations and can be reopened from the EasyCombat menu. The choice is shared by the project and its player builds.
+
+- Short 3D projectile steps can reject empty swept volumes with one conservative physics query. Nearby contacts retain the existing ordered overlap/sweep pipeline.
+- 3D traces lease contact buffers during resolution and keep the first four visited life identities inline. Longer pierces still use dynamically sized storage.
+- Combat Studio measures physical travel queries in its Editor benchmark. Added regressions for grazing hits, moving triggers, a local physics scene, nested shots and pooled long pierces.
+
+## 0.3.1 — 2026-11-10
+
+- Delayed hits cannot reflect onto a recycled attacker. Reset requests during damage/healing observers are coalesced and executed after notifications, before deferred reactions. On-hit statuses stop after a reset request.
+- Preserve NavMesh gait set while inactive; transfer a slow volume to the new collider owner without removing other contacts.
+- Cache fallback source/SO names for combat snapshots, avoid negative optional component lookups on hot paths, and measure warmed GC allocation events with calibrated Unity profiling controls.
+
+
+## 0.3.0 — 2026-11-10
+
+- Removed the game-specific sample, generator, wheel simulation and vehicle module dependency from the distributed package. Previously imported sample code belongs to the old version and should be removed or maintained by the consuming project before upgrading.
+- ImpactDurability now processes generic impact requests; projects can override IsProtected for their own rules. SafeHold and RollingDeceleration are no longer package fields. ImpactMeasure.External retains serialized value 3 and accepts caller-defined measurements.
+- Combat health/damage, status-only hits, continuous slowing fields and optional movement integrations remain supported.
+
+## 0.2.0 — 2026-11-10
+
+- Added physical impact profiles and an experimental project-specific integration (see the original v0.2.0 tag).
+- Added source-owned continuous slow fields, volume triggers and a NavMesh gait-speed adapter.
+- Added the optional EasyMovement FPS adapter and local prefab generator.
+- Added real physics, navigation, source cleanup and FPS gait regression tests.
+
+## 0.1.0 — 2026-10-17
+
+- Extracted the existing combat foundation into a standalone UPM package.
+- Renamed runtime API namespace to `EasyCombat` and assembly to `EasyCombat.Runtime`.
+- Preserved script GUIDs and added `MovedFrom` metadata for existing serialized types.
+- Removed mandatory ECM2, PrimeTween and Easy Feedbacks references from runtime/editor assemblies.
+- Preserved the six-target, twelve-weapon development sandbox and its authored definitions.
+- Migrated the existing 276-test suite without failures.
+- Added a standalone Basic Arena sample and validated a clean-project WebGL build in the browser.
+- Added owned flat/additive/multiplicative stat modifiers, immutable applied SO sets and optional maximum-health binding.
+- Added generic resources, atomic costs, regeneration and explicit stat-driven capacity refresh.
+- Added healing formulas/results, criticals, incoming/outgoing modifiers, restrictions and optional shield overheal.
+- Isolated Health observers so a presentation exception cannot suppress death or later callbacks.
+- Routed combat random rolls through injectable seeded RNG; added an explicit clock for cooldowns and journal records.
+- Added package integrity CI and published the source to orEEtheHAT/EasyCombat.
+- Added tagged action ancestry and deferred reactions with cooldowns, life-identity checks and bounded chains.
+- Added damage modification/type conversion profiles and captured armor/shield/resistance bypass policies.
+- Added status lifecycle reasons, category dispels, exact stack consumption and captured duration/power resistance.
+- Added composable action restrictions and optional ECM2 knockback/pull integration.
+- Added atomic status exchanges that preserve captured stack state on failure.
+- Added optional downed/finishing/revive behavior, nonlethal/minimum-HP policies and explicit life prevention accounting.
+- Added HealthSnapshot v2 with v1 compatibility, plus bounded last-hit/highest-damage kill and assist attribution.
+- Pruned destroyed Unity event subscribers, including components created by editor simulations without runtime lifecycle callbacks.
+- Added temporary/decaying shields, regenerating protection charges, shared damage caps and typed shield-energy costs.
+- Added bounded post-defense guardian redirection, and block costs committed only after all defense stages validate.
+- Added linked body parts, actor-group AOE/piercing, destruction/reset policies and life-aware contact deduplication.
+- Added typed buildup, decay, cooldowns and bounded threshold actions with original source attribution.
+- Routed actor reactions/attribution through local participant signals instead of one global listener per actor.
+- Added SO abilities, target revalidation, atomic release costs, cast cancellation, sequential charges and cooldowns.
+- Added bounded swept melee windows, sustained paid beams and area enter/stay/exit sensing with grouped life identities.
+- Added shared schedulers for active ability timers and timed delivery, plus authoring inspectors and documentation.
+- Added captured homing, physical ricochet, chained-target and returning 3D projectile profiles with bounded substeps.
+- Added optional Physics2D delivery assembly and separate EditMode/PlayMode adapter tests; shared health/status/defense contracts remain in the core.
+- Added configurable local facing for directional block and 2D body-part collider lifecycle integration.
+- Added stable definition catalogs, explicit actor/source registries and versioned JSON actor-state snapshots.
+- Preserved captured status formulas/strength, per-stack timers, shields, resources, modifiers, ability windups/charges and reaction/attribution state across restore.
+- Added full prevalidation, coherent life/action remapping and notification-safe restore; transient deliveries end without zone exit damage.
+- Guarded live status/formula sources against reuse of the original GameObject for a new combat life.
+- Added isolated seeded battle scenarios, HP/shield graphs and direct-packet calculation breakdowns.
+- Added eight linked recipe templates, bounded dependency/cycle diagnostics, runtime state explanations and Studio tool shortcuts.
+- Added scoped 3D physics queries and global-event isolation for safe editor simulations.
+
+Further modules are tracked in ROADMAP.md; this entry is updated before release.
+
+- Added bounded presentation events with captured identities, source/critical separation, coalescing, rate budgets and an optional EasyFeedbacks output bridge.
+- Isolated shot/area observers and preserved shot/healing metadata across callbacks; added warm allocation and lifecycle regression tests.
+
+- Added the dependency-free Combat Lab sample: shooter, swept melee, mass projectiles and automatic poison combination, with bounded floating damage numbers.
+- Declared built-in Unity module requirements explicitly and documented public API entry points and release validation.

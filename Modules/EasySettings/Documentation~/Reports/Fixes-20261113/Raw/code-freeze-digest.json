@@ -1,0 +1,5 @@
+{
+  "algorithm": "SHA256(sorted path + TAB + per-file SHA256, LF-separated UTF8)",
+  "fileCount": 92,
+  "digest": "381D1AC8D97A712C1725DC839BF2DC3470A3642376311EE71A5A5EF4B4EE78D3"
+}

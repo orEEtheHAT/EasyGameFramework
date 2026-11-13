@@ -1,0 +1,167 @@
+[
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:24.3999058Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "script",
+      "eval",
+      "--code",
+      "return new { failed=UnityEditor.EditorUtility.scriptCompilationFailed, playing=UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode, regressionLoaded=System.Type.GetType(\"EasySave.Tests.JsonCaptureTests, EasySave.Tests\") != null, scenes=UnityEditor.SceneManagement.EditorSceneManager.GetSceneManagerSetup() };"
+    ],
+    "utc": "2026-11-12T23:18:25.3877171Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "run",
+      "--mode",
+      "playmode",
+      "--filter",
+      "EasySave.PlayMode.Tests",
+      "--filter-type",
+      "assembly",
+      "--async-tests",
+      "--timeout",
+      "180"
+    ],
+    "utc": "2026-11-12T23:18:29.5305468Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:32.6921372Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:35.3685358Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:38.2260827Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:40.8962235Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:44.0059380Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:46.6708262Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:50.1020299Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:52.7631733Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "test",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:55.5721045Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:56.2420060Z"
+  },
+  {
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ],
+    "utc": "2026-11-12T23:18:57.1738544Z"
+  }
+]

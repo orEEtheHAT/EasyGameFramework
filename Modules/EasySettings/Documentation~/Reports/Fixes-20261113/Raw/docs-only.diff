@@ -1,0 +1,120 @@
+diff --git a/Documentation~/Guide.md b/Documentation~/Guide.md
+index a15d8d7..c74ecdc 100644
+--- a/Documentation~/Guide.md
++++ b/Documentation~/Guide.md
+@@ -23,7 +23,10 @@ the user accepts what they see; API readback cannot establish physical monitor f
+ The timeout is frame-driven; a suspended application cannot execute it until resumed.
+ 
+ `Capture()` always captures the last committed state, even during preview. Capture is allowed
+-inside `Committed`; mutation from `Changed`/`Committed` callbacks is rejected to avoid reentrancy.
++inside `Committed`; ordinary mutation from `Changed`/`Committed` or backend callbacks is rejected
++to avoid reentrancy. **Dispose is a permitted terminal operation inside a callback**: it releases
++resources synchronously and stops subsequent notifications of that session. A controller can be
++disabled/destroyed from Changed/Committed; a subsequent enable creates a new independent session.
+ The session and backend are main-thread objects. `ISettingsBackend` is the seam for deterministic
+ tests, not a file storage abstraction. Dispose is idempotent. Failed apply attempts rollback;
+ if rollback also fails, the session faults and must be disposed/recreated.
+@@ -36,9 +39,11 @@ The module does not create a hidden persistent global manager.
+ 
+ `BindTargets(camera, volume)` restores the previous targets, then reapplies committed graphics
+ to the new ones. `FollowMainCamera` binds on `sceneLoaded`, not every frame. Camera respawn in
+-the same scene requires an explicit BindTargets call. A camera rig such as Cinemachine may own
+-lens/FOV; leave this control unbound or integrate through that owner's lens API. Do not let two
+-systems write FOV simultaneously. Disable before changing Unity quality levels externally,
++the same scene requires an explicit BindTargets call. Active Cinemachine Brains, including a Brain
++with a ControlledObject on another GameObject, make direct output-camera FOV unavailable. The
++backend guards apply and cleanup too; it does not overwrite a newer lens owner on release.
++Use the built-in EasyMovement provider below for that player's base FOV.
++Disable before changing Unity quality levels externally,
+ then re-enable to bind the new pipeline. External pipeline ownership changes are detected on Apply.
+ 
+ ## Supported controls
+@@ -50,7 +55,7 @@ then re-enable to bind the new pipeline. External pipeline ownership changes are
+ | Render scale | Runtime URP clone `renderScale`, configured limits inside URP 0.1–2.0. |
+ | MSAA | Runtime clone `msaaSampleCount`, 1/2/4/8 within device limit. All renderer entries must be UniversalRendererData Forward/Forward+, camera Allow MSAA, no TAA. Does not claim effective sampling for every custom render target/camera. |
+ | Shadows | Runtime clone `shadowDistance`, including 0; only when source asset supports realtime shadows. Baked lighting does not change. Shadow support flags/soft-shadow quality/cascade variants are intentionally not toggled. |
+-| FOV | Bound enabled perspective camera `fieldOfView`, non-physical camera. |
++| FOV | Plain enabled perspective scene Camera `fieldOfView`, non-physical, with no active Cinemachine lens owner; or an explicitly bound base-FOV provider. |
+ | Post processing / FXAA / SMAA | Bound URP base camera `renderPostProcessing` / `antialiasing`; explicit author opt-in and renderer post-process data required. Existing TAA is preserved; TAA is not selectable. |
+ | Exposure / bloom | Deep runtime copy of a dedicated global Volume profile; existing active ColorAdjustments/Bloom components. Weight 1 and camera layer mask required, explicit author opt-in. Existing internal profile reference is restored on release. |
+ 
+@@ -62,6 +67,43 @@ Post-processing opt-in is an author assertion: retain and verify variants/resour
+ Player build before enabling it. The package cannot prove shader stripping from runtime API alone.
+ There are no Built-in/HDRP, XR, Netcode, platform SDK, audio, input-binding or language managers here.
+ 
++## EasyMovement base FOV (5.2.0+)
++
++The `EasySettings.EasyMovement` assembly is included with this package and activates when
++`com.oreethehat.easy-movement` is at least **5.2.0**. Movement 5.1.0 does not expose this owner API.
++The core Settings assembly has no Movement dependency; Movement does not depend on Settings.
++
++1. Add **EasyMovement / First Person FOV** beside the player's FPS controller and configure its
++   default/crouch/sprint/custom Cinemachine cameras normally.
++2. Add **EasySettings / EasyMovement Settings FOV** beside Settings Controller.
++3. Assign the player's `FirstPersonFov` to `Player Fov`. `Field Of View Provider` is filled when empty;
++   the adapter inspector also has **Use for Settings FOV** for an existing explicit binding.
++4. Edit/apply `Session.Draft.FieldOfView` or use the settings window. No direct output-camera write occurs.
++
++Example: authored walk 60 / sprint 70 plus settings base 80 yields walk 80 / sprint 90. A gameplay
++offset of -15 yields 65 / 75, while the Settings snapshot still contains **80**, not the zoomed FOV.
++The adapter uses `FirstPersonFov.BaseFieldOfView` and `AcquireBaseFovOverride`; each owned lease is
++updated with `TrySet` and released with `Dispose`. It never releases another base request or a
++gameplay offset. Movement owns per-camera clamps and composition. Settings profiles keep their
++existing configured FOV limits; those limits apply to the base, not the final gameplay lens.
++
++Disabled/missing FOV owners produce a specific capability/inspector reason; no fallback writes
++to a Cinemachine output camera occur. Disabling the adapter releases its own leases. After pooling
++and re-enable, Apply reacquires an expired lease. For a different player call `adapter.Bind(playerFov)`;
++binding reads the new owner without silently applying old preferences. Reapply a saved snapshot
++explicitly if that is the intended composition. Provider changes are refreshed through events,
++not by writing lenses each frame. Adapter OnEnable refreshes its already-bound live controller
++immediately when safe, including the initial scene activation order; owner notifications during
++Apply are deferred to a single later refresh.
++
++Advanced owner boundary: `ISettingsFieldOfViewProvider.TryRead(out degrees, out reason)` reads base
++FOV; `Acquire(UnityEngine.Object owner, float degrees)` returns `ISettingsFieldOfViewOverride`
++(`IsActive`, `TrySet`, `Dispose`). Bind the component through
++`SettingsController.BindFieldOfViewProvider(MonoBehaviour)`. Unavailable configured providers remain
++unavailable; an absent provider selects guarded plain Camera FOV. `RefreshFieldOfViewProvider`
++invalidates readback/capabilities without reentering a notification. Startup baseline can follow a
++late-initialized owner until the first commit, provided the draft has no edits.
++
+ ## Menu and localization
+ 
+ Import EasyUI Settings Window. Add `SettingsWindow` alongside `UIWindow`; assign Controller.
+@@ -144,7 +186,5 @@ refreshes on events; only a pending confirmation refreshes its countdown. `EasyS
+ is a profiler marker. CPU timing of Apply is not GPU cost or FPS. GC measurements must include an
+ allocation positive control; whole-frame allocations include other scene/UI systems.
+ 
+-Compatibility note for the initially published EasySave 0.1.0 adapter: it still has an additional
+-live-display-versus-Applied guard and may reject a load after an external window resize. The current
+-Settings Restore(false) handles that case safely; removing that conservative adapter guard belongs
+-to EasySave. See the verification report and coordination status for the exact tested revision.
++Current EasySave integration uses the owner Restore(snapshot, false) contract directly. An external
++window resize is preserved by Settings; no additional display observer or reconciliation guard is required.
+diff --git a/README.md b/README.md
+index c838e81..579cfb4 100644
+--- a/README.md
++++ b/README.md
+@@ -1,7 +1,7 @@
+ # EasySettings 0.1.0
+ 
+ URP graphics and display settings for Unity 6000.3 / URP 17.3, part of EasyGameFramework.
+-Requires EasyCore 0.1.0. EasyUI and EasyLocalization integrations are separate samples.
++Requires EasyCore 0.1.0 and Cinemachine 3.1.7. EasyUI and EasyLocalization integrations are separate samples.
+ 
+ 1. Install EasyCore, then this package in a **URP** project.
+ 2. Create **Assets → Create → EasySettings → Defaults**.
+@@ -24,5 +24,12 @@ Keyboard, mouse and gamepad navigation use EasyUI / New Input System.
+ The menu is scrollable; every value button cycles its choices. Screen controls are disabled
+ in the Editor. Build this scene as a desktop Player to preview window changes.
+ 
++For an **EasyMovement 5.2.0+** FPS player, add **EasyMovement → First Person FOV** beside the
++player's FPS controller. Add **EasySettings → EasyMovement Settings FOV** beside Settings Controller
++and assign that player's FOV component. The provider is assigned automatically when the field is empty.
++Its built-in integration assembly activates when Movement 5.2.0+ is installed; it creates no dependency cycle.
++Settings changes the player's base vertical FOV; Movement preserves gait-camera differences and gameplay
++zoom offsets. Without a provider, FOV on a Cinemachine output camera is disabled with a reason.
++
+ See [the guide](Documentation~/Guide.md) for ownership, supported settings, persistence and
+ the exact first-run checklist. This is a local development package; publication is coordinated separately.

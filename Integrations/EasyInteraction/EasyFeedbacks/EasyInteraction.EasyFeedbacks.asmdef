@@ -1,0 +1,10 @@
+{
+  "name": "EasyInteraction.EasyFeedbacks",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyFeedbacks.Runtime",
+    "Unity.InputSystem"
+  ],
+  "versionDefines": [],
+  "defineConstraints": []
+}

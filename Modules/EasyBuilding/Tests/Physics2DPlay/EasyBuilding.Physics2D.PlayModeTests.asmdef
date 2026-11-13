@@ -1,0 +1,5 @@
+{
+  "name": "EasyBuilding.Physics2D.PlayModeTests", "references": ["EasyBuilding.Runtime", "EasyBuilding.Physics2D"],
+  "optionalUnityReferences": ["TestAssemblies"], "defineConstraints": ["EASYBUILDING_PHYSICS2D"],
+  "versionDefines": [{ "name": "com.unity.modules.physics2d", "expression": "0.0.0", "define": "EASYBUILDING_PHYSICS2D" }]
+}

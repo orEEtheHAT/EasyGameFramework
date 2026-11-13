@@ -1,0 +1,632 @@
+[
+  {
+    "path": ".gitignore",
+    "category": "code-assets-metadata",
+    "bytes": 35,
+    "sha256": "FCED5FFF97AC2C6C93F42333A6E573203160ECEEBBCB252366EE42E33A217408"
+  },
+  {
+    "path": "CHANGELOG.md",
+    "category": "documentation",
+    "bytes": 535,
+    "sha256": "A3D15A6938DAB8C6B9B6842C3140CC9D5EF100776FF339EDD98567DE29408340"
+  },
+  {
+    "path": "CHANGELOG.md.meta",
+    "category": "code-assets-metadata",
+    "bytes": 162,
+    "sha256": "1E955C6EE1BD97A314D0FC97E84A2179E17A725D11C69D9124CAD52F5D39E013"
+  },
+  {
+    "path": "Documentation~/Guide.md",
+    "category": "documentation",
+    "bytes": 14159,
+    "sha256": "ACCCBE7676AD881687989993CF88FE1FA8BBAFF8B81B5A25794B5F39CEB80A58"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/clean-build.json",
+    "category": "documentation",
+    "bytes": 99,
+    "sha256": "23ABB30D3C9E7877714CD5B84C991911C08ADDE57AAE2862EE01B4FF6433A037"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/clean-EditMode.xml",
+    "category": "documentation",
+    "bytes": 23938,
+    "sha256": "3FADD41AC64D8B74F94A1930FA8452083C5E72FB266D93B259B4BA77BD6D9EEB"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/clean-player.json",
+    "category": "documentation",
+    "bytes": 1537,
+    "sha256": "41C138DFAA83C12AF22F6DF046103B99CF40F3DC1811E1357888159C0089137F"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/clean-PlayMode.xml",
+    "category": "documentation",
+    "bytes": 8167,
+    "sha256": "D8C6433A6C361E71F8236D036491EF656BAA9C9C66717D68FD2A45920E6CD318"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/compile.json",
+    "category": "documentation",
+    "bytes": 99,
+    "sha256": "DD6849DC026108A230D3D6A70E5E422B67489F167006A51C79D79BEDA0262286"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/editmode.json",
+    "category": "documentation",
+    "bytes": 7473,
+    "sha256": "0945A4D2F4A315990D7E771E7BF5F08658BCF24F6A2BEBD8289FAD3D7ED12960"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/playmode.json",
+    "category": "documentation",
+    "bytes": 2193,
+    "sha256": "44C8716026BDDC7B5B72497868021FF797DA51450649C6150E6D322D1FC9213A"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/save-adapter.json",
+    "category": "documentation",
+    "bytes": 924,
+    "sha256": "A686878834399207E85EAFBEAD87AE21E8CFC7D15196CD67314DC8257B32EE79"
+  },
+  {
+    "path": "Documentation~/Reports/Raw/ui-player.json",
+    "category": "documentation",
+    "bytes": 1536,
+    "sha256": "DF6ADF1D88630508A3262926BA8AF8149552EE834A4EEB3BAE2030A7BB109A80"
+  },
+  {
+    "path": "Documentation~/Reports/Verification-2026-11-13.md",
+    "category": "documentation",
+    "bytes": 10947,
+    "sha256": "A81CC6A2BFC0CF268A690C5F1A1CBF39DB7D55E44CE0AB046D15FD49E01C5363"
+  },
+  {
+    "path": "Editor.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "9320AE80C63CFB8D7F38D097A6B68D7B45E7CB99A8F3D8138D88D92FFA500FFB"
+  },
+  {
+    "path": "Editor/EasySettings.Editor.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 178,
+    "sha256": "6C7A15CDDDD521A3392BA92D714A34CE05A218EB19D51EBF0091479C1B177ED0"
+  },
+  {
+    "path": "Editor/EasySettings.Editor.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 166,
+    "sha256": "79CCD702526C144DFC35997FDB9C7267B68B283C844CD31BDBDD1E7FE321F41A"
+  },
+  {
+    "path": "Editor/SettingsInspectors.cs",
+    "category": "code-assets-metadata",
+    "bytes": 3096,
+    "sha256": "0011272F8E1AFF26A00C33C405641589452C3E04076834A38BFFCC0F28D7EC79"
+  },
+  {
+    "path": "Editor/SettingsInspectors.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "866C612EC67E0890B27EBB6DAEF4AAAD720E3C97AAA485F6706C7F2346946B10"
+  },
+  {
+    "path": "Integrations.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "F7DBD622C7710D6629FD02DB4A39BB51BD3E4FB78EDD7AB45F083CE613F359CD"
+  },
+  {
+    "path": "Integrations/EasyMovement.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "C282CF961CB9E37AB19981EE9BA8BEB511CAC606AC90FB576066DD1B0DD294B4"
+  },
+  {
+    "path": "Integrations/EasyMovement/EasyMovementSettingsFov.cs",
+    "category": "code-assets-metadata",
+    "bytes": 4292,
+    "sha256": "1452136162BDB037AD015AEF1BADB0E002A780B12BE26BAA569DC52F70F6502A"
+  },
+  {
+    "path": "Integrations/EasyMovement/EasyMovementSettingsFov.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "E1CD40C5A2CB0299D6E7674943A9FB9564E5EBEB47652F506054B06B8BE6BB90"
+  },
+  {
+    "path": "Integrations/EasyMovement/EasySettings.EasyMovement.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 329,
+    "sha256": "290ECA42512E70F1384F991D1C7DCAED5D76673550564B28003933955D8492BC"
+  },
+  {
+    "path": "Integrations/EasyMovement/EasySettings.EasyMovement.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 166,
+    "sha256": "52D0C3EDC91E0297351016E87316B9ABF5C39554B0E56FFDA6F651CC4B435A7C"
+  },
+  {
+    "path": "Integrations/EasyMovement/Editor.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "8B96B0FCE3A175C2D8972DA298FE7C522D04CAB6D303B693F8361A9EFA9BA57D"
+  },
+  {
+    "path": "Integrations/EasyMovement/Editor/EasyMovementSettingsFovEditor.cs",
+    "category": "code-assets-metadata",
+    "bytes": 1697,
+    "sha256": "8DED3C683D0938196FC9CF948B4CF473850C90A50DCA5C8A5CA6E1A842F8A3A2"
+  },
+  {
+    "path": "Integrations/EasyMovement/Editor/EasyMovementSettingsFovEditor.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "5349D4C3F129FC530F1D46FFBD46312D2583A1A62C7A761F0FC90CCAD6F073CB"
+  },
+  {
+    "path": "Integrations/EasyMovement/Editor/EasySettings.EasyMovement.Editor.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 351,
+    "sha256": "38C2393CAAEBCBBDCEE65C5A9F32331A5FF1DECA378E7E4207F29AC99F15292E"
+  },
+  {
+    "path": "Integrations/EasyMovement/Editor/EasySettings.EasyMovement.Editor.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 166,
+    "sha256": "4DC2B0FDBEF7BD43506286A1A09B0ACB0B88BD782D027621C472521566E25602"
+  },
+  {
+    "path": "package.json",
+    "category": "code-assets-metadata",
+    "bytes": 852,
+    "sha256": "50A2627B2F20D9E236348E559D70E1CDF4A8AC3A7A21F7BE190857CFCDD3B448"
+  },
+  {
+    "path": "package.json.meta",
+    "category": "code-assets-metadata",
+    "bytes": 163,
+    "sha256": "3706826C4AF9E3A778CBF0327AE9CEDCE9ADEC93772EB65986EAD59F44E2313E"
+  },
+  {
+    "path": "README.md",
+    "category": "documentation",
+    "bytes": 2164,
+    "sha256": "5A8FB65DFAD52968AAE2312802B19A1771E323D7CCF8A210987E8F0F1FCE4205"
+  },
+  {
+    "path": "README.md.meta",
+    "category": "code-assets-metadata",
+    "bytes": 158,
+    "sha256": "C4B666E6927DBDF887A094DF7CD068B35082B939461531ECDC651545D6B3EE17"
+  },
+  {
+    "path": "Runtime.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "63906F4E3AAF50281651202A44815BFB0D5C13733C7FF4897E40D549527EE467"
+  },
+  {
+    "path": "Runtime/EasySettings.Runtime.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 196,
+    "sha256": "71FC04734076190ADD41DA819D4E9093B5A815FDDB4560E95D3BC8EA347BEE88"
+  },
+  {
+    "path": "Runtime/EasySettings.Runtime.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 166,
+    "sha256": "AA377CC3DDAF6A46DC98A157693BB6196DE3FAEEEA654E8A209AF92F79C8BA2D"
+  },
+  {
+    "path": "Runtime/ISettingsFieldOfViewProvider.cs",
+    "category": "code-assets-metadata",
+    "bytes": 726,
+    "sha256": "984F3E1EFFD15DDFC13364DAD2B86F321CCB6E2A8D188925D96BC127B68C06AA"
+  },
+  {
+    "path": "Runtime/ISettingsFieldOfViewProvider.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "A65BC535443861B7DC365907BF2A7BBCB214571C09459F98F513E5865970B6C2"
+  },
+  {
+    "path": "Runtime/SettingsController.cs",
+    "category": "code-assets-metadata",
+    "bytes": 7554,
+    "sha256": "9B9E6678B64377F117A3C89FBB13CC704A4B64858FB21FEC14CBB5690B84400B"
+  },
+  {
+    "path": "Runtime/SettingsController.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "6355B586E744A14E7BDD695C4846B6052B1A40DC194B00639CFEC693F1B49F95"
+  },
+  {
+    "path": "Runtime/SettingsDefaults.cs",
+    "category": "code-assets-metadata",
+    "bytes": 1749,
+    "sha256": "5EAC340C7498C393D52A7161D5C3601B47350E54AADDC08C9FAC05D8BE01A163"
+  },
+  {
+    "path": "Runtime/SettingsDefaults.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "FA59DECC899C18ED4E233EA5B529F33505BBFC97C87A1725BD651C0BF010426F"
+  },
+  {
+    "path": "Runtime/SettingsSession.cs",
+    "category": "code-assets-metadata",
+    "bytes": 12105,
+    "sha256": "D3F5F9D7BD74CDC4A9FF4763603C6C5ADA1799C18F417E7BB415300005B8C5F2"
+  },
+  {
+    "path": "Runtime/SettingsSession.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "DC4AA622A67C869354CF376FF57F77623DD46FC6BD332B1CA22E7D5BFDA95F1F"
+  },
+  {
+    "path": "Runtime/SettingsState.cs",
+    "category": "code-assets-metadata",
+    "bytes": 4151,
+    "sha256": "BFC70306390EF232D0DAFDE4C185908273482F3C449D6332B387DD565951224F"
+  },
+  {
+    "path": "Runtime/SettingsState.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "D3D524456E63824B0EC3D03ED209FB19C7FA3EFE0BC4920E4767E2C155B38E33"
+  },
+  {
+    "path": "Runtime/SettingsValidation.cs",
+    "category": "code-assets-metadata",
+    "bytes": 7832,
+    "sha256": "C3D5EC21CFED24D599341C5043EEB617E4C725F9376CEC67F3D3595E39F23E8C"
+  },
+  {
+    "path": "Runtime/SettingsValidation.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "1E5435ECA7DD37CACB63CC46F4179BEAC0151FA86D9CB9DFCB650E17647FBBB8"
+  },
+  {
+    "path": "Runtime/UrpSettingsBackend.cs",
+    "category": "code-assets-metadata",
+    "bytes": 19074,
+    "sha256": "6B79115B6E1E9C82F0F012386E875E82395E56DD0B3D68E75D431E198EBB528A"
+  },
+  {
+    "path": "Runtime/UrpSettingsBackend.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "3AF4A16127A2BBA1E3CC32B7D00C755E55B8BE2CBED813DBA8BD2A1664F6367C"
+  },
+  {
+    "path": "Samples~.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "70C752708CE7DA223FC818775EA585368182D22CCFF089257D7034D3CBC0DA09"
+  },
+  {
+    "path": "Samples~/EasyLocalization.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "09CE90F96F3DEA4BD61652147608FE580A54D235E16A51C992B1317692A54824"
+  },
+  {
+    "path": "Samples~/EasyLocalization/EasySettings.Localization.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 97,
+    "sha256": "503AC2B3818AFDA0C8DF491A62B851B40151195470DE1889E79C6F4C0272CD5B"
+  },
+  {
+    "path": "Samples~/EasyLocalization/EasySettings.Localization.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 162,
+    "sha256": "2D1DAFCDD69492820AFC8E9D1D5D8C1D37717D0F4CD519365B896DF4BA943646"
+  },
+  {
+    "path": "Samples~/EasyLocalization/LocalizedSettingsText.cs",
+    "category": "code-assets-metadata",
+    "bytes": 1146,
+    "sha256": "2E93EC911E161030B53F8CC30C39B70617091E0E7A8F3586EA6DC82E1D18BE40"
+  },
+  {
+    "path": "Samples~/EasyLocalization/LocalizedSettingsText.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 254,
+    "sha256": "5299573A1BCE30BAEE254FBBEED8135061F5C6FA5280B045AF409B238C58E30B"
+  },
+  {
+    "path": "Samples~/EasyUI.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "F82F2FA1D1D630EF0FF9C0F3310F1C4A5292EBFF3C0CD611F3EAB0D2CC759085"
+  },
+  {
+    "path": "Samples~/EasyUI/EasySettings.UI.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 157,
+    "sha256": "35348DABA4387DE547E69ED0FBB3106D2A48B3CFBA5E35A63C2A749BFF92F046"
+  },
+  {
+    "path": "Samples~/EasyUI/EasySettings.UI.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 162,
+    "sha256": "C7A66AB2F240D5B0F8069A28268A6A7044C7EC351475222A7A36D48FF1546FA6"
+  },
+  {
+    "path": "Samples~/EasyUI/Editor.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "3747DF947D9AB6D8A9A7B50EFF3B35015627E7A416C9186E89CA24E69599B25B"
+  },
+  {
+    "path": "Samples~/EasyUI/Editor/EasySettings.UI.Editor.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 229,
+    "sha256": "D8406F0DDB5EA4A20AC82D3041A930E719E4B7382B972C870395A4D3F01F694A"
+  },
+  {
+    "path": "Samples~/EasyUI/Editor/EasySettings.UI.Editor.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 162,
+    "sha256": "86B9B4A39A4268BC8F2AAF90AAABDD9D3903AD44A947598D803C2DF64D1DADDA"
+  },
+  {
+    "path": "Samples~/EasyUI/Editor/SettingsFirstRun.cs",
+    "category": "code-assets-metadata",
+    "bytes": 5334,
+    "sha256": "1BDE84B62B77D5D6F806903A40006759CCF9624EFED3F9DE4DB01AE86CB36E67"
+  },
+  {
+    "path": "Samples~/EasyUI/Editor/SettingsFirstRun.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 254,
+    "sha256": "15A02C61F79A2C972AA6B74A80FE0F33E5F865F029204CEDBAD2B4C18EA96A2C"
+  },
+  {
+    "path": "Samples~/EasyUI/SettingsDemo.cs",
+    "category": "code-assets-metadata",
+    "bytes": 458,
+    "sha256": "633D5E98BDE9551E2C4B58FB34FDD5436C8DAD2CE9A610BFCEC760EE80C67FF6"
+  },
+  {
+    "path": "Samples~/EasyUI/SettingsDemo.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 254,
+    "sha256": "5240C1ABFC0E582EC4D77721C268FB560A65936DA4FED1CAEEB35C4B2DC8D252"
+  },
+  {
+    "path": "Samples~/EasyUI/SettingsWindow.cs",
+    "category": "code-assets-metadata",
+    "bytes": 19302,
+    "sha256": "29B8E1FB10F84EA2D1DC9E6691FBBA91E8641ED54958AA72ACBA303E388CB5AF"
+  },
+  {
+    "path": "Samples~/EasyUI/SettingsWindow.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 254,
+    "sha256": "AC9BD1CCA5695519F10360B07CA40F96E661425384CF04AA0425D670341530A5"
+  },
+  {
+    "path": "Tests.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "7DFEA0D99D31ABC7C08B25330756FBE38B6102315189517C87FE46F33974850E"
+  },
+  {
+    "path": "Tests/EditMode.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "017DE0494084025E2B1F67CF9C6CD65BBE98B1A7A9E67E087F06227C2E43D7EB"
+  },
+  {
+    "path": "Tests/EditMode/EasySettings.Tests.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 245,
+    "sha256": "243688E3A1A5D3A0D3B92C41D4745C6C1F6ADC6A88F0449F0644873DB60BFC36"
+  },
+  {
+    "path": "Tests/EditMode/EasySettings.Tests.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 166,
+    "sha256": "926C89DF9E21D4984A6B0AD0A2389901E7C560EE4CEA5ADCD50D5BEF264CB1B6"
+  },
+  {
+    "path": "Tests/EditMode/NotificationLifetimeTests.cs",
+    "category": "code-assets-metadata",
+    "bytes": 6031,
+    "sha256": "7A369B3F5E18C333EB65C39939B6C524F7D24249DBDEFC6A4434056A9EF2BEE2"
+  },
+  {
+    "path": "Tests/EditMode/NotificationLifetimeTests.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "95AE2606615FA466906D1988D4AC602C8C866E269EB9070B797BEF1447FAA3E5"
+  },
+  {
+    "path": "Tests/EditMode/SettingsSessionTests.cs",
+    "category": "code-assets-metadata",
+    "bytes": 10730,
+    "sha256": "8BDD76F51C374626B6D6B14C983664A75FBFD9D1D1E541950C77297D434A9BF1"
+  },
+  {
+    "path": "Tests/EditMode/SettingsSessionTests.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "26CF7BE8C6ED17F9D622DC2C12445164AB160874DD375A6668ECDD0A7D7D4CF7"
+  },
+  {
+    "path": "Tests/PlayMode.meta",
+    "category": "code-assets-metadata",
+    "bytes": 172,
+    "sha256": "D74FFDDC0AAEB9C1C624E3A11EC0372B886304F660BBB176EED27F3EF3DD79B4"
+  },
+  {
+    "path": "Tests/PlayMode/CinemachineOwnershipTests.cs",
+    "category": "code-assets-metadata",
+    "bytes": 6022,
+    "sha256": "C149D768C109A57BDFF9F09A40603F22C60588A19AEF355527DE63DD77400F17"
+  },
+  {
+    "path": "Tests/PlayMode/CinemachineOwnershipTests.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "431D45B3BAA2AA3FF1D3C375FBF76652247468E182F484F3D56A57583EE1DE4D"
+  },
+  {
+    "path": "Tests/PlayMode/ControllerNotificationTests.cs",
+    "category": "code-assets-metadata",
+    "bytes": 6435,
+    "sha256": "131853BFBDD7673C8FA37C2EFAFA023AAB1B94FFDF6BB511D030986D66F36B26"
+  },
+  {
+    "path": "Tests/PlayMode/ControllerNotificationTests.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "6D0B954D7A40C1B5368F6A2F65591064915E6D8FFB30F736A91BE1B86A3838FB"
+  },
+  {
+    "path": "Tests/PlayMode/EasySettings.PlayModeTests.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 243,
+    "sha256": "E1CFB7E4CFD96209D1B649AC1768EBFC21DC877497B6D31978742F621DA88EF6"
+  },
+  {
+    "path": "Tests/PlayMode/EasySettings.PlayModeTests.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 166,
+    "sha256": "FBFC01CBD0FCD4C951E67D491920FE5A6B32431AA30369D4CDC2EBE61AD674FC"
+  },
+  {
+    "path": "Tests/PlayMode/UrpLifetimeTests.cs",
+    "category": "code-assets-metadata",
+    "bytes": 6840,
+    "sha256": "6823ADC497266DB180B839913900ABF8B20EFB91780A878C619DA0C5AEF03E43"
+  },
+  {
+    "path": "Tests/PlayMode/UrpLifetimeTests.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 59,
+    "sha256": "5BFFD4EE8BA03490C3C88C92B2194EC17E6E9967ACD252E8921502B348FA01D5"
+  },
+  {
+    "path": "Tools~.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "8B78DCF44794900F56A255F924E640661371F8C43337916F8F569BE6A90DA4F3"
+  },
+  {
+    "path": "Tools~/Verification.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "6BE3AB1E65BFE85851B1DF4566C5AF446E325935BB05B95065CBDCF56AE5B4D5"
+  },
+  {
+    "path": "Tools~/Verification/Editor.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "205FBFD37F52DC9889895BB548A6658FA9512780E46295B4C36B9F7DCB62E2D6"
+  },
+  {
+    "path": "Tools~/Verification/Editor/CleanSettingsBuild.cs",
+    "category": "code-assets-metadata",
+    "bytes": 3606,
+    "sha256": "ED15A3C5BD2B4EAD1F5D65E268E21D1A9372ED364E116B191289C62B4FB1B519"
+  },
+  {
+    "path": "Tools~/Verification/Editor/CleanSettingsBuild.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 254,
+    "sha256": "6E4425BE2EE4481BE08A4CFE7D4DDDEF175FFFAC4ADBE64A894B0C157331C380"
+  },
+  {
+    "path": "Tools~/Verification/Editor/EasySettings.Verification.Editor.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 191,
+    "sha256": "97945272C197AED7567CC7983094D17DEA8AC92185D58309359EF9D206F13CEF"
+  },
+  {
+    "path": "Tools~/Verification/Editor/EasySettings.Verification.Editor.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 162,
+    "sha256": "2FA1FA21F5141AC17F35E1D8B2FEC07F60278E8A93F4065DB1B94C3CD34D540D"
+  },
+  {
+    "path": "Tools~/Verification/MovementTests/EasySettings.MovementTests.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 348,
+    "sha256": "854D99A615C0F4BEDA74BBD58A24CBBB312AA54DE090B4512EB44FD7FB36C681"
+  },
+  {
+    "path": "Tools~/Verification/MovementTests/MovementFovSettingsTests.cs",
+    "category": "code-assets-metadata",
+    "bytes": 10266,
+    "sha256": "4CC83784FAD1F77F295BD69668DC62C1E48F053DDC964C0C1FC4EDCFD0AAE0F5"
+  },
+  {
+    "path": "Tools~/Verification/Runtime.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "5538A8C83936F51FAE3EF214024A1A2470898106CB2B7809FCCF1E5B7DB3A3E6"
+  },
+  {
+    "path": "Tools~/Verification/Runtime/EasySettings.Verification.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 154,
+    "sha256": "F0053D5D73C9B196B0A5E7465060BAFB4025852579DFC16CEB7B5ECF6D5EFA84"
+  },
+  {
+    "path": "Tools~/Verification/Runtime/EasySettings.Verification.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 162,
+    "sha256": "C681CD0E648FC103304B65C5AF4C4182C562E896C42DE88510C0FC427AFF2BD4"
+  },
+  {
+    "path": "Tools~/Verification/Runtime/SettingsPlayerVerification.cs",
+    "category": "code-assets-metadata",
+    "bytes": 9369,
+    "sha256": "218B73C1AC4800E77DAEF8F8D18DB588C9E4F26CAACD094F4892970758317F03"
+  },
+  {
+    "path": "Tools~/Verification/Runtime/SettingsPlayerVerification.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 254,
+    "sha256": "280E5FC61B4BE8986AB3E1DD63830CD9BDE906AA1055783A04C488169D5C0634"
+  },
+  {
+    "path": "Tools~/Verification/Tests.meta",
+    "category": "code-assets-metadata",
+    "bytes": 180,
+    "sha256": "5640FCAC7985B1BDC870C945DDB0B691719459E48FA2795DECD18CD44D897005"
+  },
+  {
+    "path": "Tools~/Verification/Tests/EasySettings.IntegrationTests.asmdef",
+    "category": "code-assets-metadata",
+    "bytes": 312,
+    "sha256": "CE5E82EBB5BB2A4645331EE4886D4E7B19ED445837061E71E81622F6660557EE"
+  },
+  {
+    "path": "Tools~/Verification/Tests/EasySettings.IntegrationTests.asmdef.meta",
+    "category": "code-assets-metadata",
+    "bytes": 162,
+    "sha256": "CEC11A2E3886636DEC4B39E63B60E0A2994E1068005E85FA27353B58610E7CF2"
+  },
+  {
+    "path": "Tools~/Verification/Tests/SettingsWindowTests.cs",
+    "category": "code-assets-metadata",
+    "bytes": 2706,
+    "sha256": "E6B99B06F83734F10CD9D3F03DC2FC3A947812171D03D142268D044A94445195"
+  },
+  {
+    "path": "Tools~/Verification/Tests/SettingsWindowTests.cs.meta",
+    "category": "code-assets-metadata",
+    "bytes": 254,
+    "sha256": "D6F0FB6F2699F981C9F7F284F2639684CE724A5FCF88AE36517A1567FEBF2391"
+  }
+]

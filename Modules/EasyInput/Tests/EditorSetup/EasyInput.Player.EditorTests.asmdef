@@ -1,0 +1,21 @@
+{
+  "includePlatforms": [
+    "Editor"
+  ],
+  "references": [
+    "EasyInput.Player.Editor",
+    "EasyInput.Runtime",
+    "EasyInput.EasyMovement",
+    "EasyInput.EasyInteraction",
+    "EasyInput.EasyFeedbacks",
+    "EasyInteraction.Runtime",
+    "EasyMovement.FirstPerson",
+    "ECM2",
+    "EasyFootsteps.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "name": "EasyInput.Player.EditorTests",
+  "autoReferenced": false
+}

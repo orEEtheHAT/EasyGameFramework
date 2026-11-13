@@ -1,0 +1,14 @@
+{
+  "name": "EasyInput.EasyMovement.Editor",
+  "references": [
+    "EasyInput.Runtime",
+    "EasyInput.EasyMovement",
+    "EasyMovement.FirstPerson",
+    "ECM2",
+    "EasyInput.Editor",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

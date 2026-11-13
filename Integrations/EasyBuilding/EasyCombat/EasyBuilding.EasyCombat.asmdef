@@ -1,0 +1,10 @@
+{
+  "name": "EasyBuilding.EasyCombat",
+  "rootNamespace": "EasyBuilding.Integrations",
+  "references": [
+    "EasyBuilding.Runtime",
+    "EasyCombat.Runtime"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}

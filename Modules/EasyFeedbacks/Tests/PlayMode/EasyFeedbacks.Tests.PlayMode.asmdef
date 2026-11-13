@@ -1,0 +1,10 @@
+{
+    "name": "EasyFeedbacks.Tests.PlayMode",
+    "rootNamespace": "EasyGameFramework.Tests.Feedbacks",
+    "references": ["EasyFeedbacks.Runtime", "Unity.InputSystem", "Unity.VisualEffectGraph.Runtime"],
+    "includePlatforms": [],
+    "allowUnsafeCode": true,
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+    "optionalUnityReferences": ["TestAssemblies"]
+}

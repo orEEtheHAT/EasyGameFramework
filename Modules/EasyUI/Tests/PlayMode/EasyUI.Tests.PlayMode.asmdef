@@ -1,0 +1,12 @@
+{
+  "name": "EasyUI.Tests.PlayMode",
+  "references": [
+    "EasyUI.Runtime",
+    "UnityEngine.UI",
+    "Unity.InputSystem"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

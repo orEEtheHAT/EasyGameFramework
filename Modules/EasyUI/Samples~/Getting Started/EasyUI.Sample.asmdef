@@ -1,0 +1,8 @@
+{
+  "name": "EasyUI.Sample",
+  "references": [
+    "EasyUI.Runtime",
+    "UnityEngine.UI",
+    "Unity.InputSystem"
+  ]
+}

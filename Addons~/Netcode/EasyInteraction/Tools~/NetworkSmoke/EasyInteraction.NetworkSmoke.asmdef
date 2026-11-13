@@ -1,0 +1,18 @@
+{
+  "name": "EasyInteraction.NetworkSmoke",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyInteraction.Netcode",
+    "Unity.Netcode.Runtime"
+  ],
+  "versionDefines": [
+    {
+      "name": "com.unity.netcode.gameobjects",
+      "expression": "2.7.0",
+      "define": "EASY_INTERACTION_NETCODE"
+    }
+  ],
+  "defineConstraints": [
+    "EASY_INTERACTION_NETCODE"
+  ]
+}

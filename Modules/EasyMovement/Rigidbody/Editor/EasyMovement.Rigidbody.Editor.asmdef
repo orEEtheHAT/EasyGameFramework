@@ -1,0 +1,5 @@
+{
+  "name": "EasyMovement.Rigidbody.Editor",
+  "references": ["EasyMovement.Rigidbody", "EasyMovement.Combat", "EasyMovement.Combat.Editor"],
+  "includePlatforms": ["Editor"]
+}

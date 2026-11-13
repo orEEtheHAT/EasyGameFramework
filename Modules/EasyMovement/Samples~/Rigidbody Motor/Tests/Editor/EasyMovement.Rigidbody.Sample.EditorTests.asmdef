@@ -1,0 +1,6 @@
+{
+  "name": "EasyMovement.Rigidbody.Sample.EditorTests",
+  "references": ["EasyMovement.Rigidbody", "EasyMovement.Rigidbody.Sample", "EasyMovement.Rigidbody.Sample.Editor"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

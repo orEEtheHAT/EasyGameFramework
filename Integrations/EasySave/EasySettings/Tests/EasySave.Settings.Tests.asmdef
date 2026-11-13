@@ -1,0 +1,1 @@
+{ "name": "EasySave.Settings.Tests", "rootNamespace": "EasySave.Integration.Tests", "references": ["EasySave.Runtime", "EasySave.EasySettings", "EasySettings.Runtime"], "includePlatforms": ["Editor"], "optionalUnityReferences": ["TestAssemblies"] }

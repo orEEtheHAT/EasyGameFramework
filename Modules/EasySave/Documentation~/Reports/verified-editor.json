@@ -1,0 +1,314 @@
+{
+  "status": "completed",
+  "duration": 13.7,
+  "summary": {
+    "total": 43,
+    "passed": 43,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySave.Integration.Tests.AdapterTests.BuildingAdapterRejectsParcelHistoryInsteadOfDroppingIt",
+      "Status": "Passed",
+      "Duration": 0.0315919,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.AdapterTests.BuildingRecordsRepeatedRestorePreservesIdsWithoutPayment",
+      "Status": "Passed",
+      "Duration": 0.3425471,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.AdapterTests.FeedbackNonfinitePayloadRejected",
+      "Status": "Passed",
+      "Duration": 0.0010779,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.AdapterTests.FeedbackPreferencesRemainSeparateFromProgress",
+      "Status": "Passed",
+      "Duration": 0.3679752,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.AdapterTests.ReservationsAreNotCancelledOrPaidByCaptureOrPreflight",
+      "Status": "Passed",
+      "Duration": 0.1515583,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.AdapterTests.ResourceRestoreAssignsBalanceWithoutDuplicateReward",
+      "Status": "Passed",
+      "Duration": 0.2480365,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.AdapterTests.UnknownResourceFailsBeforeOtherParticipantMutation",
+      "Status": "Passed",
+      "Duration": 0.1500296,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.SettingsAdapterTests.ExternalDisplayChangePreservesActualWindowThroughOwnerApi",
+      "Status": "Passed",
+      "Duration": 0.0043005,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.SettingsAdapterTests.PendingPreviewAndFutureVersionRejectWithoutBackendMutation",
+      "Status": "Passed",
+      "Duration": 0.0014166,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Integration.Tests.SettingsAdapterTests.SavesConfirmedGraphicsAndNeverRestoresDisplay",
+      "Status": "Passed",
+      "Duration": 0.1915233,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.AggregateCaptureBudgetStopsBeforeAllParticipantsAreCaptured",
+      "Status": "Passed",
+      "Duration": 0.0033611,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.AwaitedRestoreReturnsToMainThread",
+      "Status": "Passed",
+      "Duration": 0.1401837,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.CancelDuringRestoreStopsLaterParticipants",
+      "Status": "Passed",
+      "Duration": 0.1012143,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.CancellationAfterCommitReportsSuccess",
+      "Status": "Passed",
+      "Duration": 0.0485751,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.CancellationInValidatorDoesNotMutateWorld",
+      "Status": "Passed",
+      "Duration": 0.1001056,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.ConcurrentRequestsReturnBusyAndCancelBeforeCommit",
+      "Status": "Passed",
+      "Duration": 0.1002147,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.CorruptAndTruncatedPrimaryRecoverBackupWithoutRewrite",
+      "Status": "Passed",
+      "Duration": 1.0565718,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.CorruptSlotAppearsInListingWithError",
+      "Status": "Passed",
+      "Duration": 0.7022903,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.DisposeAndUnregisterCancelPendingOperation",
+      "Status": "Passed",
+      "Duration": 0.401154,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.DuplicateKeyRejectedWithinScopeOnly",
+      "Status": "Passed",
+      "Duration": 0.0250925,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.FailedOverwriteKeepsPreviouslyCommittedSlot",
+      "Status": "Passed",
+      "Duration": 0.4728432,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.FileBackendRequiresFullyQualifiedApplicationDirectory",
+      "Status": "Passed",
+      "Duration": 0.0006138,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.FormatRejectsCrossSlotAndCrossScopeDocuments",
+      "Status": "Passed",
+      "Duration": 0.0004204,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.FormatRejectsDuplicateKeysAndInvalidVersions",
+      "Status": "Passed",
+      "Duration": 0.0004742,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.IncompatiblePrimaryNeverFallsBack",
+      "Status": "Passed",
+      "Duration": 0.6027815,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.InvalidSlotAndScopeNeverReachStorage",
+      "Status": "Passed",
+      "Duration": 0.1006633,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.LastValidatorRejectsBeforeAnyRestore",
+      "Status": "Passed",
+      "Duration": 0.3009553,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.ListMetadataAndDeleteOnlySelectedSlot",
+      "Status": "Passed",
+      "Duration": 1.9045739,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.LocalStorageHonorsCrossInstanceLock",
+      "Status": "Passed",
+      "Duration": 0.301874,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.MigrationChainDoesNotRewriteSource",
+      "Status": "Passed",
+      "Duration": 0.1025318,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.NewerPayloadAndMissingMigrationRejectBeforeMutation",
+      "Status": "Passed",
+      "Duration": 0.3015883,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.OptionsAndDefaultsAreCopied",
+      "Status": "Passed",
+      "Duration": 0.4000364,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.OversizedFileAndBackupDisabledRejectWithoutRestore",
+      "Status": "Passed",
+      "Duration": 0.6109542,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.PayloadLimitAndCaptureFailureDoNotCommit",
+      "Status": "Passed",
+      "Duration": 0.0987307,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.PendingTempIsNeverPromotedAndMissingPrimaryUsesBackup",
+      "Status": "Passed",
+      "Duration": 1.109965,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.PreCancelledRequestDoesNotCapture",
+      "Status": "Passed",
+      "Duration": 0.1012873,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.ProgressNeverAppliesPreferences",
+      "Status": "Passed",
+      "Duration": 0.4005943,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.RestoreOrderAndPartialFailureAreReported",
+      "Status": "Passed",
+      "Duration": 0.1016801,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.RoundTripAndRepeatedRestore",
+      "Status": "Passed",
+      "Duration": 0.3983441,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.SaveAfterCorruptionPreservesLastValidBackup",
+      "Status": "Passed",
+      "Duration": 0.9169209,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.UnknownOrMissingParticipantsRejectBeforeMutation",
+      "Status": "Passed",
+      "Duration": 0.4007597,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.UnsupportedContainerNeverFallsBack",
+      "Status": "Passed",
+      "Duration": 0.601244,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.SaveTests.WrongThreadDoesNotInvokeParticipants",
+      "Status": "Passed",
+      "Duration": 0.2006421,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

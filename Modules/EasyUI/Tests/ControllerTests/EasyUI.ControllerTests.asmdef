@@ -1,0 +1,16 @@
+{
+  "name": "EasyUI.ControllerTests",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyUI.EasyInput",
+    "EasyInput.Runtime",
+    "EasyInput.EasyInteraction",
+    "EasyInteraction.Runtime",
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

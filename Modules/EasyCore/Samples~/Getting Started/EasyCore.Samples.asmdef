@@ -1,0 +1,5 @@
+{
+  "name": "EasyCore.Samples",
+  "rootNamespace": "EasyCore.Samples",
+  "references": ["EasyCore.Runtime"]
+}

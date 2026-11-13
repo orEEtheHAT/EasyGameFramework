@@ -1,0 +1,1 @@
+{ "name": "EasyBuilding.Voxels", "rootNamespace": "EasyBuilding.Voxels", "references": ["EasyBuilding.Runtime", "EasyBuilding.Cells"] }

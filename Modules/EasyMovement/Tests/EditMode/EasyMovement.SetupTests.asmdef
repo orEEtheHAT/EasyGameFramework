@@ -1,0 +1,6 @@
+{
+  "name": "EasyMovement.SetupTests",
+  "references": ["EasyMovement.Rigidbody", "EasyMovement.Combat.Editor", "EasyMovement.Combat", "EasyCombat.Runtime", "EasyMovement.FirstPerson", "Unity.Cinemachine", "ECM2"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

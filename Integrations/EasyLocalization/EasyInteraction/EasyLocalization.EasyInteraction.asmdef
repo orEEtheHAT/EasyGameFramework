@@ -1,0 +1,7 @@
+{
+  "name": "EasyLocalization.EasyInteraction",
+  "references": [
+    "EasyLocalization.Runtime",
+    "EasyInteraction.Runtime"
+  ]
+}

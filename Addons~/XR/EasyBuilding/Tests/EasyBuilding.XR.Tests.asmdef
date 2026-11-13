@@ -1,0 +1,1 @@
+{"name":"EasyBuilding.XR.Tests","references":["EasyBuilding.Runtime","EasyBuilding.XR","Unity.XR.Interaction.Toolkit","Unity.InputSystem"],"optionalUnityReferences":["TestAssemblies"],"defineConstraints":["EASYBUILDING_XRI"],"versionDefines":[{"name":"com.unity.xr.interaction.toolkit","expression":"[3.3,4.0)","define":"EASYBUILDING_XRI"}]}

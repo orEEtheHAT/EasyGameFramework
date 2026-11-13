@@ -1,0 +1,1 @@
+{ "name": "EasyBuilding.Cells.Sample", "rootNamespace": "EasyBuilding.Samples", "references": ["EasyBuilding.Runtime", "EasyBuilding.Cells", "EasyBuilding.Voxels", "EasyBuilding.Paths", "Unity.InputSystem"] }

@@ -1,0 +1,298 @@
+{
+  "failures": [],
+  "files": [
+    {
+      "sha256": "cf65f65c6082565c1d410c54bce206f487aaf14d8d0603ddf9f8b168a18b2db8",
+      "path": "Editor/EasySave.Editor.asmdef",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "3c51fa0c53d7f31fe1cf6cc185d7a889f64f37991bdaa4514a776c403464d758",
+      "path": "Editor/EasySave.Editor.asmdef.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "4d0ea2152fe8d7faed5ecdec6f1423208caa6fc24bc1de3a1dfcb3b1d78a866b",
+      "path": "Editor/SaveInspectors.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "c8237ea7ccac4ac5f78e9146183efce1e096e513fb0fdc57eb0ad00d0ae7a0e2",
+      "path": "Editor/SaveInspectors.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "098bc860989d4be0c9104f5009e22e95a97863c14bc8d9381d52d95996aa8039",
+      "path": "Runtime/AssemblyInfo.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "7b637a6f615b4fcb7c8c3b82baec8e55e7d052fbb51b80a01cd6df84feba8b72",
+      "path": "Runtime/AssemblyInfo.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "2ddd5c179ec4aaf1b0fd3f18d0d7de9e67e0afcf627059074f5ae39a4c4494e7",
+      "path": "Runtime/EasySave.Runtime.asmdef",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "2bd29bc4dd469a3c73aab70afc9c4c91626c3161f87900efd5c056f62873049e",
+      "path": "Runtime/EasySave.Runtime.asmdef.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "09df2db128cf01186f8adee3c1b46fceecdb0abf0f84d98e1b4eec0b49cbc9e9",
+      "path": "Runtime/JsonSaveParticipant.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "a22765971532e71baab79bb4791f8149a9c7fc8881a1b7c639e17704addba26c",
+      "path": "Runtime/JsonSaveParticipant.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "b2bd1efaf087fd89722b59645b3bb991701f99d7490679243f64f4ec07a41f76",
+      "path": "Runtime/LocalFileStorage.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "dc3226c390ee10adeb5126f0848a9e0c8aa59a184e0648076836caeb2826ffc5",
+      "path": "Runtime/LocalFileStorage.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "decedcc5d56ea23e616fc637c78e9f13064fe6bb2408c9c8c82561643e737eb9",
+      "path": "Runtime/SaveConfiguration.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "5a129cd2ef93a6d9ddaaa171e092f36773253e2c53da7674fc83b5eb5f47ba1d",
+      "path": "Runtime/SaveConfiguration.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "93cc7cc6f0b0e0885aa9a7dad1536857ecf683846f1e9891d2288464f94842af",
+      "path": "Runtime/SaveContracts.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "b0fe1b710f28d2c9bcdc8c4512493fb2bbf41a4bf5cf6edf9d2cfb0c6d710652",
+      "path": "Runtime/SaveContracts.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "45b0f513bd0ef3d2303250f32b224aed9d424850c2f8ea56920f205c61c26caa",
+      "path": "Runtime/SaveController.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "d9696b4f4d19a370409e9da12a55121f7022849d95a5ebaf4cee4eac7ad9e184",
+      "path": "Runtime/SaveController.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "13f345faf1c1819e0868eef1ce25996562a9dbe7d39bd7e6639ac27528d811c3",
+      "path": "Runtime/SaveFormat.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "13b621f51f4e48f28eabd640d17664421790eead88a1ad9721cd2d99cd90bdd9",
+      "path": "Runtime/SaveFormat.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "07f86b8f34ddc043e9483231c06a37ef1cdaf064b762975db4edd086818161ea",
+      "path": "Runtime/SaveService.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "825582fe979aa94b3437dd4a87643c8a90862164f2e456a5414329904725ef5f",
+      "path": "Runtime/SaveService.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "6eddec6188b54ad669873459c10cbde6f73a6ed1d0a8c753f9e2ddbbb58b2a56",
+      "path": "Samples~/EasyGameFramework/EasySave.EasyGameFramework.asmdef",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "36a74cb3603a91c2638f36ae75062dda38fbd5267d22ae1cb55d0cb74be4dbca",
+      "path": "Samples~/EasyGameFramework/EasySave.EasyGameFramework.asmdef.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "08bdc524bcc080664362979beefe5e55988178401d462a07fb1d63c395d03c60",
+      "path": "Samples~/EasyGameFramework/EasySaveAdapters.cs",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "94f0f405528eba3fecc96ed36498a0951a572ab647536ba34d205ab1709dfceb",
+      "path": "Samples~/EasyGameFramework/EasySaveAdapters.cs.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "f71d51c858fd30c0870c177fc674850c34e2a828f0e766fd860bf5f80a32b144",
+      "path": "Samples~/EasyGameFramework/Tests/AdapterTests.cs",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "0793d7cf6b71cc5e3aec747be13911d0491014714c219317baaf05caaf17eefe",
+      "path": "Samples~/EasyGameFramework/Tests/AdapterTests.cs.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "5b6347cbaaedd31e03f7378d8857b5b9bd5bf9d7f39a9fef60e8cdc22c3a9b77",
+      "path": "Samples~/EasyGameFramework/Tests/EasySave.Integration.Tests.asmdef",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "572b15380778d6f3af56f68364be32fff665113c1c05de0b0fd70214be1e1998",
+      "path": "Samples~/EasyGameFramework/Tests/EasySave.Integration.Tests.asmdef.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "de80bf90ab9e4c1772255c0876ed59b3b1a9fdbcfa2097d18b29bc2c09aa7d25",
+      "path": "Samples~/EasySettings/EasySave.EasySettings.asmdef",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "e42ba2d0d27f8889226c2ae132403b81b95ff8abb50256175f9533174ae096e1",
+      "path": "Samples~/EasySettings/EasySave.EasySettings.asmdef.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "2c107877f432f564e61ffc96cb62f214d4d9684910b170b70f416553c531b5d5",
+      "path": "Samples~/EasySettings/SettingsSaveAdapter.cs",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "cd8e2004203c1083e7c0c85b8141d5edc608f538108a712993ccdebd501da71d",
+      "path": "Samples~/EasySettings/SettingsSaveAdapter.cs.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "6927ed12aa50394c02db8e1d9ebb49e0b9b2bde8b8468a6e0b11e500290c54ca",
+      "path": "Samples~/EasySettings/Tests/EasySave.Settings.Tests.asmdef",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "3a1f8bb98de61f3352d2e61392d45e22a00f6aafbae22496e74add52902a7475",
+      "path": "Samples~/EasySettings/Tests/EasySave.Settings.Tests.asmdef.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "c1d965edc7b0956e8d8ef7e347378f4dce1aeaaf3705724bf2a4e10569cfb26c",
+      "path": "Samples~/EasySettings/Tests/SettingsAdapterTests.cs",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "8ce532e7a5b9062187aab42d1b828709163a0f51a23c1b073f2f0b43ce07af70",
+      "path": "Samples~/EasySettings/Tests/SettingsAdapterTests.cs.meta",
+      "verifiedIn": "Games Factory integration"
+    },
+    {
+      "sha256": "372a583b61cb5944c1728830fa855e41b2844a4590319d88201e17a8db580479",
+      "path": "Samples~/First Run/Editor/EasySave.FirstRun.Editor.asmdef",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "d4c1f5cb98bc87ebaa7e72decdd7ad66c2fa2918e893a218e8e8aef4d0485704",
+      "path": "Samples~/First Run/Editor/EasySave.FirstRun.Editor.asmdef.meta",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "e7e7da9f0042225cafd22aae184dc25ee92775bf00274b70aee4fec8cde65ed6",
+      "path": "Samples~/First Run/Editor/SaveFirstRunSetup.cs",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "a23632d3568312a0d8ad4a8882626c86972f377064359641f6e199f1b2d0eecb",
+      "path": "Samples~/First Run/Editor/SaveFirstRunSetup.cs.meta",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "fd0b4406f7d1bd80a4614636c21e8c618742df6de80abdb1721a0998d2de92b6",
+      "path": "Samples~/First Run/Runtime/EasySave.FirstRun.asmdef",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "941858ee7981a63374bb1a7b2221a8eaa95bcfd7aa94f4db83b8f4c5e465336e",
+      "path": "Samples~/First Run/Runtime/EasySave.FirstRun.asmdef.meta",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "2a52b1424a4d6cddc42c927b518f7bf3bb2876f5b20aa01c25147a43d556ef15",
+      "path": "Samples~/First Run/Runtime/SaveFirstRun.cs",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "ee817ccb4536da6b34d1846a3e6dcb8fb9292430f569803eed62328ff7cf388b",
+      "path": "Samples~/First Run/Runtime/SaveFirstRun.cs.meta",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "8deedd584f5ab9ff70fcd5c59e2f1d1a10ee83df21d2df3436810c6398b80f47",
+      "path": "Samples~/First Run/Runtime/SaveVerification.cs",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "53cb0d95e7f1bb76370c8758dca47a6255bd6bd7f9693c6c9e346ae9748ff6fa",
+      "path": "Samples~/First Run/Runtime/SaveVerification.cs.meta",
+      "verifiedIn": "Clean First Run sample"
+    },
+    {
+      "sha256": "8260098a2ff7f0b87b5b4c8ed02166aa54707e5fb2eba3f3653044206b898a0c",
+      "path": "Tests/Editor/EasySave.Tests.asmdef",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "ab8da49c68c783168fa35dc1dd02b57651cf9776f7e57af0f1f935286c8a2d5f",
+      "path": "Tests/Editor/EasySave.Tests.asmdef.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "1fdfdf208da8546755fccc257aef670a0aaac4145f71bbdf00013b4bd9f9ff2f",
+      "path": "Tests/Editor/SaveTests.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "d1838cf5f46e71a090c6d916c70bdccbd5fe5ea39782cdb8454baae1aba22794",
+      "path": "Tests/Editor/SaveTests.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "73d96e37b73ae63fce82ae31aa3ff3f443443707c805733101da04efc2f21bff",
+      "path": "Tests/PlayMode/ControllerParticipant.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "0569aafc07ca9b117a45d00b681bd2f77a8d9e545e42e02788b2fc305cccf8cb",
+      "path": "Tests/PlayMode/ControllerParticipant.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "b5dbdc4755b91c043a7644a47377edb8575c590e9959270b5f40370030c962f3",
+      "path": "Tests/PlayMode/ControllerTests.cs",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "0ca4b32f17e8c4884e131d5a3d1461a54dc37c9a943e06b9cb33eca8e0c90994",
+      "path": "Tests/PlayMode/ControllerTests.cs.meta",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "c3a6fd3775bdc346b463fc03ce605fdb10670bf007ac75ee3b29d5180607e71b",
+      "path": "Tests/PlayMode/EasySave.PlayMode.Tests.asmdef",
+      "verifiedIn": "Clean installed UPM"
+    },
+    {
+      "sha256": "f99e43663ab834b4d825bf6b12719bdcb49151efcd5675e4efad99e8b79f5bdd",
+      "path": "Tests/PlayMode/EasySave.PlayMode.Tests.asmdef.meta",
+      "verifiedIn": "Clean installed UPM"
+    }
+  ],
+  "matched": 58,
+  "utc": "2026-11-12T22:18:06.7576823Z",
+  "cleanPackage": "C:\\Users\\LeshaPC\\Games Factory\\Audits\\EasySave\\CleanProject\\Library\\PackageCache\\com.oreethehat.easy-save@ebdcbb281c00"
+}

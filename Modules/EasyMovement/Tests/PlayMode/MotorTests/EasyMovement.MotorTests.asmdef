@@ -1,0 +1,6 @@
+{
+  "name": "EasyMovement.MotorTests",
+  "rootNamespace": "EasyMovement.MotorTests",
+  "references": ["EasyMovement.Rigidbody", "EasyMovement.FirstPerson", "EasyMovement.Combat", "EasyCombat.Runtime", "Unity.Cinemachine", "ECM2"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0,1942484">
+  <test-suite type="TestSuite" id="1012" name="EasySaveCleanVerification" fullname="EasySaveCleanVerification" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.194248" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1007" name="EasySave.PlayMode.Tests.dll" fullname="C:/Users/LeshaPC/Games Factory/Audits/EasySave/CleanProject/Library/ScriptAssemblies/EasySave.PlayMode.Tests.dll" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.185963" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="71748" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1008" name="EasySave" fullname="EasySave" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.185612" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1009" name="Tests" fullname="EasySave.Tests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.185460" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="ControllerTests" fullname="EasySave.Tests.ControllerTests" classname="EasySave.Tests.ControllerTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.184483" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1005" name="AutosaveUsesUnscaledTimeAndProgressOnly" fullname="EasySave.Tests.ControllerTests.AutosaveUsesUnscaledTimeAndProgressOnly" methodname="AutosaveUsesUnscaledTimeAndProgressOnly" classname="EasySave.Tests.ControllerTests" runstate="Runnable" seed="1453381706" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.087849" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1003" name="DestroyCancelsOwnedSession" fullname="EasySave.Tests.ControllerTests.DestroyCancelsOwnedSession" methodname="DestroyCancelsOwnedSession" classname="EasySave.Tests.ControllerTests" runstate="Runnable" seed="1431324288" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.034249" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="DisableCancelsRestoreAndSuppressesLateNotification" fullname="EasySave.Tests.ControllerTests.DisableCancelsRestoreAndSuppressesLateNotification" methodname="DisableCancelsRestoreAndSuppressesLateNotification" classname="EasySave.Tests.ControllerTests" runstate="Runnable" seed="2101290522" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.026344" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1006" name="InspectorExplainsDuplicateParticipantKeys" fullname="EasySave.Tests.ControllerTests.InspectorExplainsDuplicateParticipantKeys" methodname="InspectorExplainsDuplicateParticipantKeys" classname="EasySave.Tests.ControllerTests" runstate="Runnable" seed="100562879" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.002896" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="ReenableCreatesIndependentSessionAndKeepsDefaults" fullname="EasySave.Tests.ControllerTests.ReenableCreatesIndependentSessionAndKeepsDefaults" methodname="ReenableCreatesIndependentSessionAndKeepsDefaults" classname="EasySave.Tests.ControllerTests" runstate="Runnable" seed="983486389" result="Passed" start-time="2026-11-12 22:01:17Z" end-time="2026-11-12 22:01:17Z" duration="0.022174" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:\Users\LeshaPC\Games Factory\Audits\EasySave\TestPlay.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,22 @@
+{
+  "name": "EasyUI.IntegrationWindows",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyUI.EasyInput",
+    "EasyUI.EasyBuilding",
+    "EasyUI.EasyResources",
+    "EasyUI.EasyInteraction",
+    "EasyUI.EasyFeedbacks",
+    "EasyBuilding.Runtime",
+    "EasyBuilding.EasyResources",
+    "EasyResources.Runtime",
+    "EasyInteraction.Runtime",
+    "EasyFeedbacks.Runtime",
+    "EasyLocalization.Runtime",
+    "Unity.Localization",
+    "UnityEngine.UI",
+    "Unity.InputSystem",
+    "EasySettings.Runtime",
+    "EasySettings.UI"
+  ]
+}

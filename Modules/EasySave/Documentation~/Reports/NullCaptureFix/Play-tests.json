@@ -1,0 +1,55 @@
+{
+  "status": "completed",
+  "duration": 0.57,
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySave.Tests.ControllerTests.AutosaveUsesUnscaledTimeAndProgressOnly",
+      "Status": "Passed",
+      "Duration": 0.0876894,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.DestroyCancelsOwnedSession",
+      "Status": "Passed",
+      "Duration": 0.1344457,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.DisableCancelsRestoreAndSuppressesLateNotification",
+      "Status": "Passed",
+      "Duration": 0.0550079,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.InspectorExplainsDuplicateParticipantKeys",
+      "Status": "Passed",
+      "Duration": 0.0053366,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.ControllerTests.ReenableCreatesIndependentSessionAndKeepsDefaults",
+      "Status": "Passed",
+      "Duration": 0.0663043,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySave.Tests.JsonCapturePlayTests.NullJsonCaptureCannotDisplaceGoodSlotInPlayMode",
+      "Status": "Passed",
+      "Duration": 0.0828326,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

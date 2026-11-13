@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "duration": 7.02,
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySettings.Tests.SettingsWindowTests.ReopenDoesNotDuplicateViewAndControllerRebinds",
+      "Status": "Passed",
+      "Duration": 4.5270588,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.CameraAndDeepVolumeCloneRestorePreviousReferences",
+      "Status": "Passed",
+      "Duration": 0.0626464,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DefaultOptInFlagsPreserveCameraPostProcessing",
+      "Status": "Passed",
+      "Duration": 0.0289287,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DestroyedTargetsCanBeReleased",
+      "Status": "Passed",
+      "Duration": 1.9163886,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DuplicateOwnerRejectedWithoutChangingExistingOverride",
+      "Status": "Passed",
+      "Duration": 0.0925613,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.EditorDoesNotOfferScreenMutation",
+      "Status": "Passed",
+      "Duration": 0.0298766,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.PipelineIsClonedAndRestored",
+      "Status": "Passed",
+      "Duration": 0.0455069,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.RepeatedControllerEnableDisableReleasesOwnership",
+      "Status": "Passed",
+      "Duration": 0.0533577,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.TargetReplacementRestoresOldCameraAndVolume",
+      "Status": "Passed",
+      "Duration": 0.039052,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

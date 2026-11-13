@@ -1,0 +1,1 @@
+{ "name": "EasyBuilding.Cells.Sample.Editor", "rootNamespace": "EasyBuilding.Samples.Editor", "references": ["EasyBuilding.Runtime", "EasyBuilding.Cells", "EasyBuilding.Voxels", "EasyBuilding.Paths", "EasyBuilding.Cells.Sample"], "includePlatforms": ["Editor"] }

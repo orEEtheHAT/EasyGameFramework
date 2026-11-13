@@ -1,0 +1,5 @@
+{
+  "name": "EasyCore.Verification",
+  "rootNamespace": "EasyCore.Verification",
+  "references": ["EasyCore.Runtime", "EasyCore.Samples"]
+}

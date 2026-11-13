@@ -1,0 +1,5 @@
+{
+  "name": "EasyBuilding.Networking.Sample", "rootNamespace": "EasyBuilding.Networking.Sample",
+  "references": ["EasyBuilding.Runtime"],
+  "excludePlatforms": ["WebGL"]
+}

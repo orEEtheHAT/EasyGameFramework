@@ -1,0 +1,9 @@
+{
+  "name": "EasyUI.EasyInput",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyInput.Runtime",
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ]
+}

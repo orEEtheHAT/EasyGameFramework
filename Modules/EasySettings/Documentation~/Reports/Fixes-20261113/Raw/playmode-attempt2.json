@@ -1,0 +1,237 @@
+{
+  "status": "completed",
+  "duration": 25.19,
+  "summary": {
+    "total": 32,
+    "passed": 20,
+    "failed": 12,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySettings.Tests.SettingsWindowTests.ReopenDoesNotDuplicateViewAndControllerRebinds",
+      "Status": "Passed",
+      "Duration": 5.568232,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.BaseFovSurvivesBrainAndGaitCameraSwitches",
+      "Status": "Failed",
+      "Duration": 1.8143755,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.CommittedDisableReenableDoesNotLeaveMovementOrUrpOwner",
+      "Status": "Failed",
+      "Duration": 2.0274377,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.ExpiredMovementLeaseCanBeReacquiredAfterPooling",
+      "Status": "Failed",
+      "Duration": 1.7667759,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.GameplayOffsetsAreExcludedFromSnapshotAndSurviveSettingsRelease",
+      "Status": "Failed",
+      "Duration": 1.2873417,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.MissingOwnerHasReasonAndDoesNotFallBackToOutputCamera",
+      "Status": "Failed",
+      "Duration": 1.20725,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.OtherBaseOwnerIsPreservedWhenSettingsReleasesItsHandle",
+      "Status": "Failed",
+      "Duration": 1.1676739,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.OwnerCallbackClosingSettingsDuringAcquisitionReleasesReturnedHandle",
+      "Status": "Failed",
+      "Duration": 1.1190354,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.ProviderDisableReleasesOnlyItsLeaseAndReacquiresOnApply",
+      "Status": "Failed",
+      "Duration": 1.2744074,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.PublishedSaveAdapterRestoresBaseWithoutSerializingZoom",
+      "Status": "Failed",
+      "Duration": 1.4137626,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.BrainEnabledAfterEditingIsDetectedAtApply",
+      "Status": "Passed",
+      "Duration": 0.005463,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.CinemachineFovIsUnavailableAndApplyDoesNotClaimRequestedValue",
+      "Status": "Failed",
+      "Duration": 1.1426555,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.ControlledObjectOverrideIsDetected",
+      "Status": "Passed",
+      "Duration": 0.0346783,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.DirectBackendApplyCannotWriteOrRestoreAnOwnedLens",
+      "Status": "Failed",
+      "Duration": 1.2055986,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.NewBrainOwnershipPreventsOldDirectOverrideRollback",
+      "Status": "Failed",
+      "Duration": 1.1998172,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.SwitchingVirtualCamerasKeepsDirectFovUnavailable",
+      "Status": "Passed",
+      "Duration": 0.0347522,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.UnrelatedLaterDirectWriterIsNotOverwrittenOnRelease",
+      "Status": "Passed",
+      "Duration": 0.0124219,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.BindTargetsDoesNotRestoreOldSnapshotIntoReenabledSession",
+      "Status": "Passed",
+      "Duration": 0.0057857,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.BindTargetsStopsAfterRefreshDisablesController",
+      "Status": "Passed",
+      "Duration": 0.0058432,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.ChangedCanDisableComponentWithoutLaterCommitted",
+      "Status": "Passed",
+      "Duration": 0.0064565,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.CommittedCanDisableAndImmediatelyReenableGameObject",
+      "Status": "Passed",
+      "Duration": 0.0059316,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.DeferredDestroyFromCommittedReleasesOwnerOnDestroy",
+      "Status": "Passed",
+      "Duration": 1.1833125,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.ImmediateDestroyFromChangedStopsDispatchAndReleasesOwner",
+      "Status": "Passed",
+      "Duration": 0.0136925,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.SessionChangedReenableDoesNotReceiveStaleFinalNotification",
+      "Status": "Passed",
+      "Duration": 0.0111465,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.CameraAndDeepVolumeCloneRestorePreviousReferences",
+      "Status": "Passed",
+      "Duration": 0.032707,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DefaultOptInFlagsPreserveCameraPostProcessing",
+      "Status": "Passed",
+      "Duration": 0.0058547,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DestroyedTargetsCanBeReleased",
+      "Status": "Passed",
+      "Duration": 1.1117054,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DuplicateOwnerRejectedWithoutChangingExistingOverride",
+      "Status": "Passed",
+      "Duration": 0.0741279,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.EditorDoesNotOfferScreenMutation",
+      "Status": "Passed",
+      "Duration": 0.0122232,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.PipelineIsClonedAndRestored",
+      "Status": "Passed",
+      "Duration": 0.0295537,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.RepeatedControllerEnableDisableReleasesOwnership",
+      "Status": "Passed",
+      "Duration": 0.0361284,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.TargetReplacementRestoresOldCameraAndVolume",
+      "Status": "Passed",
+      "Duration": 0.0353416,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

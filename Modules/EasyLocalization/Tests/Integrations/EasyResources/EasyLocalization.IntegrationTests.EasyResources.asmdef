@@ -1,0 +1,15 @@
+{
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "name": "EasyLocalization.IntegrationTests.EasyResources",
+  "references": [
+    "EasyLocalization.Runtime",
+    "EasyLocalization.EasyResources",
+    "EasyResources.Runtime",
+    "Unity.Localization",
+    "Unity.Addressables",
+    "Unity.ResourceManager"
+  ],
+  "autoReferenced": false
+}

@@ -1,0 +1,8 @@
+{
+  "name": "EasySettings.EasyMovement",
+  "rootNamespace": "EasySettings.Integrations",
+  "references": [
+    "EasySettings.Runtime",
+    "EasyMovement.FirstPerson"
+  ]
+}

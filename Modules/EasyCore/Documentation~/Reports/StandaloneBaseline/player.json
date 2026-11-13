@@ -1,0 +1,83 @@
+{
+    "unity": "6000.3.22f1",
+    "platform": "WindowsPlayer",
+    "cpu": "Intel(R) Core(TM) i7-14700KF",
+    "backend": "Mono",
+    "utc": "2026-11-12T21:41:40.0450189Z",
+    "development": true,
+    "passed": true,
+    "firstRun": true,
+    "pausedScaled": true,
+    "advancingUnscaled": true,
+    "resumedScaled": true,
+    "allocationMeterValid": true,
+    "positiveControlEvents": 1,
+    "emptyControlEvents": 0,
+    "allocationUnits": "main-thread GC.Alloc event count; not bytes",
+    "measurements": [
+        {
+            "operation": "Numeric predicates",
+            "operations": 32,
+            "repetitions": 16,
+            "totalMilliseconds": 0.010499999999999999,
+            "nanosecondsPerOperation": 20.5078125,
+            "allocationEvents": 0
+        },
+        {
+            "operation": "Inline baseline",
+            "operations": 32,
+            "repetitions": 16,
+            "totalMilliseconds": 0.005699999999999999,
+            "nanosecondsPerOperation": 11.1328125,
+            "allocationEvents": 0
+        },
+        {
+            "operation": "ManualClock Advance/read",
+            "operations": 32,
+            "repetitions": 16,
+            "totalMilliseconds": 0.0031999999999999999,
+            "nanosecondsPerOperation": 6.25,
+            "allocationEvents": 0
+        },
+        {
+            "operation": "Unity clocks read",
+            "operations": 32,
+            "repetitions": 16,
+            "totalMilliseconds": 0.0072,
+            "nanosecondsPerOperation": 14.0625,
+            "allocationEvents": 0
+        },
+        {
+            "operation": "Numeric predicates",
+            "operations": 100000,
+            "repetitions": 16,
+            "totalMilliseconds": 35.6993,
+            "nanosecondsPerOperation": 22.3120625,
+            "allocationEvents": 0
+        },
+        {
+            "operation": "Inline baseline",
+            "operations": 100000,
+            "repetitions": 16,
+            "totalMilliseconds": 18.6036,
+            "nanosecondsPerOperation": 11.62725,
+            "allocationEvents": 0
+        },
+        {
+            "operation": "ManualClock Advance/read",
+            "operations": 100000,
+            "repetitions": 16,
+            "totalMilliseconds": 11.0307,
+            "nanosecondsPerOperation": 6.8941875,
+            "allocationEvents": 0
+        },
+        {
+            "operation": "Unity clocks read",
+            "operations": 100000,
+            "repetitions": 16,
+            "totalMilliseconds": 23.0063,
+            "nanosecondsPerOperation": 14.3789375,
+            "allocationEvents": 0
+        }
+    ]
+}

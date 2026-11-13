@@ -1,0 +1,15 @@
+{
+  "name": "EasyLocalization.Gameplay",
+  "references": [
+    "EasyLocalization.Runtime",
+    "Unity.Localization",
+    "EasyResources.Runtime",
+    "EasyBuilding.Runtime",
+    "EasyInteraction.Runtime",
+    "Unity.InputSystem",
+    "UnityEngine.UI",
+    "EasyLocalization.EasyResources",
+    "EasyLocalization.EasyBuilding",
+    "EasyLocalization.EasyInteraction"
+  ]
+}

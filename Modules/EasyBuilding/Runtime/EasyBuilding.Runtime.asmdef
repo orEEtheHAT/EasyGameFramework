@@ -1,0 +1,6 @@
+{
+  "name": "EasyBuilding.Runtime",
+  "rootNamespace": "EasyBuilding",
+  "references": ["Unity.InputSystem"],
+  "autoReferenced": true
+}

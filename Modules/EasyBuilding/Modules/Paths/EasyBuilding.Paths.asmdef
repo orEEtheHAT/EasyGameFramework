@@ -1,0 +1,1 @@
+{ "name": "EasyBuilding.Paths", "rootNamespace": "EasyBuilding.Paths", "references": ["EasyBuilding.Runtime"] }

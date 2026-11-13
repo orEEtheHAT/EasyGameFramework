@@ -1,0 +1,63 @@
+EasyCore в EasyGameFramework — STAGING, 2026-11-13
+
+Результат подготовки
+Готовый фундамент сохранён небольшим: Numeric, IClock, ScaledClock, UnscaledClock,
+ManualClock, DisposableScope. Шесть runtime-файлов побайтно совпадают с исходным
+проверенным фундаментом. Runtime API не расширялся без новой общей потребности.
+Ссылка EasyCore.Runtime не требует других игровых модулей или Editor.
+
+Реальные потребители
+Settings уже использует Numeric для finite validation, preview delta и FOV.
+Save имеет совпадающую проверку интервала autosave; предложение направлено через
+статус координатору. Combat/Building/Input/Interaction содержат эквивалентные
+numeric predicates. UI/Interaction/Save имеют unscaled frame deadlines;
+Resources workflow/UI gate leases подтверждают explicit IDisposable ownership.
+UTC, cancellation, save participant/storage, URP clamp/fallback, owner generation
+и neutral-frame policies остаются у владельцев. Подробности: ../Consumers.ru.md.
+
+Изменения staging
+- README, FirstRun и Consumers описывают единый пакет, assembly references и
+  testable root com.oreethehat.easy-game-framework. Legacy wrappers не требуются.
+- Sample: AddComponentMenu EasyGameFramework/Examples/Core First Run;
+  новая Editor-only assembly EasyCore.Samples.Editor с Undo-командой
+  Tools/EasyGameFramework/Examples/Core/Create First Run и понятным Inspector.
+- 2 новые EditMode регрессии: nested failure не прерывает cleanup родителя;
+  отклонённая reentrant регистрация не мешает освободить остальные ресурсы.
+  Invalid Advance также проверяет дальнейшую пригодность ManualClock.
+- Perf fixture schema 2 проверяет все 7 Numeric overloads на одинаковых с inline
+  baseline входах; сохраняет fixture, режим, объём, warmup/repeats, delta/checksum.
+  GC.Alloc positive/empty controls сохранены; новый результат скорости не заявлен.
+- Build helper пишет только в Assets/PackageTests/EasyGameFramework/EasyCore;
+  сам владелец не запускал build/clean project. Root решает состав общего стенда.
+- Старые JSON/XML/отчёты сохранены в StandaloneBaseline без переписывания.
+
+Проверено без Unity Editor
+Семь staging assemblies скомпилированы отдельным установленным Roslyn csc
+Unity 6000.3.22f1: Runtime, Samples, Samples.Editor, Tests.EditMode, Tests.PlayMode,
+Verification, Verification.Editor. Все exitCode=0. Новые staging Runtime DLL
+использовались как reference для зависимых сборок. Это компиляция C# исходников
+вне импорта, не Unity import/asmdef discovery/Play Mode/Player проверка.
+Asmdef references принадлежат Core; у Runtime references=[]; у Editor-only
+сборок includePlatforms=[Editor]; tests используют TestAssemblies.
+Module package.json/.git и obsolete package guards отсутствуют.
+У активного кода/инструкций нет ссылок на прежний package ID/меню.
+
+План после CUTOVER
+1. Под общей Editor-блокировкой проверить импорт/компиляцию в указанном root пути.
+2. Через unity command с явным project-path запустить 41 EditMode + 3 PlayMode
+   теста EasyCore. Они не требуют import Samples или production adapters.
+3. Проверить импорт sample, новую команду и Inspector: 8/8, Undo, повторный Play.
+4. Root выполняет общие clean-install/Player/perf проверки с новым fixture и
+   positive/empty GC controls. До этого не переносить старые perf цифры на stage.
+
+Ограничения
+STAGING не импортирован и Unity-тесты нового состава НЕ запускались.
+Шесть runtime-файлов ранее проверены отдельно, но это не приёмка единого пакета.
+Jobs/Burst/IL2CPP/mobile/WebGL и performance schema 2 требуют отдельной проверки.
+Unity clocks остаются main-thread frame time, scope — single-thread setup/lifetime.
+Нет новых integrations/addons/внешних зависимостей. Package-level упаковка и
+регистрация sample принадлежат координатору; сам модуль package.json не имеет.
+
+Доказательства: Staging-static-checks.json рядом; подробные response files и
+compiler logs — Audits/EasyCore/Unification/Staging. Скрипт воспроизведения:
+Library/EasyCoreWork/Unification/CheckStaging.ps1 (не запускает Editor).

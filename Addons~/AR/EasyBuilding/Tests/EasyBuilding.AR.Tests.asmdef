@@ -1,0 +1,1 @@
+{"name":"EasyBuilding.AR.Tests","references":["EasyBuilding.Runtime","EasyBuilding.AR","Unity.InputSystem","Unity.XR.ARFoundation","Unity.XR.ARSubsystems"],"optionalUnityReferences":["TestAssemblies"],"defineConstraints":["EASYBUILDING_AR"],"versionDefines":[{"name":"com.unity.xr.arfoundation","expression":"[6.3,7.0)","define":"EASYBUILDING_AR"}]}

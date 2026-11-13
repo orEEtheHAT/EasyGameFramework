@@ -1,0 +1,9 @@
+{
+  "name": "EasyInteraction.EasyCombat",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyCombat.Runtime"
+  ],
+  "versionDefines": [],
+  "defineConstraints": []
+}

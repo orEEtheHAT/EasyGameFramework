@@ -1,0 +1,9 @@
+{
+  "name": "EasyUI.EasyLocalization",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyLocalization.Runtime",
+    "Unity.Localization",
+    "UnityEngine.UI"
+  ]
+}

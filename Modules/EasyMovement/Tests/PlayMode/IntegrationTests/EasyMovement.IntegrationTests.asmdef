@@ -1,0 +1,7 @@
+{
+  "name": "EasyMovement.IntegrationTests",
+  "rootNamespace": "EasyMovement.IntegrationTests",
+  "references": ["EasyMovement.FirstPerson", "EasyFootsteps.Runtime", "EasyFeedbacks.Runtime", "ECM2", "Unity.InputSystem"],
+  "allowUnsafeCode": true,
+  "optionalUnityReferences": ["TestAssemblies"]
+}

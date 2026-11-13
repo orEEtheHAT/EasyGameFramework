@@ -1,0 +1,7 @@
+{
+  "name": "EasyBuilding.Physics2D",
+  "rootNamespace": "EasyBuilding.TwoD",
+  "references": ["EasyBuilding.Runtime", "Unity.InputSystem"],
+  "defineConstraints": ["EASYBUILDING_PHYSICS2D"],
+  "versionDefines": [{ "name": "com.unity.modules.physics2d", "expression": "0.0.0", "define": "EASYBUILDING_PHYSICS2D" }]
+}

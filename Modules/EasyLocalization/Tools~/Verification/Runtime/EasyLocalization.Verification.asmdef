@@ -1,0 +1,8 @@
+{
+  "name": "EasyLocalization.Verification",
+  "references": [
+    "EasyLocalization.Runtime",
+    "Unity.Localization",
+    "Unity.ResourceManager"
+  ]
+}

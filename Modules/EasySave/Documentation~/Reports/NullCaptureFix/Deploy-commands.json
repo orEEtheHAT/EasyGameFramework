@@ -1,0 +1,171 @@
+[
+  {
+    "utc": "2026-11-12T23:14:37.6804264Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:14:38.6986714Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "script",
+      "eval",
+      "--code",
+      "UnityEditor.AssetDatabase.Refresh(UnityEditor.ImportAssetOptions.ForceSynchronousImport); return \"refreshed\";"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:14:42.6676691Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "script",
+      "recompile"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:14:45.9886096Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:14:49.0013095Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:14:52.3026035Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:14:55.2934917Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:14:58.4952773Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:15:01.2563868Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:15:04.3017098Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:15:06.9575657Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:15:09.8311636Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:15:12.5475518Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "script",
+      "recompile_status"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:15:13.3802803Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "script",
+      "eval",
+      "--code",
+      "return new { failed=UnityEditor.EditorUtility.scriptCompilationFailed, playing=UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode, regressionLoaded=System.Type.GetType(\"EasySave.Tests.JsonCaptureTests, EasySave.Tests\") != null, scenes=UnityEditor.SceneManagement.EditorSceneManager.GetSceneManagerSetup() };"
+    ]
+  },
+  {
+    "utc": "2026-11-12T23:15:20.8059717Z",
+    "arguments": [
+      "command",
+      "--result-only",
+      "--project-path",
+      "C:\\Users\\LeshaPC\\Games Factory",
+      "editor",
+      "status"
+    ]
+  }
+]

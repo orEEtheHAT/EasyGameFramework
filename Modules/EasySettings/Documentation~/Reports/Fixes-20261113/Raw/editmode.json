@@ -1,0 +1,307 @@
+{
+  "status": "completed",
+  "duration": 0.3,
+  "summary": {
+    "total": 42,
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.BackendCallbackCannotReenterOrdinaryMutation",
+      "Status": "Passed",
+      "Duration": 0.1147806,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.CaptureRemainsAllowedButOrdinaryReentrantMutationIsRejected",
+      "Status": "Passed",
+      "Duration": 0.0008252,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.ChangedCanDisposeAndStopsRemainingEvents",
+      "Status": "Passed",
+      "Duration": 0.0002928,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.CommittedCanDisposeSynchronously",
+      "Status": "Passed",
+      "Duration": 0.0001249,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.DisposalFromConfirmChangedSuppressesCommitted",
+      "Status": "Passed",
+      "Duration": 0.0012064,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.DisposalFromPreviewChangedRollsBackBeforeRelease",
+      "Status": "Passed",
+      "Duration": 0.0002228,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.FailedPreviewRollbackStillReleasesExactlyOnce",
+      "Status": "Passed",
+      "Duration": 0.0001839,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.ReentrantBackendApplyCannotContinueAfterCleanup",
+      "Status": "Passed",
+      "Duration": 0.0001813,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.NotificationLifetimeTests.WorkerCannotDisposeLiveSession",
+      "Status": "Passed",
+      "Duration": 0.0003697,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.ApplyAndCaptureCommitValueCopies",
+      "Status": "Passed",
+      "Duration": 0.0026069,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.CancelDuringPreviewReverts",
+      "Status": "Passed",
+      "Duration": 0.0007426,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.CannotReplaceUnconfirmedPreview",
+      "Status": "Passed",
+      "Duration": 0.0002412,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.CommittedSubscriberCanCapture",
+      "Status": "Passed",
+      "Duration": 0.0011147,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.ConfirmationSavesOsFallback",
+      "Status": "Passed",
+      "Duration": 0.000108,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.ConfirmationWaitsForObservation",
+      "Status": "Passed",
+      "Duration": 0.0001114,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.DisposeRevertsPendingAndIsIdempotent",
+      "Status": "Passed",
+      "Duration": 7.78E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.DraftDoesNotWriteAndCancelDoesNotApply",
+      "Status": "Passed",
+      "Duration": 0.0001263,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.FailedApplyRestoresPriorState",
+      "Status": "Passed",
+      "Duration": 0.0002794,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.FailedRollbackFaultsSession",
+      "Status": "Passed",
+      "Duration": 0.0001899,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.FutureVersionRejectedWithoutMutation",
+      "Status": "Passed",
+      "Duration": 0.0003578,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.GraphicsProfilePreservesSyncAndDisplay",
+      "Status": "Passed",
+      "Duration": 0.0002006,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.GraphicsRestorePreservesExternallyResizedWindow",
+      "Status": "Passed",
+      "Duration": 0.0001095,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.GraphicsRestoreValidationIgnoresOldMonitorModes",
+      "Status": "Passed",
+      "Duration": 0.0001571,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.IdleTickPerformsNoBackendReadsOrWrites",
+      "Status": "Passed",
+      "Duration": 0.0001171,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.IncompleteSnapshotRejectedBeforeApply",
+      "Status": "Passed",
+      "Duration": 0.0001061,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.InvalidDisplayIsRejectedBeforeSideEffects",
+      "Status": "Passed",
+      "Duration": 0.0001345,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.NonfiniteValuesUseSafeFallback(float.NaN)",
+      "Status": "Passed",
+      "Duration": 0.0003221,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.NonfiniteValuesUseSafeFallback(float.PositiveInfinity)",
+      "Status": "Passed",
+      "Duration": 5.62E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.NonfiniteValuesUseSafeFallback(float.NegativeInfinity)",
+      "Status": "Passed",
+      "Duration": 4.37E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.NumericLimitsClamp",
+      "Status": "Passed",
+      "Duration": 0.0003339,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.PreviewDoesNotLeakIntoSavedState",
+      "Status": "Passed",
+      "Duration": 0.0001746,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.ResetChangesOnlyDraftAndPreservesDisplay",
+      "Status": "Passed",
+      "Duration": 0.0002264,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.ResetPreservesExternallyResizedWindow",
+      "Status": "Passed",
+      "Duration": 9.43E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.RestoreWithDisplayStillRequiresConfirmation",
+      "Status": "Passed",
+      "Duration": 0.0001114,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.SnapshotJsonRoundTripAndDefaultRestoreDoNotChangeDisplay",
+      "Status": "Passed",
+      "Duration": 0.0003105,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.TaaIsNotOfferedAsASelectableMode",
+      "Status": "Passed",
+      "Duration": 0.0006333,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.ThreadGuardRejectsWorkerMutation",
+      "Status": "Passed",
+      "Duration": 0.0002593,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.TimeoutRevertsAllPreviewSettings",
+      "Status": "Passed",
+      "Duration": 0.0001487,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.UnchangedApplyDoesNotWrite",
+      "Status": "Passed",
+      "Duration": 6.57E-05,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.UnsupportedFeaturesArePreservedWithReasons",
+      "Status": "Passed",
+      "Duration": 0.0006753,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.ValidateNeverWrites",
+      "Status": "Passed",
+      "Duration": 0.0001264,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.SettingsSessionTests.VsyncDisablesFrameLimiterWithReason",
+      "Status": "Passed",
+      "Duration": 0.0001449,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

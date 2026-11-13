@@ -1,0 +1,70 @@
+{
+  "phase": "STAGING static source compilation only; no Unity import, tests or performance run",
+  "compiler": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.3.22f1\\Editor\\Data\\DotNetSdkRoslyn\\csc.dll",
+  "assemblies": [
+    {
+      "assembly": "EasyCore.Runtime",
+      "sources": 6,
+      "exitCode": 0
+    },
+    {
+      "assembly": "EasyCore.Samples",
+      "sources": 1,
+      "exitCode": 0
+    },
+    {
+      "assembly": "EasyCore.Samples.Editor",
+      "sources": 1,
+      "exitCode": 0
+    },
+    {
+      "assembly": "EasyCore.Tests.EditMode",
+      "sources": 3,
+      "exitCode": 0
+    },
+    {
+      "assembly": "EasyCore.Tests.PlayMode",
+      "sources": 2,
+      "exitCode": 0
+    },
+    {
+      "assembly": "EasyCore.Verification",
+      "sources": 1,
+      "exitCode": 0
+    },
+    {
+      "assembly": "EasyCore.Verification.Editor",
+      "sources": 1,
+      "exitCode": 0
+    }
+  ],
+  "editModeCases": 41,
+  "playModeCases": 3,
+  "staleActiveReferences": 0,
+  "runtimeSourceUnchanged": [
+    {
+      "file": "DisposableScope.cs",
+      "matches": true
+    },
+    {
+      "file": "IClock.cs",
+      "matches": true
+    },
+    {
+      "file": "ManualClock.cs",
+      "matches": true
+    },
+    {
+      "file": "Numeric.cs",
+      "matches": true
+    },
+    {
+      "file": "ScaledClock.cs",
+      "matches": true
+    },
+    {
+      "file": "UnscaledClock.cs",
+      "matches": true
+    }
+  ]
+}

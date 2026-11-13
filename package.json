@@ -1,0 +1,148 @@
+{
+  "name": "com.oreethehat.easy-game-framework",
+  "displayName": "EasyGameFramework",
+  "version": "0.1.0",
+  "unity": "6000.3",
+  "description": "Twelve integrated game-development modules: movement, combat, interaction, building, resources, feedbacks, input, UI, localization, saving, URP settings and a small shared core.",
+  "author": {
+    "name": "orEEtheHAT"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "com.unity.inputsystem": "1.20.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.burst": "1.8.30",
+    "com.unity.modules.particlesystem": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.ai": "1.0.0",
+    "com.unity.cinemachine": "3.1.7",
+    "com.unity.visualeffectgraph": "17.3.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.localization": "1.5.13",
+    "com.unity.addressables": "2.9.1",
+    "com.unity.modules.terrainphysics": "1.0.0",
+    "com.unity.render-pipelines.universal": "17.3.0",
+    "com.unity.ugui": "2.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.2",
+    "com.unity.modules.physics2d": "1.0.0",
+    "com.unity.modules.tilemap": "1.0.0",
+    "com.unity.modules.terrain": "1.0.0"
+  },
+  "samples": [
+    {
+      "description": "A self-contained playable example connecting all modules. Import, create the scene from Tools > EasyGameFramework > Examples, then Play.",
+      "displayName": "Framework Playground",
+      "path": "Samples~/Framework Playground"
+    },
+    {
+      "description": "Optional EasyBuilding example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Building - Getting Started",
+      "path": "Modules/EasyBuilding/Samples~/Getting Started"
+    },
+    {
+      "description": "Optional EasyBuilding example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Building - Cells and Paths",
+      "path": "Modules/EasyBuilding/Samples~/Cells and Paths"
+    },
+    {
+      "description": "Optional EasyCombat example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Combat - Basic Arena",
+      "path": "Modules/EasyCombat/Samples~/BasicArena"
+    },
+    {
+      "description": "Optional EasyCombat example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Combat Lab",
+      "path": "Modules/EasyCombat/Samples~/CombatLab"
+    },
+    {
+      "description": "Optional EasyCombat example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Combat - Attack Gallery",
+      "path": "Modules/EasyCombat/Samples~/AttackGallery"
+    },
+    {
+      "description": "Optional EasyCombat example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Combat - First Person Demo",
+      "path": "Modules/EasyCombat/Samples~/EasyMovement"
+    },
+    {
+      "description": "Optional EasyCore example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Core - Getting Started",
+      "path": "Modules/EasyCore/Samples~/Getting Started"
+    },
+    {
+      "description": "Optional EasyInput example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Input - Getting Started",
+      "path": "Modules/EasyInput/Samples~/Getting Started"
+    },
+    {
+      "description": "Optional EasyInput example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Input - First Person Input Demo",
+      "path": "Modules/EasyInput/Samples~/EasyMovement"
+    },
+    {
+      "description": "Optional EasyInput example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Input - Benchmarks",
+      "path": "Modules/EasyInput/Samples~/Benchmarks"
+    },
+    {
+      "description": "Optional EasyInteraction example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Interaction - Door and Crate",
+      "path": "Modules/EasyInteraction/Samples~/Door and Crate"
+    },
+    {
+      "description": "Optional EasyInteraction example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Interaction Gallery",
+      "path": "Modules/EasyInteraction/Samples~/Interaction Gallery"
+    },
+    {
+      "description": "Optional EasyLocalization example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Localization - First Run",
+      "path": "Modules/EasyLocalization/Samples~/First Run"
+    },
+    {
+      "description": "Optional EasyLocalization example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Localization - Gameplay Integration",
+      "path": "Modules/EasyLocalization/Samples~/Gameplay Integration"
+    },
+    {
+      "description": "Optional EasyMovement example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Movement - Rigidbody Motor",
+      "path": "Modules/EasyMovement/Samples~/Rigidbody Motor"
+    },
+    {
+      "description": "Optional EasyResources example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Resources - Basics",
+      "path": "Modules/EasyResources/Samples~/Basics"
+    },
+    {
+      "description": "Optional EasyResources example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Resources - Workflows",
+      "path": "Modules/EasyResources/Samples~/Workflows"
+    },
+    {
+      "description": "Optional EasyResources example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Resources - Benchmarks",
+      "path": "Modules/EasyResources/Samples~/Benchmarks"
+    },
+    {
+      "description": "Optional EasySave example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Save - First Run",
+      "path": "Modules/EasySave/Samples~/First Run"
+    },
+    {
+      "description": "Optional EasySettings example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "Settings - Graphics Settings Demo",
+      "path": "Modules/EasySettings/Samples~/EasyUI"
+    },
+    {
+      "description": "Optional EasyUI example. Production module integrations are already included in the framework. See this sample README for the exact scenario and controls.",
+      "displayName": "UI - Getting Started",
+      "path": "Modules/EasyUI/Samples~/Getting Started"
+    }
+  ],
+  "documentationUrl": "https://github.com/orEEtheHAT/EasyGameFramework/blob/main/README.md",
+  "changelogUrl": "https://github.com/orEEtheHAT/EasyGameFramework/blob/main/CHANGELOG.md"
+}

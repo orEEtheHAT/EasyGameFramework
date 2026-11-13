@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="33" result="Passed" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0,055695">
+  <test-suite type="TestSuite" id="1000" name="CleanProject" fullname="CleanProject" runstate="Runnable" testcasecount="72" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.055695" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1088" name="EasySettings.Tests.dll" fullname="C:/Users/LeshaPC/Games Factory/Audits/EasySettings/CleanProject/Library/ScriptAssemblies/EasySettings.Tests.dll" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.047982" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51980" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1089" name="EasySettings" fullname="EasySettings" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.047636" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1090" name="Tests" fullname="EasySettings.Tests" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.047504" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1053" name="SettingsSessionTests" fullname="EasySettings.Tests.SettingsSessionTests" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" testcasecount="33" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.046685" total="33" passed="33" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1055" name="ApplyAndCaptureCommitValueCopies" fullname="EasySettings.Tests.SettingsSessionTests.ApplyAndCaptureCommitValueCopies" methodname="ApplyAndCaptureCommitValueCopies" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1864006306" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.016207" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1067" name="CancelDuringPreviewReverts" fullname="EasySettings.Tests.SettingsSessionTests.CancelDuringPreviewReverts" methodname="CancelDuringPreviewReverts" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1014011405" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.001713" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1068" name="CannotReplaceUnconfirmedPreview" fullname="EasySettings.Tests.SettingsSessionTests.CannotReplaceUnconfirmedPreview" methodname="CannotReplaceUnconfirmedPreview" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1271972892" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.001753" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1085" name="CommittedSubscriberCanCapture" fullname="EasySettings.Tests.SettingsSessionTests.CommittedSubscriberCanCapture" methodname="CommittedSubscriberCanCapture" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="955462585" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.001192" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1065" name="ConfirmationSavesOsFallback" fullname="EasySettings.Tests.SettingsSessionTests.ConfirmationSavesOsFallback" methodname="ConfirmationSavesOsFallback" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1330635259" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000427" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1064" name="ConfirmationWaitsForObservation" fullname="EasySettings.Tests.SettingsSessionTests.ConfirmationWaitsForObservation" methodname="ConfirmationWaitsForObservation" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="443246890" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000167" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1069" name="DisposeRevertsPendingAndIsIdempotent" fullname="EasySettings.Tests.SettingsSessionTests.DisposeRevertsPendingAndIsIdempotent" methodname="DisposeRevertsPendingAndIsIdempotent" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1465514774" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000119" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1054" name="DraftDoesNotWriteAndCancelDoesNotApply" fullname="EasySettings.Tests.SettingsSessionTests.DraftDoesNotWriteAndCancelDoesNotApply" methodname="DraftDoesNotWriteAndCancelDoesNotApply" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1466033210" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000333" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1074" name="FailedApplyRestoresPriorState" fullname="EasySettings.Tests.SettingsSessionTests.FailedApplyRestoresPriorState" methodname="FailedApplyRestoresPriorState" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="99814427" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000264" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1075" name="FailedRollbackFaultsSession" fullname="EasySettings.Tests.SettingsSessionTests.FailedRollbackFaultsSession" methodname="FailedRollbackFaultsSession" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="988110781" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000235" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1078" name="FutureVersionRejectedWithoutMutation" fullname="EasySettings.Tests.SettingsSessionTests.FutureVersionRejectedWithoutMutation" methodname="FutureVersionRejectedWithoutMutation" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1486417117" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000412" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1084" name="GraphicsProfilePreservesSyncAndDisplay" fullname="EasySettings.Tests.SettingsSessionTests.GraphicsProfilePreservesSyncAndDisplay" methodname="GraphicsProfilePreservesSyncAndDisplay" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1180217436" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000272" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1081" name="GraphicsRestorePreservesExternallyResizedWindow" fullname="EasySettings.Tests.SettingsSessionTests.GraphicsRestorePreservesExternallyResizedWindow" methodname="GraphicsRestorePreservesExternallyResizedWindow" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1841342100" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000158" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1080" name="GraphicsRestoreValidationIgnoresOldMonitorModes" fullname="EasySettings.Tests.SettingsSessionTests.GraphicsRestoreValidationIgnoresOldMonitorModes" methodname="GraphicsRestoreValidationIgnoresOldMonitorModes" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1006761380" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000181" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1070" name="IdleTickPerformsNoBackendReadsOrWrites" fullname="EasySettings.Tests.SettingsSessionTests.IdleTickPerformsNoBackendReadsOrWrites" methodname="IdleTickPerformsNoBackendReadsOrWrites" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="698803049" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000116" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1079" name="IncompleteSnapshotRejectedBeforeApply" fullname="EasySettings.Tests.SettingsSessionTests.IncompleteSnapshotRejectedBeforeApply" methodname="IncompleteSnapshotRejectedBeforeApply" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1462161282" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000114" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1072" name="InvalidDisplayIsRejectedBeforeSideEffects" fullname="EasySettings.Tests.SettingsSessionTests.InvalidDisplayIsRejectedBeforeSideEffects" methodname="InvalidDisplayIsRejectedBeforeSideEffects" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="202180864" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000166" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1061" name="NonfiniteValuesUseSafeFallback" fullname="EasySettings.Tests.SettingsSessionTests.NonfiniteValuesUseSafeFallback" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.001699" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1058" name="NonfiniteValuesUseSafeFallback(float.NaN)" fullname="EasySettings.Tests.SettingsSessionTests.NonfiniteValuesUseSafeFallback(float.NaN)" methodname="NonfiniteValuesUseSafeFallback" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1036638808" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000317" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1059" name="NonfiniteValuesUseSafeFallback(float.PositiveInfinity)" fullname="EasySettings.Tests.SettingsSessionTests.NonfiniteValuesUseSafeFallback(float.PositiveInfinity)" methodname="NonfiniteValuesUseSafeFallback" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1306317365" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000065" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1060" name="NonfiniteValuesUseSafeFallback(float.NegativeInfinity)" fullname="EasySettings.Tests.SettingsSessionTests.NonfiniteValuesUseSafeFallback(float.NegativeInfinity)" methodname="NonfiniteValuesUseSafeFallback" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="190461382" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000052" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1062" name="NumericLimitsClamp" fullname="EasySettings.Tests.SettingsSessionTests.NumericLimitsClamp" methodname="NumericLimitsClamp" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="2044141236" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000251" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1063" name="PreviewDoesNotLeakIntoSavedState" fullname="EasySettings.Tests.SettingsSessionTests.PreviewDoesNotLeakIntoSavedState" methodname="PreviewDoesNotLeakIntoSavedState" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="133140131" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000180" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1056" name="ResetChangesOnlyDraftAndPreservesDisplay" fullname="EasySettings.Tests.SettingsSessionTests.ResetChangesOnlyDraftAndPreservesDisplay" methodname="ResetChangesOnlyDraftAndPreservesDisplay" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="2014655335" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000246" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1082" name="ResetPreservesExternallyResizedWindow" fullname="EasySettings.Tests.SettingsSessionTests.ResetPreservesExternallyResizedWindow" methodname="ResetPreservesExternallyResizedWindow" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1666690613" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000135" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1077" name="RestoreWithDisplayStillRequiresConfirmation" fullname="EasySettings.Tests.SettingsSessionTests.RestoreWithDisplayStillRequiresConfirmation" methodname="RestoreWithDisplayStillRequiresConfirmation" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="812564170" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000125" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1076" name="SnapshotJsonRoundTripAndDefaultRestoreDoNotChangeDisplay" fullname="EasySettings.Tests.SettingsSessionTests.SnapshotJsonRoundTripAndDefaultRestoreDoNotChangeDisplay" methodname="SnapshotJsonRoundTripAndDefaultRestoreDoNotChangeDisplay" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="206899663" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000370" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1087" name="TaaIsNotOfferedAsASelectableMode" fullname="EasySettings.Tests.SettingsSessionTests.TaaIsNotOfferedAsASelectableMode" methodname="TaaIsNotOfferedAsASelectableMode" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="54562044" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000796" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1086" name="ThreadGuardRejectsWorkerMutation" fullname="EasySettings.Tests.SettingsSessionTests.ThreadGuardRejectsWorkerMutation" methodname="ThreadGuardRejectsWorkerMutation" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="829749613" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.005136" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1066" name="TimeoutRevertsAllPreviewSettings" fullname="EasySettings.Tests.SettingsSessionTests.TimeoutRevertsAllPreviewSettings" methodname="TimeoutRevertsAllPreviewSettings" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="2571371" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000257" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1071" name="UnchangedApplyDoesNotWrite" fullname="EasySettings.Tests.SettingsSessionTests.UnchangedApplyDoesNotWrite" methodname="UnchangedApplyDoesNotWrite" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1025603029" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000151" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1073" name="UnsupportedFeaturesArePreservedWithReasons" fullname="EasySettings.Tests.SettingsSessionTests.UnsupportedFeaturesArePreservedWithReasons" methodname="UnsupportedFeaturesArePreservedWithReasons" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1842287256" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.001008" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1083" name="ValidateNeverWrites" fullname="EasySettings.Tests.SettingsSessionTests.ValidateNeverWrites" methodname="ValidateNeverWrites" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="799965576" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000212" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1057" name="VsyncDisablesFrameLimiterWithReason" fullname="EasySettings.Tests.SettingsSessionTests.VsyncDisablesFrameLimiterWithReason" methodname="VsyncDisablesFrameLimiterWithReason" classname="EasySettings.Tests.SettingsSessionTests" runstate="Runnable" seed="1231397679" result="Passed" start-time="2026-11-12 21:57:18Z" end-time="2026-11-12 21:57:18Z" duration="0.000237" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: C:/Users/LeshaPC/AppData/LocalLow/DefaultCompany/CleanProject\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

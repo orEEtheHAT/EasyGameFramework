@@ -1,0 +1,237 @@
+{
+  "status": "completed",
+  "duration": 12.29,
+  "summary": {
+    "total": 32,
+    "passed": 20,
+    "failed": 12,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "EasySettings.Tests.SettingsWindowTests.ReopenDoesNotDuplicateViewAndControllerRebinds",
+      "Status": "Passed",
+      "Duration": 5.647128,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.BaseFovSurvivesBrainAndGaitCameraSwitches",
+      "Status": "Failed",
+      "Duration": 0.0630179,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.CommittedDisableReenableDoesNotLeaveMovementOrUrpOwner",
+      "Status": "Failed",
+      "Duration": 0.0038788,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.ExpiredMovementLeaseCanBeReacquiredAfterPooling",
+      "Status": "Failed",
+      "Duration": 0.0025412,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.GameplayOffsetsAreExcludedFromSnapshotAndSurviveSettingsRelease",
+      "Status": "Failed",
+      "Duration": 0.005203,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.MissingOwnerHasReasonAndDoesNotFallBackToOutputCamera",
+      "Status": "Failed",
+      "Duration": 0.0289226,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.OtherBaseOwnerIsPreservedWhenSettingsReleasesItsHandle",
+      "Status": "Failed",
+      "Duration": 0.0029827,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.OwnerCallbackClosingSettingsDuringAcquisitionReleasesReturnedHandle",
+      "Status": "Failed",
+      "Duration": 0.0041181,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.ProviderDisableReleasesOnlyItsLeaseAndReacquiresOnApply",
+      "Status": "Failed",
+      "Duration": 0.0059166,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.MovementFovSettingsTests.PublishedSaveAdapterRestoresBaseWithoutSerializingZoom",
+      "Status": "Failed",
+      "Duration": 0.0057004,
+      "Message": "SetUp :   Expected: True\r\n  But was:  False\r\n",
+      "StackTrace": "at EasySettings.Tests.MovementFovSettingsTests.SetUp () [0x002a7] in C:\\Users\\LeshaPC\\Games Factory\\Assets\\PackageTests\\EasySettings\\Verification\\MovementTests\\MovementFovSettingsTests.cs:51\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.BrainEnabledAfterEditingIsDetectedAtApply",
+      "Status": "Passed",
+      "Duration": 0.0058839,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.CinemachineFovIsUnavailableAndApplyDoesNotClaimRequestedValue",
+      "Status": "Failed",
+      "Duration": 2.0468347,
+      "Message": "TearDown : Unhandled log message: '[Warning] The referenced script (Unknown) on this Behaviour is missing!'. Use UnityEngine.TestTools.LogAssert.Expect",
+      "StackTrace": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\r\n\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.ControlledObjectOverrideIsDetected",
+      "Status": "Passed",
+      "Duration": 0.0569745,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.DirectBackendApplyCannotWriteOrRestoreAnOwnedLens",
+      "Status": "Failed",
+      "Duration": 0.03166,
+      "Message": "  Expected: 72\r\n  But was:  60.0f\r\n",
+      "StackTrace": "at EasySettings.Tests.CinemachineOwnershipTests.DirectBackendApplyCannotWriteOrRestoreAnOwnedLens () [0x00088] in .\\Packages\\com.oreethehat.easy-settings\\Tests\\PlayMode\\CinemachineOwnershipTests.cs:71\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.NewBrainOwnershipPreventsOldDirectOverrideRollback",
+      "Status": "Failed",
+      "Duration": 0.0083384,
+      "Message": "  Expected: 72\r\n  But was:  60.0f\r\n",
+      "StackTrace": "at EasySettings.Tests.CinemachineOwnershipTests.NewBrainOwnershipPreventsOldDirectOverrideRollback () [0x00088] in .\\Packages\\com.oreethehat.easy-settings\\Tests\\PlayMode\\CinemachineOwnershipTests.cs:77\r\n"
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.SwitchingVirtualCamerasKeepsDirectFovUnavailable",
+      "Status": "Passed",
+      "Duration": 0.011822,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.CinemachineOwnershipTests.UnrelatedLaterDirectWriterIsNotOverwrittenOnRelease",
+      "Status": "Passed",
+      "Duration": 0.0297189,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.BindTargetsDoesNotRestoreOldSnapshotIntoReenabledSession",
+      "Status": "Passed",
+      "Duration": 0.0119509,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.BindTargetsStopsAfterRefreshDisablesController",
+      "Status": "Passed",
+      "Duration": 0.0278323,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.ChangedCanDisableComponentWithoutLaterCommitted",
+      "Status": "Passed",
+      "Duration": 0.011606,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.CommittedCanDisableAndImmediatelyReenableGameObject",
+      "Status": "Passed",
+      "Duration": 0.0359289,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.DeferredDestroyFromCommittedReleasesOwnerOnDestroy",
+      "Status": "Passed",
+      "Duration": 1.8180917,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.ImmediateDestroyFromChangedStopsDispatchAndReleasesOwner",
+      "Status": "Passed",
+      "Duration": 0.0340536,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.ControllerNotificationTests.SessionChangedReenableDoesNotReceiveStaleFinalNotification",
+      "Status": "Passed",
+      "Duration": 0.007971,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.CameraAndDeepVolumeCloneRestorePreviousReferences",
+      "Status": "Passed",
+      "Duration": 0.0652879,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DefaultOptInFlagsPreserveCameraPostProcessing",
+      "Status": "Passed",
+      "Duration": 0.0283184,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DestroyedTargetsCanBeReleased",
+      "Status": "Passed",
+      "Duration": 1.7635471,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.DuplicateOwnerRejectedWithoutChangingExistingOverride",
+      "Status": "Passed",
+      "Duration": 0.0692271,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.EditorDoesNotOfferScreenMutation",
+      "Status": "Passed",
+      "Duration": 0.0122212,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.PipelineIsClonedAndRestored",
+      "Status": "Passed",
+      "Duration": 0.0299527,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.RepeatedControllerEnableDisableReleasesOwnership",
+      "Status": "Passed",
+      "Duration": 0.0354363,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "EasySettings.Tests.UrpLifetimeTests.TargetReplacementRestoresOldCameraAndVolume",
+      "Status": "Passed",
+      "Duration": 0.0418195,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

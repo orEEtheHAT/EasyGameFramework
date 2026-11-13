@@ -1,0 +1,14 @@
+{
+  "status": "ready",
+  "compiling": false,
+  "domainReloadInProgress": false,
+  "codeLoadCount": 146,
+  "autoRefresh": "enabled",
+  "playMode": "stopped",
+  "runInBackground": true,
+  "lastHeartbeat": "2026-11-12T23:18:57.2073911Z",
+  "projectPath": "C:\\Users\\LeshaPC\\Games Factory",
+  "unityVersion": "6000.3.22f1",
+  "role": "main",
+  "instanceName": "Main Editor"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "EasyBuilding.EasyFeedbacks.Tests",
+  "references": [
+    "EasyBuilding.Runtime",
+    "EasyBuilding.EasyFeedbacks",
+    "EasyFeedbacks.Runtime",
+    "Unity.InputSystem"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}

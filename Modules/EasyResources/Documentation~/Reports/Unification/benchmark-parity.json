@@ -1,0 +1,27 @@
+[
+  {
+    "path": "Samples~\\Benchmarks\\ResourceBenchmark.cs",
+    "baseline": "standalone 0.3.0",
+    "sameWorkload": true,
+    "onlyAllowedDifference": "AddComponentMenu prefix"
+  },
+  {
+    "path": "Samples~\\Benchmarks\\ResourceBenchmark.Modules.cs",
+    "baseline": "standalone 0.3.0",
+    "sameWorkload": true,
+    "onlyAllowedDifference": "AddComponentMenu prefix"
+  },
+  {
+    "path": "Samples~\\Benchmarks\\ResourceBenchmark.unity",
+    "baseline": "standalone 0.3.0",
+    "sameWorkload": true,
+    "onlyAllowedDifference": "AddComponentMenu prefix"
+  },
+  {
+    "path": "Samples~/Benchmarks/ResourceNotificationBenchmark.cs",
+    "baseline": "Integration Wave 1 local fixture",
+    "sameWorkload": true,
+    "sha256": "06F277E479397432D49469CCBDCF732EB77FEB7E0F27168E3AF5D32A65715959",
+    "onlyAllowedDifference": "none in runtime source; scene GUID/assembly binding only"
+  }
+]

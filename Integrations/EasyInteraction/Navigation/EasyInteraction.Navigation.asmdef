@@ -1,0 +1,6 @@
+{
+  "name": "EasyInteraction.Navigation",
+  "references": [
+    "EasyInteraction.Runtime"
+  ]
+}

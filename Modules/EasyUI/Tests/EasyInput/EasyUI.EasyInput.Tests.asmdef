@@ -1,0 +1,14 @@
+{
+  "name": "EasyUI.EasyInput.Tests",
+  "references": [
+    "EasyUI.Runtime",
+    "EasyUI.EasyInput",
+    "EasyInput.Runtime",
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

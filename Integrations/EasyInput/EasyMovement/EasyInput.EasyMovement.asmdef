@@ -1,0 +1,9 @@
+{
+  "name": "EasyInput.EasyMovement",
+  "references": [
+    "EasyInput.Runtime",
+    "Unity.InputSystem",
+    "EasyMovement.FirstPerson",
+    "ECM2"
+  ]
+}

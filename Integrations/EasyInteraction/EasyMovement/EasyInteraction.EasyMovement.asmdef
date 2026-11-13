@@ -1,0 +1,13 @@
+{
+  "name": "EasyInteraction.EasyMovement",
+  "references": [
+    "EasyInteraction.Runtime",
+    "EasyMovement.FirstPerson",
+    "ECM2",
+    "Unity.Cinemachine",
+    "EasyFootsteps.Runtime",
+    "Unity.InputSystem"
+  ],
+  "versionDefines": [],
+  "defineConstraints": []
+}

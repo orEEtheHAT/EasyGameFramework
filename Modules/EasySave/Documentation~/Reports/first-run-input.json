@@ -1,0 +1,12 @@
+{
+  "output": null,
+  "diagnostics": [],
+  "success": true,
+  "result": {
+    "success": true,
+    "coins": 11,
+    "textSize": 24,
+    "message": "Success",
+    "input": "Synthetic Keyboard via New Input System; actual sample actions"
+  }
+}

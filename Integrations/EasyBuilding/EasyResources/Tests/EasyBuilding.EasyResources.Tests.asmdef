@@ -1,0 +1,16 @@
+{
+  "name": "EasyBuilding.EasyResources.Tests",
+  "references": [
+    "EasyBuilding.Runtime",
+    "EasyBuilding.EasyResources",
+    "EasyResources.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "defineConstraints": [],
+  "versionDefines": []
+}
