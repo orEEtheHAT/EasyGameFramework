@@ -141,7 +141,10 @@ namespace EasyMovement.MotorTests
         }
         [Test] public void CombatStatusSpatialOverlapExpiryDisableAndResetComposeOnce()
         {
-            var statuses = motor.gameObject.AddComponent<StatusController>(); var effects = motor.gameObject.AddComponent<MovementInfluences>();
+            var health = motor.GetComponent<Health>();
+            if (!health) health = motor.gameObject.AddComponent<Health>();
+            var statuses = health.Statuses;
+            var effects = motor.gameObject.AddComponent<MovementInfluences>();
             var adapter = motor.gameObject.AddComponent<RigidbodyCombatSpeed>();
             var stat = Asset<CombatStatDefinition>(); effects.MovementSpeedStat = stat;
             var slow = Asset<MovementInfluenceDefinition>(); slow.SpeedMultiplier = .5f;
@@ -155,7 +158,7 @@ namespace EasyMovement.MotorTests
             effects.Release(source); adapter.Refresh(); Assert.That(motor.SpeedMultiplier, Is.EqualTo(.8f).Within(.001f));
             effects.enabled = false; adapter.Refresh(); Assert.AreEqual(1, motor.SpeedMultiplier);
             effects.enabled = true; effects.Set(source, slow); adapter.Refresh(); Assert.AreEqual(.5f, motor.SpeedMultiplier);
-            statuses.Health.ResetToFull(); adapter.Refresh(); Assert.AreEqual(1, motor.SpeedMultiplier);
+            health.ResetToFull(); adapter.Refresh(); Assert.AreEqual(1, motor.SpeedMultiplier);
             var independent = motor.AcquireSpeedMultiplier(other, .25f);
             effects.Set(source, slow); adapter.Refresh(); Assert.AreEqual(.125f, motor.SpeedMultiplier);
             adapter.enabled = false; Assert.AreEqual(.25f, motor.SpeedMultiplier);
