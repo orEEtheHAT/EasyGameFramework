@@ -150,9 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: EasyResources.Runtime::EasyResources.ResourceContainer
   initialContents:
     items:
-    - resource: {fileID: 11400000, guid: 076e93a5fd54e9d45a43f52d3294ca04, type: 2}
+    - resource: {fileID: 11400001, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
       amount: 10
-    - resource: {fileID: 11400000, guid: edbb0619dfbfb2f43b0533e945bbeb54, type: 2}
+    - resource: {fileID: 11400002, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
       amount: 5
   onChanged:
     m_PersistentCalls:
@@ -286,9 +286,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: EasyResources.Runtime::EasyResources.ResourceContainer
   initialContents:
     items:
-    - resource: {fileID: 11400000, guid: 076e93a5fd54e9d45a43f52d3294ca04, type: 2}
+    - resource: {fileID: 11400001, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
       amount: 3
-    - resource: {fileID: 11400000, guid: edbb0619dfbfb2f43b0533e945bbeb54, type: 2}
+    - resource: {fileID: 11400002, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
       amount: 1
   onChanged:
     m_PersistentCalls:
@@ -339,8 +339,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: EasyResources.Samples.Basics::EasyResources.Samples.ResourceBasicsDemo
   containerA: {fileID: 763101486}
   containerB: {fileID: 1639433443}
-  wood: {fileID: 11400000, guid: 076e93a5fd54e9d45a43f52d3294ca04, type: 2}
-  stone: {fileID: 11400000, guid: edbb0619dfbfb2f43b0533e945bbeb54, type: 2}
+  wood: {fileID: 11400001, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
+  stone: {fileID: 11400002, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
   buildingCost: {fileID: 11400000, guid: c8894ae74110f9346b5a0b7c39e8e9c6, type: 2}
 --- !u!4 &1930852130
 Transform:

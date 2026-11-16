@@ -1,4 +1,5 @@
 using System;
+using EasyResources.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -38,8 +39,10 @@ namespace EasyResources.Samples.Editor
             var scenePath = folder + "/ResourceBasics.unity";
             if (AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath) != null)
                 throw new InvalidOperationException("This example already exists. Open " + scenePath);
-            var wood = CreateResource(folder, "Wood");
-            var stone = CreateResource(folder, "Stone");
+            var database = ScriptableObject.CreateInstance<ResourceDatabase>();
+            AssetDatabase.CreateAsset(database, AssetDatabase.GenerateUniqueAssetPath(folder + "/Resources.asset"));
+            var wood = ResourceDatabaseEditorUtility.AddResource(database, "Wood");
+            var stone = ResourceDatabaseEditorUtility.AddResource(database, "Stone");
             var cost = ScriptableObject.CreateInstance<ResourceCostAsset>();
             AssetDatabase.CreateAsset(cost, AssetDatabase.GenerateUniqueAssetPath(folder + "/Building Cost.asset"));
             SetAmounts(new SerializedObject(cost), "cost", wood, 4, stone, 2);
@@ -73,13 +76,6 @@ namespace EasyResources.Samples.Editor
 
             AssetDatabase.SaveAssets();
             return scenePath;
-        }
-
-        private static ResourceDefinition CreateResource(string folder, string name)
-        {
-            var resource = ResourceDefinition.Create(name);
-            AssetDatabase.CreateAsset(resource, AssetDatabase.GenerateUniqueAssetPath(folder + "/" + name + ".asset"));
-            return resource;
         }
 
         private static ResourceContainer CreateContainer(string name, Transform root, ResourceDefinition wood, int woodAmount, ResourceDefinition stone, int stoneAmount)

@@ -19,7 +19,7 @@ namespace EasyResources.Editor
             var width = Math.Min(145f, position.width * .44f);
             var resourceRect = new Rect(position.x, position.y, position.width - width - 8, EditorGUIUtility.singleLineHeight);
             var amountRect = new Rect(resourceRect.xMax + 8, position.y, width, resourceRect.height);
-            EditorGUI.PropertyField(resourceRect, resource, GUIContent.none);
+            ResourceSelector.Draw(resourceRect, resource, GUIContent.none);
             var definition = resource.objectReferenceValue as ResourceDefinition;
             var previous = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 48;
@@ -72,7 +72,7 @@ namespace EasyResources.Editor
             var maximum = property.FindPropertyRelative("maximum");
             var width = Math.Min(180f, position.width * .48f);
             var left = new Rect(position.x, position.y, position.width - width - 8, position.height);
-            EditorGUI.PropertyField(left, resource, GUIContent.none);
+            ResourceSelector.Draw(left, resource, GUIContent.none);
             var prior = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 80;
             maximum.longValue = EditorGUI.LongField(new Rect(left.xMax + 8, position.y, width, position.height), new GUIContent("Max units", "Maximum in integer smallest units. 0 accepts none; omitted resources are unlimited."), maximum.longValue);
@@ -294,32 +294,24 @@ namespace EasyResources.Editor
     [CustomEditor(typeof(ResourceDefinition))]
     public sealed class ResourceDefinitionEditor : UnityEditor.Editor
     {
-        private bool units, physical, identity;
+        private bool identity;
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("displayName"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("icon"));
-            using (new EditorGUI.DisabledScope(Application.isPlaying))
+            var resource = (ResourceDefinition)target;
+            var database = ResourceDatabaseEditorUtility.FindDatabase(resource);
+            if (database != null)
             {
-                units = EditorGUILayout.Foldout(units, "Units (optional)", true);
-                if (units)
+                EditorGUILayout.HelpBox("This record belongs to a Resource Database. Edit its configuration alongside the other resources in that single asset.", MessageType.Info);
+                if (GUILayout.Button("Edit in Database"))
                 {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("decimalPlaces"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("unit"));
-                    EditorGUILayout.HelpBox("0 decimal places means whole items. For fuel, 3 means 1 unit = 0.001 litres. Changing precision requires migrating existing saves.", MessageType.Info);
-                }
-
-                physical = EditorGUILayout.Foldout(physical, "Weight and Volume (optional)", true);
-                if (physical)
-                {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("weightPerUnit"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("volumePerUnit"));
+                    Selection.activeObject = database;
+                    EditorGUIUtility.PingObject(database);
                 }
             }
-
-            ResourceInspectorValidation.Identity(serializedObject, (ResourceDefinition)target, ref identity);
-            serializedObject.ApplyModifiedProperties();
+            else if (EditorUtility.IsPersistent(resource))
+                EditorGUILayout.HelpBox("This is a standalone resource asset. New resources are authored as nested records inside a Resource Database.", MessageType.Warning);
+            using (new EditorGUI.DisabledScope(Application.isPlaying || database != null))
+                ResourceDatabaseEditor.DrawResourceParameters(resource, ref identity);
         }
     }
 }

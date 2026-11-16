@@ -85,6 +85,7 @@ namespace EasyResources
         public long GetAvailable(ResourceDefinition resource) => Store.GetAvailable(resource);
         public void Add(ResourceDefinition resource, long amount) => Store.Add(resource, amount);
         public bool TryAdd(ResourceDefinition resource, long amount, out ResourceFailure failure) => Store.TryAdd(resource, amount, out failure);
+        public bool TryGrant(ResourceCost reward, out ResourceFailure failure, ResourceOperationContext context = default) => Store.TryGrant(reward, out failure, context);
         public long AddUpTo(ResourceDefinition resource, long amount) => Store.AddUpTo(resource, amount);
         public bool CanAfford(ResourceCost cost) => Store.CanAfford(cost);
         public bool TrySpend(ResourceCost cost) => Store.TrySpend(cost);

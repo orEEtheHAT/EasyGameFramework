@@ -4,9 +4,17 @@ using UnityEngine;
 
 namespace EasyResources
 {
-    [CreateAssetMenu(menuName = "EasyGameFramework/Resources/Resource", fileName = "New Resource")]
     public sealed class ResourceDefinition : DefinitionAsset
     {
+        // Databases subscribe only to their own validated records. Authoring a child does not call the
+        // parent OnValidate automatically, so invalidate explicitly without an Editor/runtime registry.
+        internal event Action ConfigurationChanged;
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            ConfigurationChanged?.Invoke();
+        }
+        private void OnDisable() => ConfigurationChanged?.Invoke();
         [SerializeField, Range(0, 9)]
         private int decimalPlaces;
         [SerializeField]

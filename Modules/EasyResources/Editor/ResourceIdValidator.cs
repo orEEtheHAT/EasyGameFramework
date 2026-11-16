@@ -28,11 +28,13 @@ namespace EasyResources.Editor
             if (allDefinitions != null)
                 return allDefinitions;
             var result = new List<DefinitionAsset>();
-            foreach (var guid in AssetDatabase.FindAssets("t:DefinitionAsset"))
+            var seen = new HashSet<DefinitionAsset>();
+            var guids = new HashSet<string>(AssetDatabase.FindAssets("t:DefinitionAsset"));
+            guids.UnionWith(AssetDatabase.FindAssets("t:ResourceDatabase"));
+            foreach (var guid in guids)
             {
-                var asset = AssetDatabase.LoadAssetAtPath<DefinitionAsset>(AssetDatabase.GUIDToAssetPath(guid));
-                if (asset != null)
-                    result.Add(asset);
+                foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GUIDToAssetPath(guid)))
+                    if (asset is DefinitionAsset definition && seen.Add(definition)) result.Add(definition);
             }
 
             return allDefinitions = result.ToArray();
@@ -43,12 +45,8 @@ namespace EasyResources.Editor
             if (definitions != null)
                 return definitions;
             var result = new List<ResourceDefinition>();
-            foreach (var guid in AssetDatabase.FindAssets("t:ResourceDefinition"))
-            {
-                var resource = AssetDatabase.LoadAssetAtPath<ResourceDefinition>(AssetDatabase.GUIDToAssetPath(guid));
-                if (resource != null)
-                    result.Add(resource);
-            }
+            foreach (var definition in GetAllDefinitions())
+                if (definition is ResourceDefinition resource) result.Add(resource);
 
             definitions = result.ToArray();
             return definitions;
@@ -67,6 +65,13 @@ namespace EasyResources.Editor
             Invalidate();
             var errors = new List<string>();
             var ids = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var guid in AssetDatabase.FindAssets("t:ResourceDatabase"))
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var database = AssetDatabase.LoadAssetAtPath<ResourceDatabase>(path);
+                try { ResourceDatabaseEditorUtility.ValidateAsset(database); }
+                catch (Exception exception) { errors.Add(path + ": " + exception.Message); }
+            }
             foreach (var resource in GetAllDefinitions())
             {
                 var path = AssetDatabase.GetAssetPath(resource);

@@ -1,0 +1,29 @@
+{
+  "status": "VALIDATED_FROZEN",
+  "date": "2026-11-16",
+  "editorReleased": true,
+  "compileErrors": 0,
+  "editMode": {
+    "passed": 180,
+    "total": 180
+  },
+  "playMode": {
+    "passed": 15,
+    "total": 15
+  },
+  "nativeOwnerPredicate": "ResourceDatabaseEditorUtility.IsOwnedResource(db,entry)",
+  "actualSharedDatabaseRecordsPassed": 4,
+  "scaling": {
+    "thousandRecordRollMedianMillisecondsPer128": 0.3905,
+    "lookupMilliseconds": 6.0779,
+    "warmedLookupAllocationEvents": 0,
+    "records": 1000,
+    "equalRollAllocationEvents": 10240,
+    "lookupIterations": 32000,
+    "positiveControl": 1,
+    "oneRecordRollMedianMillisecondsPer128": 0.3763
+  },
+  "sharedMigrationNotAltered": true,
+  "rootSceneClean": true,
+  "sourceFreeze": "post-validation-source-hashes.json"
+}

@@ -1,0 +1,32 @@
+{
+  "status": "VALIDATED",
+  "date": "2026-11-16",
+  "apiImported": true,
+  "frozen": true,
+  "editorReleased": true,
+  "compileErrors": 0,
+  "editMode": {
+    "passed": 160,
+    "newRewardCases": 22,
+    "total": 160
+  },
+  "playMode": {
+    "passed": 13,
+    "newRewardCases": 2,
+    "total": 13
+  },
+  "performance": {
+    "positiveControlPassed": true,
+    "rollSnapshotAllocates": true,
+    "gcAllocationEvents": 0,
+    "path": "prepared TryGrant",
+    "measuredIterations": 256,
+    "warmup": 64
+  },
+  "ownership": {
+    "sampleOwner": "coordinator",
+    "combatAdapterOwner": "EasyCombat",
+    "module": "EasyResources"
+  },
+  "scene": "Assets/EasyGameFramework/Playground/FrameworkPlayground.unity"
+}

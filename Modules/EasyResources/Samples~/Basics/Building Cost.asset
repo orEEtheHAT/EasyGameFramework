@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: EasyResources.Runtime::EasyResources.ResourceCostAsset
   cost:
     items:
-    - resource: {fileID: 11400000, guid: 076e93a5fd54e9d45a43f52d3294ca04, type: 2}
+    - resource: {fileID: 11400001, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
       amount: 4
-    - resource: {fileID: 11400000, guid: edbb0619dfbfb2f43b0533e945bbeb54, type: 2}
+    - resource: {fileID: 11400002, guid: c9db1ea30e4a44beb94efbd8cf8672c7, type: 2}
       amount: 2

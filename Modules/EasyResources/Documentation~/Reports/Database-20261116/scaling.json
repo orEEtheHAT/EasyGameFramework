@@ -1,0 +1,34 @@
+{
+    "unity": "6000.3.22f1",
+    "cpu": "Intel(R) Core(TM) i7-14700KF",
+    "utc": "2026-11-16T13:07:22.6252030Z",
+    "editor": true,
+    "databaseRecords": 1000,
+    "lookupIterations": 32000,
+    "positiveControlAllocationEvents": 1,
+    "warmedLookupAllocationEvents": 0,
+    "lookupMilliseconds": 6.0779,
+    "oneRecordRoll": {
+        "databaseRecords": 1,
+        "rewardRows": 1,
+        "warmupIterations": 64,
+        "batches": 8,
+        "iterationsPerBatch": 128,
+        "allocationEvents": 10240,
+        "checksum": 5155,
+        "medianMillisecondsPerBatch": 0.3763,
+        "maxMillisecondsPerBatch": 0.3913
+    },
+    "thousandRecordRoll": {
+        "databaseRecords": 1000,
+        "rewardRows": 1,
+        "warmupIterations": 64,
+        "batches": 8,
+        "iterationsPerBatch": 128,
+        "allocationEvents": 10240,
+        "checksum": 5155,
+        "medianMillisecondsPerBatch": 0.3905,
+        "maxMillisecondsPerBatch": 0.4664
+    },
+    "note": "Equal one-row roll work and seeds; Roll owns an allocating snapshot. Timings are observations, not a tight performance threshold. Lookups and validation are measured after warmup."
+}
