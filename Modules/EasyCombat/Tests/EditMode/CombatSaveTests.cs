@@ -40,7 +40,7 @@ namespace EasyCombat.Tests
         {
             stat=Asset<CombatStatDefinition>(); a.gameObject.AddComponent<CombatStats>().SetValue(stat,10);
             var effect=Asset<PeriodicDamageEffect>(); effect.Terms=new[] { new StatusDamageTerm(StatusDamageBasis.SourceStat,1,live ? StatusValueSampling.EveryTick : StatusValueSampling.OnApplication) { Stat=stat } };
-            status=Asset<StatusDefinition>(); status.TickEffects=new StatusTickEffect[] { effect }; return b.gameObject.AddComponent<StatusController>();
+            status=Asset<StatusDefinition>(); status.TickEffects=new StatusTickEffect[] { effect }; return b.Statuses;
         }
         [Test] public void JsonRestoresHealthShieldResourcesAndInvulnerabilityWithoutGameplayEvents()
         {
@@ -81,7 +81,7 @@ namespace EasyCombat.Tests
         {
             var effect=Asset<PeriodicDamageEffect>(); effect.Terms=new[] { new StatusDamageTerm(StatusDamageBasis.Fixed,1) };
             var status=Asset<StatusDefinition>(); status.Duration=1; status.TickInterval=.1f; status.TickEffects=new StatusTickEffect[] { effect };
-            var statuses=b.gameObject.AddComponent<StatusController>(); statuses.Apply(status,a.gameObject); statuses.Advance(1); Assert.That(b.Current,Is.EqualTo(92));
+            var statuses=b.Statuses; statuses.Apply(status,a.gameObject); statuses.Advance(1); Assert.That(b.Current,Is.EqualTo(92));
             var saved=Capture(); statuses.Advance(.001f); Assert.That(b.Current,Is.EqualTo(90)); Restore(saved); statuses.Advance(.001f); Assert.That(b.Current,Is.EqualTo(90));
         }
         [Test] public void UnknownDefinitionOrInvalidLateActorLeavesAllHealthUnchanged()
@@ -124,7 +124,7 @@ namespace EasyCombat.Tests
         }
         [Test] public void BuildupRestoresValueWithoutThresholdActions()
         {
-            var statuses=b.gameObject.AddComponent<StatusController>(); var status=Asset<StatusDefinition>(); var action=Asset<ReactionStatusAction>(); action.Status=status;
+            var statuses=b.Statuses; var status=Asset<StatusDefinition>(); var action=Asset<ReactionStatusAction>(); action.Status=status;
             var definition=Asset<BuildupDefinition>(); definition.Actions=new CombatReactionAction[] { action }; definition.Threshold=20; definition.DecayPerSecond=0;
             var meters=b.gameObject.AddComponent<CombatBuildup>(); meters.Configure(new[] { definition }); meters.Add(definition,15,a.gameObject); var saved=Capture(); meters.Add(definition,5,a.gameObject);
             Assert.That(statuses.GetStacks(status),Is.EqualTo(1)); Restore(saved); Assert.That(statuses.GetStacks(status),Is.Zero); Assert.That(meters.GetMeter(0).Value,Is.EqualTo(15));
@@ -177,7 +177,7 @@ namespace EasyCombat.Tests
             formula.Terms=new[] { new DamageFormulaTerm(fire,StatusDamageBasis.Fixed,5),
                 new DamageFormulaTerm(fire,StatusDamageBasis.SourceStat,1) { Stat=stat,Sampling=StatusValueSampling.EveryTick,MaximumDamage=12 } };
             var effect=Asset<PeriodicDamageEffect>(); effect.Formula=formula; effect.CriticalChance=1; effect.CriticalMultiplier=2;
-            var status=Asset<StatusDefinition>(); status.TickEffects=new StatusTickEffect[] { effect }; var statuses=b.gameObject.AddComponent<StatusController>(); statuses.Apply(status,a.gameObject);
+            var status=Asset<StatusDefinition>(); status.TickEffects=new StatusTickEffect[] { effect }; var statuses=b.Statuses; statuses.Apply(status,a.gameObject);
             var saved=Capture(); var random=new CountingRandom(); using(new CombatExecutionScope(random:random)) Restore(saved); Assert.That(random.Calls,Is.Zero);
             stats.SetValue(stat,20); DamageResult tick=default; b.Damaged+=result=>tick=result; statuses.Advance(1);
             Assert.That(tick.Damage.IsCritical,Is.True); Assert.That(tick.AppliedAmount,Is.EqualTo(22)); Assert.That(tick.Damage.Parts[0].Type,Is.EqualTo(fire));
@@ -194,7 +194,7 @@ namespace EasyCombat.Tests
             var stat=Asset<CombatStatDefinition>(); var stats=a.gameObject.AddComponent<CombatStats>(); stats.SetValue(stat,10);
             stats.TryAdd(new StatModifier(stat,StatModifierOperation.Flat,5),null,out var modifier);
             var control=a.gameObject.AddComponent<CombatControl>(); control.TryRestrict(CombatRestriction.Move,out var restriction);
-            var status=Asset<StatusDefinition>(); var statuses=b.gameObject.AddComponent<StatusController>(); statuses.Apply(status,a.gameObject);
+            var status=Asset<StatusDefinition>(); var statuses=b.Statuses; statuses.Apply(status,a.gameObject);
             Resources(b,out _);
             var projectileAttack=Asset<AttackDefinition>(); projectileAttack.Delivery=DamageDelivery.Projectile;
             var shotObject=new GameObject("Preflight live projectile"); cleanup.Add(shotObject);
@@ -247,7 +247,7 @@ namespace EasyCombat.Tests
             var speed=Asset<CombatStatDefinition>(); var status=Asset<StatusDefinition>();
             status.Duration=2; status.TickInterval=.2f; status.Stacking=stacking;
             status.StatModifiers=new[] { new StatusStatModifier(speed,.5f) }; status.Restrictions=CombatRestriction.Move;
-            var statuses=b.gameObject.AddComponent<StatusController>();
+            var statuses=b.Statuses;
             Assert.That(statuses.Apply(status,a.gameObject),Is.True); statuses.Advance(.25f);
             Assert.That(statuses.Apply(status,a.gameObject),Is.EqualTo(stacking!=StatusStacking.IgnoreWhileActive));
             var expectedStacks=statuses.GetStacks(status); var expectedMultiplier=statuses.GetStatMultiplier(speed);
@@ -289,7 +289,7 @@ namespace EasyCombat.Tests
         {
             var status=Asset<StatusDefinition>();
             if(periodic) status.TickEffects=new StatusTickEffect[] { Asset<PeriodicDamageEffect>() };
-            var statuses=b.gameObject.AddComponent<StatusController>(); Assert.That(statuses.Apply(status,a.gameObject),Is.True);
+            var statuses=b.Statuses; Assert.That(statuses.Apply(status,a.gameObject),Is.True);
             var saved=Capture(); var identity=b.Identity.Id; var current=statuses.GetStack(status,0);
             saved.Actors[1].Statuses.Values[0].Records[0].NextTickIn=nextTick;
             Assert.That(CombatSaveSystem.TryValidate(saved,catalog,references,out var validationError),Is.False);

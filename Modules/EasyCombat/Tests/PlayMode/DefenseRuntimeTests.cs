@@ -32,7 +32,7 @@ namespace EasyCombat.Tests
         public void AllDeliveriesRespectCommonRulesThenSpendShield(DamageDelivery delivery, bool explosion)
         {
             var source = Actor("Source"); var team = source.AddComponent<CombatTeam>(); team.Team = 1;
-            var target = Target(); var controller = target.gameObject.AddComponent<StatusController>(); var status = Asset<StatusDefinition>();
+            var target = Target(); var controller = target.Statuses; var status = Asset<StatusDefinition>();
             var attack = Asset<AttackDefinition>(); attack.Delivery = delivery; attack.Damage = 20; attack.Cooldown = 0; attack.ProjectileSpeed = 20;
             attack.OnHitStatuses = new[] { new StatusApplication(status) }; attack.StatusPolicy = StatusApplyPolicy.AfterDamageOrShield;
             if (explosion) { attack.Area = Asset<AreaDefinition>(); attack.Area.Radius = 5; }
@@ -53,7 +53,7 @@ namespace EasyCombat.Tests
         [Test] public void PeriodicStatusUsesSameRelationshipRulesAndShieldPipeline()
         {
             var source = Actor("Source"); source.AddComponent<CombatTeam>().Team = 1;
-            var target = Target(); var controller = target.gameObject.AddComponent<StatusController>();
+            var target = Target(); var controller = target.Statuses;
             var effect = Asset<PeriodicDamageEffect>(); effect.DamagePerStack = 10;
             var status = Asset<StatusDefinition>(); status.TickEffects = new StatusTickEffect[] { effect };
             controller.Apply(status, source); controller.Advance(1); Assert.That(target.ShieldCurrent, Is.EqualTo(50));

@@ -222,7 +222,7 @@ namespace EasyCombat.Tests
             profile.Resistances = resistance;
             var target = Target(5);
             target.ApplyDefinition(profile);
-            var statuses = target.gameObject.AddComponent<StatusController>();
+            var statuses = target.Statuses;
             var tick = Asset<PeriodicDamageEffect>();
             tick.DamageType = fire; tick.DamagePerStack = 4;
             var burn = Asset<StatusDefinition>();
@@ -240,7 +240,7 @@ namespace EasyCombat.Tests
         [UnityTest] public IEnumerator ProjectileKeepsRolledDamageAndStatusesAfterWeaponChanges()
         {
             var target = Target(5);
-            var statuses = target.gameObject.AddComponent<StatusController>();
+            var statuses = target.Statuses;
             var fire = Asset<DamageTypeDefinition>();
             var burn = Asset<StatusDefinition>();
             attack.Damage = 10; attack.CriticalChance = 1; attack.CriticalMultiplier = 2;
@@ -289,7 +289,7 @@ namespace EasyCombat.Tests
         [UnityTest] public IEnumerator SchedulerTicksAndExpiresActiveStatusInRealPlayerLoop()
         {
             var target = Target(5);
-            var statuses = target.gameObject.AddComponent<StatusController>();
+            var statuses = target.Statuses;
             var effect = Asset<PeriodicDamageEffect>(); effect.DamagePerStack = 1;
             var burn = Asset<StatusDefinition>();
             burn.Duration = 0.12f; burn.TickInterval = 0.04f;
@@ -302,7 +302,7 @@ namespace EasyCombat.Tests
         [UnityTest] public IEnumerator DeactivatingActorClearsStatusesButPreservesHealth()
         {
             var target = Target(5);
-            var statuses = target.gameObject.AddComponent<StatusController>();
+            var statuses = target.Statuses;
             var burn = Asset<StatusDefinition>();
             statuses.Apply(burn);
             target.ApplyDamage(new DamageInfo(10));

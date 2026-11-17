@@ -289,14 +289,14 @@ namespace EasyCombat
         internal bool CanPrepareAttack(AttackDefinition attack,in AbilityContext context)
         {
             if(owner==null || attack==null || !attack.IsValid) return false;
-            var statuses=owner.GetComponent<StatusController>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(attack.DamageModifierStat) : 1;
+            var statuses=owner.GetComponent<Health>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(attack.DamageModifierStat) : 1;
             return CombatMath.Positive(multiplier) && attack.RollDamage(owner.gameObject,context.Origin,context.Direction,0,1,multiplier).IsValid;
         }
         internal bool Deliver(AbilityAttackAction action,in AbilityContext context)
         {
             if(!action.CanExecute(in context)) return false;
             var attack=action.Attack; var source=owner.gameObject;
-            var statuses=source.GetComponent<StatusController>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(attack.DamageModifierStat) : 1;
+            var statuses=source.GetComponent<Health>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(attack.DamageModifierStat) : 1;
             if(!CombatMath.Positive(multiplier)) return false;
             var damage=attack.RollRandom(source,context.Origin,context.Direction,multiplier,context.OriginFor(attack)); if(!damage.IsValid) return false;
             if(impactCallback==null) impactCallback=impacts.Publish;

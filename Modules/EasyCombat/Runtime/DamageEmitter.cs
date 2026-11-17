@@ -29,7 +29,7 @@ namespace EasyCombat
         private readonly AttackTrace trace = new AttackTrace();
         private double nextShotTime = double.NegativeInfinity;
         private Transform resolvedOwner;
-        private StatusController ownerStatuses;
+        private Health ownerHealth;
         private Action<DamageImpact> impactCallback;
         private bool firing;
         public AttackDefinition Attack { get => attack; set => attack = value; }
@@ -63,10 +63,10 @@ namespace EasyCombat
             if (resolvedOwner != sourceRoot)
             {
                 resolvedOwner = sourceRoot;
-                sourceRoot.TryGetComponent(out ownerStatuses);
+                sourceRoot.TryGetComponent(out ownerHealth);
             }
-            var damageMultiplier = ownerStatuses != null ? ownerStatuses.GetStatMultiplier(definition.DamageModifierStat) : 1f;
-            var rateMultiplier = ownerStatuses != null ? ownerStatuses.GetStatMultiplier(definition.FireRateModifierStat) : 1f;
+            var damageMultiplier = ownerHealth != null ? ownerHealth.GetStatMultiplier(definition.DamageModifierStat) : 1f;
+            var rateMultiplier = ownerHealth != null ? ownerHealth.GetStatMultiplier(definition.FireRateModifierStat) : 1f;
             if (!CombatMath.Positive(damageMultiplier) || !CombatMath.Positive(rateMultiplier)) return false;
             var delivery = definition.Delivery;
             var radius = delivery == DamageDelivery.Area ? 0 : definition.HitRadius;

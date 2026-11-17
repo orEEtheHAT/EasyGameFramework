@@ -78,7 +78,7 @@ namespace EasyCombat.Samples.Editor
             for(var i=0;i<lab.Targets.Length;i++)
             {
                 var angle=i*Mathf.PI/4; var target=Shape("Target "+(i+1),PrimitiveType.Capsule,new Vector3(Mathf.Sin(angle)*4,1,Mathf.Cos(angle)*4),Vector3.one,i==1 ? blue : teal);
-                var health=target.AddComponent<Health>(); health.ApplyDefinition(i==1 ? protectedHp : hp); target.AddComponent<StatusController>();
+                var health=target.AddComponent<Health>(); health.ApplyDefinition(i==1 ? protectedHp : hp); (target.GetComponent<Health>() ?? target.AddComponent<Health>()).StatusesEnabled = true;
                 target.AddComponent<CombatPresentationRelay>().Hub=lab.Hub; lab.Targets[i]=health;
             }
             var player=Shape("Source",PrimitiveType.Cube,new Vector3(0,1,0),Vector3.one*.6f,blue,false); player.AddComponent<Health>(); player.AddComponent<CombatReactions>();

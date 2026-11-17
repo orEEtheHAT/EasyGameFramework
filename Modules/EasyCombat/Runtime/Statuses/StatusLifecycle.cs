@@ -19,16 +19,15 @@ namespace EasyCombat
     }
     public sealed partial class StatusController
     {
-        private readonly CombatSignal<StatusChange> lifecycle = new CombatSignal<StatusChange>();
-        private readonly CombatSignal changedSignal = new CombatSignal();
-        public event Action<StatusChange> Lifecycle { add => lifecycle.Add(value); remove => lifecycle.Remove(value); }
+        public event Action<StatusChange> Lifecycle { add => health.StatusLifecycle+=value; remove => health.StatusLifecycle-=value; }
         private StatusRemovalReason clearReason = StatusRemovalReason.Cleared;
         private CombatRestriction restrictions;
-        public CombatRestriction Restrictions { get { RebuildModifiersIfNeeded(); return restrictions; } }
+        public CombatRestriction Restrictions { get { if(!IsActiveAndEnabled || EntryCount==0) return CombatRestriction.None; RebuildModifiersIfNeeded(); return restrictions; } }
         public int OverdueTickRecords
         {
             get
             {
+                if(entries==null) return 0;
                 var count=0;
                 foreach(var entry in entries)
                 {
@@ -41,7 +40,7 @@ namespace EasyCombat
         /// <summary>Remove matching groups, with an explicit budget. Null matches all statuses.</summary>
         public int Dispel(CombatTagDefinition tag = null,int maximumGroups = 32)
         {
-            if (maximumGroups <= 0) return 0;
+            if (maximumGroups <= 0 || entries==null) return 0;
             var removed = 0;
             if (advancing)
             {
@@ -87,8 +86,8 @@ namespace EasyCombat
                 if (entry.IndependentStacks.Count == 0) RemoveAt(index,StatusRemovalReason.Consumed);
             }
             InvalidateModifiers(); ReconcileScheduler();
-            lifecycle.Publish(new StatusChange(this,definition,StatusChangeKind.Removed,before,before-count,reason:StatusRemovalReason.Consumed));
-            changedSignal.Publish(); return true;
+            PublishLifecycle(new StatusChange(this,definition,StatusChangeKind.Removed,before,before-count,reason:StatusRemovalReason.Consumed));
+            PublishChanged(); return true;
         }
     }
 }

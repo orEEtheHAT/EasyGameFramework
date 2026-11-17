@@ -23,7 +23,6 @@ namespace EasyCombat
         private bool initialized;
         private CombatLifeState lifeState;
         private ResourceSpendReceipt pendingDefenseCosts;
-        private StatusController statuses;
         private DamageRedirector attachedRedirector;
         private CombatDamageModifiers attachedModifiers;
         private bool attachmentsBound;
@@ -50,9 +49,6 @@ namespace EasyCombat
         public float InvulnerabilityRemaining => Mathf.Max(manualInvulnerability, hitInvulnerability);
         public bool Invulnerable { get => invulnerable; set => invulnerable = value; }
         public ResistanceProfile Resistances => definition != null ? definition.Resistances : resistances;
-        public StatusController Statuses => statuses;
-        internal void AttachStatuses(StatusController controller) => statuses = controller;
-        internal void DetachStatuses(StatusController controller) { if (statuses == controller) statuses = null; }
         public float Current { get { EnsureInitialized(); return currentHealth; } }
         public float Normalized => Current / Maximum;
         public CombatLifeState LifeState { get { EnsureInitialized(); return lifeState; } }
@@ -90,12 +86,16 @@ namespace EasyCombat
                 TryGetComponent(out attachedModifiers);
             }
             ReconcileDefenseScheduler();
+            ObserveEnabledReward();
+            ReconcileStatuses();
         }
         private void OnDisable()
         {
             attachmentsBound = false;
+            ClearStatuses(StatusRemovalReason.Disabled);
             DefenseScheduler.Unregister(this);
         }
+        private void OnDestroy() => DestroyStatuses();
         private void OnValidate()
         {
             if (!CombatMath.Positive(maximumHealth)) maximumHealth = 100f;
@@ -129,7 +129,7 @@ namespace EasyCombat
         {
             var profile = Resistances;
             var baseReduction = profile != null ? profile.GetReduction(type) : 0f;
-            var statusReduction = statuses != null ? statuses.GetResistanceModifier(type) : 0f;
+            var statusReduction = GetStatusResistanceModifier(type);
             return Mathf.Clamp(baseReduction + statusReduction, -1f, 1f);
         }
         // Compound parts share actor eligibility; their individual dodge/defense stages remain independent.
@@ -281,19 +281,22 @@ namespace EasyCombat
                 || damage.StatusPolicy == StatusApplyPolicy.AfterDamageOrShield && shieldAbsorbed > 0)
                 && damage.OnHitStatuses != null && damage.OnHitStatuses.Length > 0)
             {
-                if (statuses == null) TryGetComponent(out statuses);
-                if (statuses != null)
+                if (StatusesEnabled)
                 {
                     var hit = new DamageResult(damage, applied, killed, breakdown: breakdown, effectiveAmount: effectiveAmount,
                         healthDamage: healthDamage, shieldAbsorbed: shieldAbsorbed, armorPrevented: armorPrevented, resistanceDelta: resistanceDelta, defenses: defenses,
                         downed:becameDowned,lifePrevented:lifePrevented,redirected:redirected);
-                    appliedStatuses = statuses.ApplyOnHit(damage.OnHitStatuses, in hit);
+                    appliedStatuses = Statuses.ApplyOnHit(damage.OnHitStatuses, in hit);
                 }
             }
             var rejection = damage.Amount > 0 && healthDamage == 0 && shieldAbsorbed == 0 && redirected==0 ? armorPrevented > 0 ? DamageRejection.Blocked : DamageRejection.Immune
                 : damage.Amount == 0 && appliedStatuses == 0 ? DamageRejection.NoEffect : DamageRejection.None;
             var result = new DamageResult(damage, applied, killed, rejection, breakdown, effectiveAmount, appliedStatuses,
                 healthDamage, shieldAbsorbed, armorPrevented, resistanceDelta, defenses,becameDowned,lifePrevented,redirected);
+            var committedReward = killed ? CaptureDeathReward() : default;
+            var committedFeedback = CaptureDamageFeedback(in result);
+            ProcessCommittedDeathReward(in committedReward);
+            ProcessDamageFeedback(in committedFeedback);
             CombatEvents.Publish(targetLife, result, this);
             if (shieldAbsorbed > 0) defenseChangedSignal.Publish(this);
             if (applied > 0)
@@ -302,7 +305,7 @@ namespace EasyCombat
                 damagedSignal.Publish(result);
             }
             if(becameDowned) downedSignal.Publish(this);
-            if(killed) diedSignal.Publish(this);
+            if(killed) { ClearStatuses(StatusRemovalReason.Death); diedSignal.Publish(this); }
             return result;
         }
 
@@ -354,6 +357,7 @@ namespace EasyCombat
                     ? defense.RestoreShield(healing.ShieldIndex,excess) : 0;
                 if (shield > 0) ReconcileDefenseScheduler();
                 var result = new HealingResult(healing,applied,shield,excess-shield,target:identity,position:transform.position);
+                ProcessHealingFeedback(in result);
                 if (applied > 0) changedSignal.Publish(new HealthChange(previous,currentHealth,maximumHealth,HealthChangeReason.Healing));
                 if (shield > 0) defenseChangedSignal.Publish(this);
                 healedSignal.Publish(result);
@@ -395,6 +399,7 @@ namespace EasyCombat
             identity = new CombatActorIdentity(CombatEvents.NextId(), identity.Name);
             defense?.Reset(); manualInvulnerability = hitInvulnerability = 0; invulnerable = false;
             ReconcileDefenseScheduler(); defenseChangedSignal.Publish(this);
+            ClearStatuses(StatusRemovalReason.Reset);
             changedSignal.Publish(new HealthChange(previous, currentHealth, maximumHealth, HealthChangeReason.Reset));
             if (previous == 0f) revivedSignal.Publish(this);
         }
@@ -418,6 +423,8 @@ namespace EasyCombat
             maximumHealth = snapshot.Maximum;
             currentHealth = restoredCurrent;
             lifeState = restoredLife;
+            RestoreRewardBoundary();
+            ClearStatuses(StatusRemovalReason.Restore);
             ReconcileDefenseScheduler();
             changedSignal.Publish(new HealthChange(previous, currentHealth, maximumHealth, HealthChangeReason.Restore));
             if (previous == 0f && currentHealth > 0f) revivedSignal.Publish(this);
@@ -444,7 +451,7 @@ namespace EasyCombat
             if(rules!=null)
             {
                 GrantInvulnerability(rules.ReviveInvulnerability);
-                if(rules.ClearStatusesOnRevive && statuses!=null) statuses.Clear(StatusRemovalReason.Reset);
+                if(rules.ClearStatusesOnRevive) ClearStatuses(StatusRemovalReason.Reset);
             }
             ReconcileDefenseScheduler();
             changedSignal.Publish(new HealthChange(previous,currentHealth,maximumHealth,HealthChangeReason.Revive));

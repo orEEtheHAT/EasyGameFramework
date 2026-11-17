@@ -15,7 +15,7 @@ namespace EasyCombat.Tests
         { for (var i = cleanup.Count - 1; i >= 0; i--) if (cleanup[i] != null) Object.Destroy(cleanup[i]); cleanup.Clear(); yield return null; }
         [UnityTest] public IEnumerator SharedSchedulerExpiresIndependentStacksSeparately()
         {
-            var go = Actor("Scheduled target"); var health = go.AddComponent<Health>(); var controller = go.AddComponent<StatusController>();
+            var go = Actor("Scheduled target"); var health = go.AddComponent<Health>(); var controller = (go.GetComponent<Health>() ?? go.AddComponent<Health>()).Statuses;
             var effect = Asset<PeriodicDamageEffect>(); effect.DamagePerStack = 1;
             var status = Asset<StatusDefinition>(); status.DisplayName = "Scheduled burn";
             status.Duration = .6f; status.TickInterval = .1f; status.TickEffects = new StatusTickEffect[] { effect };
@@ -31,7 +31,7 @@ namespace EasyCombat.Tests
         }
         [UnityTest] public IEnumerator DisableClearsAllStacksAndReenableStartsClean()
         {
-            var go = Actor("Pooled target"); var controller = go.AddComponent<StatusController>();
+            var go = Actor("Pooled target"); var controller = (go.GetComponent<Health>() ?? go.AddComponent<Health>()).Statuses;
             var status = Asset<StatusDefinition>(); controller.Apply(status); controller.Apply(status);
             Assert.That(controller.GetStacks(status), Is.EqualTo(2));
             go.SetActive(false); Assert.That(controller.Count, Is.Zero); Assert.That(controller.IndependentRecordCount, Is.Zero);
@@ -42,7 +42,7 @@ namespace EasyCombat.Tests
         {
             var position = new Vector3(0, 4000, 0);
             var target = Actor("Area target"); target.transform.position = position + Vector3.forward;
-            target.AddComponent<BoxCollider>(); target.AddComponent<Health>(); var controller = target.AddComponent<StatusController>();
+            target.AddComponent<BoxCollider>(); target.AddComponent<Health>(); var controller = (target.GetComponent<Health>() ?? target.AddComponent<Health>()).Statuses;
             var status = Asset<StatusDefinition>(); status.DisplayName = "Field status"; status.Duration = 1; status.TickInterval = .25f;
             var first = Actor("First source"); first.AddComponent<Health>(); var second = Actor("Second source"); second.AddComponent<Health>();
             var shape = Asset<AreaDefinition>(); shape.Radius = 2;

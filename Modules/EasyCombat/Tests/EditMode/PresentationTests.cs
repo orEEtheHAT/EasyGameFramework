@@ -108,7 +108,7 @@ namespace EasyCombat.Tests
         [Test] public void ActorRelayPublishesHealthHealingAndStatusesWithoutChangingGameplay()
         {
             var hub=Actor().AddComponent<CombatPresentationHub>(); hub.Configure(profile); hub.AutomaticFlush=false;
-            var actor=Actor(); var health=actor.AddComponent<Health>(); var statuses=actor.AddComponent<StatusController>();
+            var actor=Actor(); var health=actor.AddComponent<Health>(); var statuses=(actor.GetComponent<Health>() ?? actor.AddComponent<Health>()).Statuses;
             var relay=actor.AddComponent<CombatPresentationRelay>(); relay.Configure(hub);
             var values=new List<CombatPresentationEvent>(); hub.Emitted+=values.Add;
             var burn=Asset<StatusDefinition>(); var tick=Asset<PeriodicDamageEffect>(); tick.DamagePerStack=3; burn.TickEffects=new StatusTickEffect[] { tick }; burn.TickInterval=1;

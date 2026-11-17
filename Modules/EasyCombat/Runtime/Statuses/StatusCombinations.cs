@@ -58,7 +58,7 @@ namespace EasyCombat
                 else if(removed!=null)
                 {
                     for(var n=0;n<recipe.Stacks;n++) ReleaseData(removed[n].Data);
-                    if(removedGroup) stackLists.Push(original.IndependentStacks);
+                    if(removedGroup) { if(stackLists==null) stackLists=new System.Collections.Generic.Stack<System.Collections.Generic.List<StackState>>(8); stackLists.Push(original.IndependentStacks); }
                 }
                 else if(removedGroup) ReleaseData(original.Data);
                 if(removed!=null) { ArrayPool<StackState>.Shared.Return(removed,true); ArrayPool<int>.Shared.Return(positions,true); }
@@ -69,9 +69,9 @@ namespace EasyCombat
             var kind=resultBefore==0 ? StatusChangeKind.Applied : resultAfter>resultBefore ? StatusChangeKind.StackAdded
                 : recipe.Apply.Stacking==StatusStacking.Independent ? StatusChangeKind.StackReplaced : StatusChangeKind.Refreshed;
             var appliedChange=new StatusChange(this,recipe.Apply,kind,resultBefore,resultAfter,origin,recipe.Apply.Stacking==StatusStacking.Independent ? nextStackId : 0);
-            lifecycle.Publish(new StatusChange(this,recipe.Consume,StatusChangeKind.Removed,before,before-recipe.Stacks,reason:StatusRemovalReason.Consumed));
-            lifecycle.Publish(appliedChange);
-            changedSignal.Publish(); return true;
+            PublishLifecycle(new StatusChange(this,recipe.Consume,StatusChangeKind.Removed,before,before-recipe.Stacks,reason:StatusRemovalReason.Consumed));
+            PublishLifecycle(appliedChange);
+            PublishChanged(); return true;
         }
     }
 }

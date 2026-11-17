@@ -7,7 +7,7 @@ Combat is the health, damage, defense, status and ability module of **EasyGameFr
 1. Install the EasyGameFramework package and its standard dependencies. ECM2 is supplied separately by its licensed owner.
 2. Open **Tools > EasyGameFramework > Combat > Combat Studio**. SOs are also available under **Assets > Create > EasyGameFramework > Combat**.
 3. For a ready firing range, import **Combat Attack Gallery** from EasyGameFramework's Samples, then use **Tools > EasyGameFramework > Combat > Samples > Open Attack Gallery**. Press Play, select **Pistol Shot**, then **Attack**: the front target loses HP. Fireball adds an explosion, a persistent field and Burn.
-4. For a custom target, add `Health` and a Collider. A Health Profile is optional; the default is 100 HP. Add `StatusController` if the target receives statuses. Add Hurtboxes only for distinct contact zones.
+4. For a custom target, add `Health` and a Collider. A Health Profile is optional; the default is 100 HP. Status support and health feedback are enabled in Health by default; no extra components are required. Add Hurtboxes only for distinct contact zones.
 5. Create a Weapon SO, assign it to `DamageEmitter.Attack`, then call `TryFire` from your Input System action or AI. Hitscan needs no projectile pool. Projectile attacks need `ProjectilePool`; impact fields also need a world-owned `DamageAreaPool`.
 6. Movement, Resources and Feedbacks adapters ship with the framework and need no sample import. See the integration section below.
 
@@ -23,10 +23,20 @@ target.Heal(5); // Healing does not resurrect a dead target.
 ```
 
 ```csharp
-// statuses: StatusController; slow: StatusDefinition; attacker: GameObject.
-statuses.Apply(slow, attacker);
+// target: Health; slow: StatusDefinition; attacker: GameObject.
+target.ApplyStatus(slow, attacker);
 // A motor reads MovementInfluences.Multiplier once; it already includes the timed speed stat.
 ```
+
+## Health statuses and feedback
+
+**Enable Statuses** and **Enable Health Feedbacks** are independent Health options, both on by default. A fresh Health with no active statuses has no old status collections/pools/pending buffers; empty feedback slots do no service or provider work. Turn statuses off to clear only their effects; spatial movement sources and manual control/stat modifiers remain. Set Damage/Death/Healing presets directly in Health. No StatusController or HealthFeedbacks component is needed.
+
+Use `health.StatusCount`, `GetStatMultiplier`, `GetStatusResistanceModifier`, `StatusRestrictions` and `StatusesChanged` for UI/adapters without allocating the status engine. `health.Statuses` exposes the stable managed advanced API for stacks/combinations/manual simulation; it is not a MonoBehaviour. [Configuration, lifecycle and save semantics](Documentation~/HealthComposition.ru.md).
+
+## Health death reward
+
+In Health enable **Enable Death Reward** (off by default), then assign a Resource Reward profile and explicit recipient ResourceContainer. The profile selects entries from a Resource Database and gives inclusive Min/Max ranges. `health.ConfigureDeathReward(profile, wallet)` performs the same setup in code. Observe `RewardCompleted` / `LastRewardResult` for atomic admission failures. Confirmed death pays once before Died observers; loading a corpse never pays. [Setup, API and save/pooling lifecycle](Documentation~/DeathRewards.ru.md).
 
 ## Projectile execution
 
@@ -39,7 +49,7 @@ The framework Setup reads and explicitly saves the project choice. **Parallel is
 - `Integrations/EasyCombat/Movement`: `CombatFirstPersonController` extends the standard EasyMovement FPS controller (ECM2), preserving gait, camera and input behavior. The optional **Combat FPS Player** sample contains only the local prefab builder. `NavMeshSpeedAdapter` is in the Combat module. Rigidbody integration belongs to Movement (`RigidbodyCombatSpeed`).
 - `MovementSurface`, shown as **Slow Volume**, takes a `MovementInfluenceDefinition` coefficient in [0..1], with one trigger collider. The receiver needs `MovementInfluences` and its movement adapter. Overlapping zones use the strongest slow; `MovementSpeedStat` multiplies the timed status value once and can provide haste. Slow Volume is not a general arbitrary Status zone; advanced area entry/stay/exit delivery uses `CombatAreaTrigger` and `AreaTriggerDefinition`.
 - `Integrations/EasyCombat/Resources`: `EasyResourcesCostProvider` + `CombatResourceMap` connect abilities, beam pulses and paid blocks to one existing wallet. Configure the provider on the actor, assign Container/Mapping; no mirrored balance is created. An explicit invalid/disabled provider rejects costs. Conversion/payment objects allocate; scopes are synchronous. Irreversible partial execution is not refunded.
-- `Integrations/EasyCombat/Feedbacks`: `HealthFeedbacks` and `PresentationFeedbacks` route combat events to Feedback presets and an optional `IFeedbackContextProvider`. Standalone EasyFeedbacks is maintained separately; installing it alongside the framework would duplicate assemblies.
+- `Health` routes damage/death/healing to assigned Feedback presets and an optional `IFeedbackContextProvider`. `Integrations/EasyCombat/Feedbacks/PresentationFeedbacks` handles the separate bounded presentation stream. Standalone EasyFeedbacks is maintained separately; installing it alongside the framework would duplicate assemblies.
 - `CombatSaveSystem.TryCapture/TryValidate/TryRestore` expose world snapshots to Save. Preflight is nonmutating and reuses restore validation; it is not a reservation or cross-module transaction. [Restore semantics](Documentation~/Saving.ru.md).
 
 ## Authoring helpers

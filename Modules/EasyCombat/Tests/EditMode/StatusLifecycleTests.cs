@@ -17,7 +17,7 @@ namespace EasyCombat.Tests
         private T Asset<T>() where T : ScriptableObject { var a = ScriptableObject.CreateInstance<T>(); cleanup.Add(a); return a; }
         [SetUp] public void Setup()
         {
-            var actor=new GameObject("Statuses"); cleanup.Add(actor); health=actor.AddComponent<Health>(); controller=actor.AddComponent<StatusController>();
+            var actor=new GameObject("Statuses"); cleanup.Add(actor); health=actor.AddComponent<Health>(); controller=(actor.GetComponent<Health>() ?? actor.AddComponent<Health>()).Statuses;
             burn=Asset<StatusDefinition>(); burn.Duration=2; burn.TickInterval=1;
             tick=Asset<PeriodicDamageEffect>(); tick.DamagePerStack=5; burn.TickEffects=new StatusTickEffect[] { tick };
         }

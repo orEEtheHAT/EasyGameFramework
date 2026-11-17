@@ -52,13 +52,13 @@
 
 ## Концепция: рецепт и исполнитель
 
-**AttackDefinition → DamageEmitter → луч/снаряд → Hurtbox → Health → StatusController.**
+**AttackDefinition → DamageEmitter → луч/снаряд → Hurtbox → Health → встроенные статусы.**
 
 SO описывает правила. Компоненты исполняют их для конкретного персонажа: два врага с одним HealthDefinition имеют независимые HP и статусы.
 Чтобы вооружить объект, назначьте AttackDefinition компоненту DamageEmitter; для Projectile ему нужен ProjectilePool.
 Контроллер ввода или AI вызывает TryFire(origin, direction). SO сам не стреляет и не задаёт поведение AI.
 На цели нужен Health с HealthDefinition и коллайдер; Hurtbox связывает дочернюю зону попадания со здоровьем и задаёт её множитель.
-Для статусов добавьте StatusController. HealthFeedbacks связывает события здоровья с Easy Feedbacks. На FPS-игроке CombatFirstPersonController применяет множитель скорости через MovementInfluences.
+Статусы и отклики на здоровье включены в Health по умолчанию. Настройте Damage/Death/Healing presets в его Inspector; отдельные StatusController/HealthFeedbacks компоненты не нужны. На FPS-игроке CombatFirstPersonController применяет множитель скорости через MovementInfluences.
 
 Начинать удобнее с варианта FireLauncher: поменять диапазон урона, темп и вероятность Burning, назначить вариант DamageEmitter и проверить на полигоне.
 
@@ -393,7 +393,7 @@ ApplyDefinition меняет конфигурацию экземпляра; SetM
 
 ## Как создать статус
 
-На получателе должны быть Health и StatusController. Сама Health не требует добавлять контроллер всем разрушаемым объектам.
+На получателе достаточно Health с Enable Statuses. Пустой объект не создаёт тяжёлое status storage; advanced API доступен через Health.Statuses.
 
 Пример горения:
 
@@ -462,7 +462,7 @@ RefreshDuration и StackAndRefresh сохраняют общий ритм: но�
 
 **Примеры:** в StatusEffects / Statuses доступны HitScaledBurn, CurrentHealthPoison, MaximumHealthBurn, MissingHealthBleed,
 SpellPowerBurn, HybridBurn и HitBudgetBurn (действия имеют суффикс Tick). Старые Burning и Poisoned оставлены с фиксированными тиками.
-Клавиша **0** на полигоне выбирает оружие с ударом 10–30 и ожогом 20% фактически снятого HP за тик. В инспекторе StatusController
+Клавиша **0** на полигоне выбирает оружие с ударом 10–30 и ожогом 20% фактически снятого HP за тик. В секции статусов инспектора Health
 под каждым стаком видна величина его следующего тика до резистов. **R** очищает статусы и восстанавливает цели.
 Команда **Tools > EasyGameFramework > Combat > Set Up Status Formula Demo** создаёт примеры без перезаписи существующих SO.
 
@@ -511,15 +511,15 @@ Ignore New выбран по умолчанию, чтобы быстрые по�
 ## Характеристики и интеграции
 
 CombatStatDefinition — ключ; новый ключ сам по себе не изменяет поведение персонажа.
-CombatStatsDefinition — SO-профиль численных значений. CombatStats на объекте источника читает профиль и применяет множители его StatusController.
+CombatStatsDefinition — SO-профиль численных значений. CombatStats на объекте источника читает профиль и применяет множители статусов его Health.
 SetValue задаёт локальное значение поверх профиля и не меняет SO или другие экземпляры. Отсутствующий ключ не считается нулевым существующим значением.
 Повторные строки одного ключа используют последнюю. В демо DemoCasterStats задаёт SpellPower = 100.
-StatusController.GetStatMultiplier возвращает произведение модификаторов, по умолчанию 1.
+Health.GetStatMultiplier возвращает произведение модификаторов, по умолчанию 1.
 Множитель применяется на каждый стек: 0.8 при двух стаках даёт 0.64.
 DamageEmitter использует ключи DamageModifierStat и FireRateModifierStat из оружия.
 На FPS-игроке назначьте выбранный ключ в MovementInfluences.MovementSpeedStat. Базовые скорости ходьбы, спринта и других режимов настраиваются в EasyMovement.
 Новый потребитель характеристики подключается аналогичным адаптером.
-HealthFeedbacks подписывается на события здоровья и запускает Easy Feedbacks.
+Health запускает назначенные Feedbacks presets напрямую на committed damage/death/healing, без self-subscriptions.
 
 ## Runtime API
 
@@ -528,11 +528,11 @@ Health: ApplyDamage, Heal, ResetToFull, SetMaximum, ApplyDefinition, CaptureStat
 Лечение не воскрешает. Health не уничтожает объект и не отключает коллайдеры при смерти.
 RestoreState не вызывает Damaged или Died, чтобы загрузка мёртвого объекта не выдавала награду повторно.
 
-StatusController: Apply, Remove, Clear, GetStatus, GetStacks, GetStack, GetStatMultiplier, GetResistanceModifier.
+Health: ApplyStatus, RemoveStatus, ClearStatuses и нейтральные queries; advanced Health.Statuses: Apply, Remove, Clear, GetStatus, GetStacks, GetStack, GetStatMultiplier, GetResistanceModifier.
 Событие Changed сообщает об изменении набора/стаков/модификаторов. Таймеры читаются через GetStatus без создания списка.
 Count считает группы SO, не отдельные стаки. В Independent GetStacks возвращает число живых стаков. GetStatus.Remaining — время до последнего истечения, NextStackExpiresIn — до ближайшего; PendingStacks показывает просроченные записи, ожидающие догоняющих тиков. Поэтому группа может временно оставаться в Count при нуле живых стаков.
 GetStack(definition, index) возвращает живой независимый стак: его Id, Remaining, NextTickIn, Source и Origin. В общих режимах индекс 0 возвращает общее состояние. Порядок индексов не гарантирован; для отслеживания используй Id.
-В инспекторе StatusController показаны сроки, источники и урон отдельных стаков; в HUD полигона стрелка вниз обозначает время до ближайшего спада числа стаков.
+В секции статусов инспектора Health показаны сроки, источники и урон отдельных стаков; в HUD полигона стрелка вниз обозначает время до ближайшего спада числа стаков.
 TryGetStackDamage(definition, stackIndex, effectIndex, out amount) читает следующий урон PeriodicDamageEffect на один стак до резистов без выполнения действия.
 Advance доступен для детерминированной симуляции и тестов; в обычной игре его вызывает общий планировщик.
 Не вызывайте Advance дополнительно в Update своих скриптов.
@@ -541,7 +541,7 @@ Advance доступен для детерминированной симуля�
 
 DamageEmitter: TryFire(origin, direction), ResetCooldown, RefreshOwner.
 Owner Root должен указывать на отдельного персонажа, а не общего родителя уровня.
-После динамического добавления StatusController стрелку вызовите RefreshOwner для обновления ссылки.
+Health автоматически учитывает статусы, наложенные позднее. RefreshOwner нужен, когда меняется владелец DamageEmitter.
 Hurtbox направляет урон в IDamageable; для каждой цели используется её первый встреченный коллайдер, а продолжение пути задаёт ContactBehavior.
 Обычные препятствия также останавливают выстрел. Слои и триггеры задаются в SO оружия.
 Queries используют стандартную 3D-сцену Physics; для Physics2D нужен отдельный адаптер доставки.
@@ -608,7 +608,7 @@ Combat Studio > Нагрузка запускает локальную диаг�
 - Золотая зона — ×2. У второй цели огненный резист 50% и уязвимость к яду 50%; у третьей — иммунитет к огню.
 
 В Demo/Definitions/Statuses также есть Regeneration, FireWard и Frenzy.
-В Play Mode их можно назначить через инспектор StatusController и кнопку «Наложить статус».
+В Play Mode их можно назначить через секцию статусов инспектора Health и кнопку «Наложить статус».
 Это тестовый desktop-интерфейс. Yandex SDK, мобильный HUD и полноценный backend сохранений не входят в данный модуль.
 
 ## Проверка

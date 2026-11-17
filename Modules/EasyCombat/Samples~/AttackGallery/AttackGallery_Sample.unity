@@ -500,7 +500,6 @@ GameObject:
   - component: {fileID: 817500824}
   - component: {fileID: 817500823}
   - component: {fileID: 817500822}
-  - component: {fileID: 817500821}
   m_Layer: 2
   m_Name: Front
   m_TagString: Untagged
@@ -508,21 +507,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &817500821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 817500820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798f5988160757d43a3ab9988bb05ec6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: EasyCombat.Runtime::EasyCombat.StatusController
-  maximumActiveStatuses: 32
-  maximumCatchUpTicksPerStatus: 8
-  maximumIndependentStackRecords: 512
 --- !u!114 &817500822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,6 +524,10 @@ MonoBehaviour:
   resistances: {fileID: 0}
   hitRules: {fileID: 0}
   defenseProfile: {fileID: 0}
+  statusesEnabled: 1
+  maximumActiveStatuses: 32
+  maximumCatchUpTicksPerStatus: 8
+  maximumIndependentStackRecords: 512
 --- !u!23 &817500823
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -792,7 +780,6 @@ GameObject:
   - component: {fileID: 1082351289}
   - component: {fileID: 1082351288}
   - component: {fileID: 1082351287}
-  - component: {fileID: 1082351286}
   m_Layer: 2
   m_Name: Middle
   m_TagString: Untagged
@@ -800,21 +787,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1082351286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082351285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798f5988160757d43a3ab9988bb05ec6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: EasyCombat.Runtime::EasyCombat.StatusController
-  maximumActiveStatuses: 32
-  maximumCatchUpTicksPerStatus: 8
-  maximumIndependentStackRecords: 512
 --- !u!114 &1082351287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,6 +804,10 @@ MonoBehaviour:
   resistances: {fileID: 0}
   hitRules: {fileID: 0}
   defenseProfile: {fileID: 0}
+  statusesEnabled: 1
+  maximumActiveStatuses: 32
+  maximumCatchUpTicksPerStatus: 8
+  maximumIndependentStackRecords: 512
 --- !u!23 &1082351288
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -941,7 +917,6 @@ GameObject:
   - component: {fileID: 1361958563}
   - component: {fileID: 1361958562}
   - component: {fileID: 1361958561}
-  - component: {fileID: 1361958560}
   m_Layer: 2
   m_Name: Flank
   m_TagString: Untagged
@@ -949,21 +924,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1361958560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361958559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798f5988160757d43a3ab9988bb05ec6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: EasyCombat.Runtime::EasyCombat.StatusController
-  maximumActiveStatuses: 32
-  maximumCatchUpTicksPerStatus: 8
-  maximumIndependentStackRecords: 512
 --- !u!114 &1361958561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,6 +941,10 @@ MonoBehaviour:
   resistances: {fileID: 0}
   hitRules: {fileID: 0}
   defenseProfile: {fileID: 0}
+  statusesEnabled: 1
+  maximumActiveStatuses: 32
+  maximumCatchUpTicksPerStatus: 8
+  maximumIndependentStackRecords: 512
 --- !u!23 &1361958562
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1090,7 +1054,6 @@ GameObject:
   - component: {fileID: 1363272234}
   - component: {fileID: 1363272233}
   - component: {fileID: 1363272232}
-  - component: {fileID: 1363272231}
   m_Layer: 2
   m_Name: Rear
   m_TagString: Untagged
@@ -1098,21 +1061,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1363272231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1363272230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798f5988160757d43a3ab9988bb05ec6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: EasyCombat.Runtime::EasyCombat.StatusController
-  maximumActiveStatuses: 32
-  maximumCatchUpTicksPerStatus: 8
-  maximumIndependentStackRecords: 512
 --- !u!114 &1363272232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1130,6 +1078,10 @@ MonoBehaviour:
   resistances: {fileID: 0}
   hitRules: {fileID: 0}
   defenseProfile: {fileID: 0}
+  statusesEnabled: 1
+  maximumActiveStatuses: 32
+  maximumCatchUpTicksPerStatus: 8
+  maximumIndependentStackRecords: 512
 --- !u!23 &1363272233
 MeshRenderer:
   m_ObjectHideFlags: 0

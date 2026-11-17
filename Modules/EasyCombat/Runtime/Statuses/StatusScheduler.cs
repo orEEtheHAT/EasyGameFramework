@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EasyCombat
 {
-    /// <summary>One Update for the world; only actors with active statuses are visited.</summary>
+    /// <summary>One existing world scheduler; only Health-owned engines with active statuses are visited.</summary>
     [AddComponentMenu("")]
     [UnityEngine.Scripting.APIUpdating.MovedFrom(true, "GamesFactory.Combat", "GamesFactory.Combat")]
     public sealed class StatusScheduler : MonoBehaviour

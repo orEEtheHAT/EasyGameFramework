@@ -21,7 +21,7 @@ namespace EasyCombat.Tests
         private GameObject Actor(string name) { var go = new GameObject(name); cleanup.Add(go); return go; }
         [SetUp] public void Setup()
         {
-            var target = Actor("Target"); health = target.AddComponent<Health>(); statuses = target.AddComponent<StatusController>();
+            var target = Actor("Target"); health = target.AddComponent<Health>(); statuses = (target.GetComponent<Health>() ?? target.AddComponent<Health>()).Statuses;
             journal = Actor("Journal").AddComponent<CombatJournal>();
             journal.StartRecording(); // EditMode does not run ordinary MonoBehaviour lifecycle callbacks.
             fire = Asset<DamageTypeDefinition>(); fire.DisplayName = "Fire";

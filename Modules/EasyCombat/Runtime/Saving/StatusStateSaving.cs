@@ -8,6 +8,7 @@ namespace EasyCombat
         internal SavedStatuses SaveCombatState(SaveCodec codec)
         {
             SaveCodec.Need(!advancing && pendingCount==0,"Cannot save during status processing.");
+            if(entries==null) return new SavedStatuses();
             var saved=new SavedStatuses { Values=new SavedStatus[entries.Count] };
             for(var i=0;i<entries.Count;i++)
             {
@@ -41,7 +42,7 @@ namespace EasyCombat
             }
             return saved;
         }
-        internal Action PrepareCombatRestore(SavedStatuses saved,SaveCodec codec,bool targetAlive)
+        internal Action<StatusController> PrepareCombatRestore(SavedStatuses saved,SaveCodec codec,bool targetAlive,out int preparedRecords)
         {
             SaveCodec.Need(saved!=null && !advancing && pendingCount==0,"Invalid/busy status restore."); SaveCodec.Length(saved.Values,maximumActiveStatuses,"Status groups");
             SaveCodec.Need(targetAlive || saved.Values.Length==0,"Dead actors cannot retain active statuses.");
@@ -72,12 +73,19 @@ namespace EasyCombat
                 SaveCodec.Need(live<=definition.MaximumStacks,"Too many live independent stacks."); next[i]=entry;
             }
             SaveCodec.Need(records<=maximumIndependentStackRecords,"Total status record budget exceeded.");
-            return ()=>
-            {
-                BindHealth(); foreach(var entry in entries) ReleaseStacks(entry); entries.Clear();
-                clock=0; independentRecordCount=records; nextStackId=largestId; clearRequested=false; InvalidateModifiers();
-                entries.AddRange(next); ReconcileScheduler();
-            };
+            preparedRecords=records;
+            return destination => destination.CommitPreparedStatusRestore(next,records,largestId);
+        }
+        private void CommitPreparedStatusRestore(Entry[] next,int records,long largestId)
+        {
+            EnsureEntries(); foreach(var entry in entries) ReleaseStacks(entry); entries.Clear();
+            clock=0; independentRecordCount=records; nextStackId=largestId; clearRequested=false; InvalidateModifiers();
+            entries.AddRange(next); ReconcileScheduler();
+        }
+        internal void RestoreEmptyState()
+        {
+            Clear(StatusRemovalReason.Restore);
+            clock=0; independentRecordCount=0; clearRequested=false; InvalidateModifiers();
         }
         private static ApplicationData LoadData(SavedStatusData saved,StatusDefinition definition,SaveCodec codec)
         {
@@ -94,6 +102,6 @@ namespace EasyCombat
             }
             return data;
         }
-        internal void NotifyStateRestored()=>changedSignal.Publish();
+        internal void NotifyStateRestored()=>PublishChanged();
     }
 }

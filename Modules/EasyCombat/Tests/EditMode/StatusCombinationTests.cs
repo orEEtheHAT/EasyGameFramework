@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 using Object=UnityEngine.Object;
@@ -16,13 +15,13 @@ namespace EasyCombat.Tests
         private T Asset<T>() where T:ScriptableObject { var a=ScriptableObject.CreateInstance<T>(); cleanup.Add(a); return a; }
         [SetUp] public void Setup()
         {
-            var actor=new GameObject("Combination"); cleanup.Add(actor); health=actor.AddComponent<Health>(); controller=actor.AddComponent<StatusController>();
+            var actor=new GameObject("Combination"); cleanup.Add(actor); health=actor.AddComponent<Health>(); controller=(actor.GetComponent<Health>() ?? actor.AddComponent<Health>()).Statuses;
             input=Asset<StatusDefinition>(); output=Asset<StatusDefinition>(); recipe=Asset<StatusCombinationDefinition>(); recipe.Consume=input; recipe.Apply=output; recipe.Stacks=2;
         }
         [TearDown] public void Cleanup() { for(var i=cleanup.Count-1;i>=0;i--) if(cleanup[i]!=null) Object.DestroyImmediate(cleanup[i]); cleanup.Clear(); }
         [Test] public void ExchangeFreesSlotAndObserversSeeCommittedResult()
         {
-            typeof(StatusController).GetField("maximumActiveStatuses",BindingFlags.NonPublic|BindingFlags.Instance).SetValue(controller,1);
+            health.StatusCapacity=1;
             controller.Apply(input); controller.Apply(input); var sawResult=false;
             controller.Lifecycle+=change=> { if(change.RemovalReason==StatusRemovalReason.Consumed) sawResult=controller.GetStacks(output)==1; };
             Assert.That(controller.TryCombine(recipe),Is.True); Assert.That(controller.GetStacks(input),Is.Zero); Assert.That(controller.GetStacks(output),Is.EqualTo(1)); Assert.That(sawResult,Is.True);

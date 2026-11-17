@@ -22,7 +22,7 @@ namespace EasyCombat.Tests
         [SetUp] public void Setup()
         {
             health = Actor("Target").AddComponent<Health>(); health.SetMaximum(1000);
-            controller = health.gameObject.AddComponent<StatusController>();
+            controller = health.Statuses;
             source = Actor("Source"); source.AddComponent<Health>(); stats = source.AddComponent<CombatStats>();
             power = Asset<CombatStatDefinition>(); stats.SetValue(power, 100);
             effect = Asset<PeriodicDamageEffect>(); effect.DamagePerStack = 5;
@@ -114,7 +114,7 @@ namespace EasyCombat.Tests
         [TestCase(StatusValueSampling.EveryTick, 30)]
         public void SourceAttributeIncludesStatusMultiplierAndSamplingPolicy(StatusValueSampling sampling, float expected)
         {
-            var modifiers = source.AddComponent<StatusController>();
+            var modifiers = (source.GetComponent<Health>() ?? source.AddComponent<Health>()).Statuses;
             var buff = Asset<StatusDefinition>(); buff.StatModifiers = new[] { new StatusStatModifier(power, 1.5f) };
             modifiers.Apply(buff); Formula(StatusDamageBasis.SourceStat, .1f, sampling); controller.Apply(status, source);
             stats.SetValue(power, 200); Assert.That(Preview(), Is.EqualTo(expected).Within(.001f));

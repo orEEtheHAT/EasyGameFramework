@@ -40,7 +40,7 @@ namespace EasyCombat
             if(!isActiveAndEnabled || IsRunning || advancing || finishing || recipe==null || !recipe.IsValid
                 || recipe.Attack.ImpactArea!=null && (areaPool==null || !areaPool.isActiveAndEnabled)
                 || !CombatControl.IsAllowed(OwnerRoot.gameObject,CombatRestriction.Cast)) return false;
-            var stats=OwnerRoot.GetComponent<StatusController>(); var outgoing=stats!=null ? stats.GetStatMultiplier(recipe.Attack.DamageModifierStat) : 1;
+            var stats=OwnerRoot.GetComponent<Health>(); var outgoing=stats!=null ? stats.GetStatMultiplier(recipe.Attack.DamageModifierStat) : 1;
             if(!CombatMath.Positive(outgoing) || !recipe.Attack.RollDamage(OwnerRoot.gameObject,Muzzle.position,Muzzle.forward,0,1,outgoing).IsValid) return false;
             return recipe.PulseCosts.Length==0 || CombatCosts.CanSpend(OwnerRoot.gameObject,recipe.PulseCosts);
         }
@@ -48,7 +48,7 @@ namespace EasyCombat
         {
             if(!CanBegin(recipe)) return false;
             definition=recipe; source=OwnerRoot; sourceHealth=source.GetComponentInParent<Health>(); sourceLife=sourceHealth!=null ? sourceHealth.Identity.Id : 0;
-            var stats=source.GetComponent<StatusController>(); multiplier=stats!=null ? stats.GetStatMultiplier(recipe.Attack.DamageModifierStat) : 1;
+            var stats=source.GetComponent<Health>(); multiplier=stats!=null ? stats.GetStatMultiplier(recipe.Attack.DamageModifierStat) : 1;
             origin=parent.CastId!=0 ? parent : DamageOrigin.Capture(source.gameObject,recipe.Attack);
             payload=recipe.RerollEachPulse ? default : recipe.Attack.RollRandom(source.gameObject,Muzzle.position,Muzzle.forward,multiplier,origin);
             if(!recipe.RerollEachPulse && !payload.IsValid) return false;

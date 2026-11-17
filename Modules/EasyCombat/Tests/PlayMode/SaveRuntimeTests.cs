@@ -11,7 +11,7 @@ namespace EasyCombat.Tests
         [UnityTest] public IEnumerator RestoredStatusReregistersAndTicksOnlyItsRemainingSchedule()
         {
             var source=new GameObject("SaveSource"); var target=new GameObject("SaveTarget");
-            var a=source.AddComponent<Health>(); var b=target.AddComponent<Health>(); var controller=target.AddComponent<StatusController>();
+            var a=source.AddComponent<Health>(); var b=target.AddComponent<Health>(); var controller=(target.GetComponent<Health>() ?? target.AddComponent<Health>()).Statuses;
             var effect=ScriptableObject.CreateInstance<PeriodicDamageEffect>(); effect.DamagePerStack=1;
             var status=ScriptableObject.CreateInstance<StatusDefinition>(); status.Duration=.1f; status.TickInterval=.05f; status.TickEffects=new StatusTickEffect[] { effect };
             var catalog=ScriptableObject.CreateInstance<CombatDefinitionCatalog>(); catalog.Configure(new[] { new CombatCatalogEntry("status",status),new CombatCatalogEntry("effect",effect) });

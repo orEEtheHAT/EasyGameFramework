@@ -1,6 +1,6 @@
 # Звук, VFX и числа урона
 
-`CombatPresentationRelay` подписывается на **локальные** события Health, StatusController, DamageEmitter, CombatAbilities, CombatMelee, CombatBeam и DamageArea на своём объекте. Один `CombatPresentationHub` на сцену принимает события, буферизует их и выдаёт `Emitted` в LateUpdate. Ссылку на Hub назначь в инспекторе, через `Configure(hub)` после добавления компонентов или расположи Hub на родительском объекте. Глобальный поиск для каждого попадания не используется. Для DamageEmitter2D есть отдельный `CombatPresentationRelay2D`; события Health в 2D обслуживает обычный relay.
+`CombatPresentationRelay` подписывается на **локальные** события Health (включая StatusLifecycle), DamageEmitter, CombatAbilities, CombatMelee, CombatBeam и DamageArea на своём объекте. Один `CombatPresentationHub` на сцену принимает события, буферизует их и выдаёт `Emitted` в LateUpdate. Ссылку на Hub назначь в инспекторе, через `Configure(hub)` после добавления компонентов или расположи Hub на родительском объекте. Глобальный поиск для каждого попадания не используется. Для DamageEmitter2D есть отдельный `CombatPresentationRelay2D`; события Health в 2D обслуживает обычный relay.
 
 Событие содержит тип, идентичности источника и жизни цели, мировые координаты, направление, число объединённых событий, Amount, крит и исходный SO. Damage — реально потерянные HP, Shield — поглощённый урон, Healing — восстановленные HP + щит. Impact — контакт доставки, Shot — выстрел, AreaStarted/Ended — жизненный цикл лужи. StatusApplied включает добавление/обновление/замену стака; StatusRemoved — снятие. StatusTick отключён у relay по умолчанию: урон тика уже создаёт Damage. События способности включают начало, выполнение и отмену/ошибку. За точными причинами обращайся к исходным событиям, за историей урона — к CombatJournal.
 
@@ -9,7 +9,7 @@
 3. Подпиши вывод чисел на `hub.Emitted`. Используй `Position`, `Amount`, `Critical`, `Count`. Пули/числа/VFX следует брать из своих пулов.
 4. Для EasyFeedbacks импортируй одноимённый sample и добавь `PresentationFeedbacks` рядом с Hub. В Bindings выбери событие и FeedbackPreset, при необходимости SO-фильтр и CriticalOnly. `MinimumInterval` ограничивает проигрывание **одного binding для всех целей**; например 0.03 с не даст одному звуку играть сотни раз за кадр. `ReferenceAmount` задаёт интенсивность amount/reference в пределах 0.1–3; 0 означает постоянную 1. После изменения Bindings кодом вызови Rebind().
 
-Старый `HealthFeedbacks` остаётся для простых сцен. Если используется новый bridge, убери дублирующие старые подписки на те же эффекты. Пакет не включает аудио, VFX или код EasyFeedbacks и не требует его в Runtime.
+Health напрямую вызывает назначенные Damage/Death/Healing presets через публичный EasyFeedbacks API. Отдельный HealthFeedbacks удалён. PresentationFeedbacks обрабатывает поток presentation events; назначение одного и того же отклика в Health и presentation bridge воспроизводит его дважды. EasyCombat.Runtime штатно зависит от EasyFeedbacks.Runtime.
 
 ## Правила и бюджеты
 

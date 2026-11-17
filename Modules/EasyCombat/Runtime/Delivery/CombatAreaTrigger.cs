@@ -71,7 +71,7 @@ namespace EasyCombat
         private static bool Prepare(AttackDefinition attack,GameObject source,DamageOrigin parent,out DamageInfo payload)
         {
             payload=default; if(attack==null) return true;
-            var statuses=source!=null ? source.GetComponent<StatusController>() : null; var multiplier=statuses!=null ? statuses.GetStatMultiplier(attack.DamageModifierStat) : 1;
+            var statuses=source!=null ? source.GetComponent<Health>() : null; var multiplier=statuses!=null ? statuses.GetStatMultiplier(attack.DamageModifierStat) : 1;
             if(!CombatMath.Positive(multiplier)) return false;
             var origin=new DamageOrigin(parent.Actor,attack,parent.CastId,hasTeam:parent.HasTeam,team:parent.Team,action:parent.Action.Child(CombatOriginKind.Area));
             payload=attack.RollRandom(source,default,Vector3.forward,multiplier,origin); return payload.IsValid;

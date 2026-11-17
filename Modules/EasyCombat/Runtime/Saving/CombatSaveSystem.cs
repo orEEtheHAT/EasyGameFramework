@@ -29,7 +29,7 @@ namespace EasyCombat
                     {
                         Id=pair.Key,Health=actor.SaveCombatState(codec),
                         Resources=actor.GetComponent<CombatResources>()?.SaveCombatState(codec),Stats=actor.GetComponent<CombatStats>()?.SaveCombatState(codec),
-                        Statuses=actor.GetComponent<StatusController>()?.SaveCombatState(codec),Abilities=actor.GetComponent<CombatAbilities>()?.SaveCombatState(codec),
+                        Statuses=actor.SaveStatuses(codec),Abilities=actor.GetComponent<CombatAbilities>()?.SaveCombatState(codec),
                         Buildup=actor.GetComponent<CombatBuildup>()?.SaveCombatState(codec),Control=actor.GetComponent<CombatControl>()?.SaveCombatState(codec),
                         Reactions=actor.GetComponent<CombatReactions>()?.SaveCombatState(codec),Attribution=actor.GetComponent<CombatAttribution>()?.SaveCombatState(codec),
                         BodyPart=actor.GetComponent<CombatBodyPart>()?.SaveCombatState(codec),DamageModifiers=LinkedStateSaving.Save(actor.GetComponent<CombatDamageModifiers>(),codec),
@@ -73,6 +73,7 @@ namespace EasyCombat
 
         /// <summary>
         /// Validates every actor before committing. Restore never executes attacks, costs or rewards.
+        /// Native status configuration is revalidated after transient cancellation and before actor state commits.
         /// User ICombatTransient callbacks and commit-time Unity failures can still interrupt a commit;
         /// false is not a promise of rollback after that boundary. The caller owns cross-module recovery.
         /// </summary>
@@ -91,6 +92,9 @@ namespace EasyCombat
                 {
                     foreach(var component in UnityEngine.Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include,FindObjectsSortMode.None))
                         if(component!=null && component is ICombatTransient transient) transient.CancelForRestore();
+                    // Cancellation callbacks may change native feature configuration. Validate all actors
+                    // against that final configuration before committing any saved actor/module state.
+                    foreach(var validate in plan.CommitValidations) validate();
                     foreach(var commit in healthCommits) commit();
                     foreach(var commit in moduleCommits) commit();
                     foreach(var actor in actors) actor.GetComponent<CombatBodyPart>()?.RefreshAfterRestore();
@@ -100,7 +104,7 @@ namespace EasyCombat
                 foreach(var actor in actors)
                 {
                     if(actor==null) continue; actor.NotifyStateRestored(); if(actor==null) continue;
-                    actor.GetComponent<StatusController>()?.NotifyStateRestored(); if(actor!=null) actor.GetComponent<CombatControl>()?.NotifyStateRestored();
+                    actor.NotifyStatusesRestored(); if(actor!=null) actor.GetComponent<CombatControl>()?.NotifyStateRestored();
                 }
                 restored.Publish(result); return true;
             }
@@ -111,14 +115,14 @@ namespace EasyCombat
         {
             internal SaveCodec Codec;
             internal List<Health> Actors;
-            internal List<Action> HealthCommits,ModuleCommits;
+            internal List<Action> HealthCommits,ModuleCommits,CommitValidations;
         }
         private static RestorePlan Prepare(CombatWorldSnapshot snapshot,CombatDefinitionCatalog catalog,CombatReferenceRegistry references,bool validating)
         {
             SaveCodec.Need(snapshot!=null && snapshot.Version==1,"Unsupported world snapshot version."); var codec=new SaveCodec(catalog,references,true,validating);
             SaveCodec.Need(snapshot.CatalogCompatibility==catalog.CompatibilityKey,"Catalog compatibility key mismatch; migrate the save first.");
             SaveCodec.Length(snapshot.Actors,MaximumActors,"Actors"); SaveCodec.Need(snapshot.Actors.Length==references.ActorCount,"Registered actor set differs from saved world.");
-            var ids=new HashSet<string>(StringComparer.Ordinal); var healthCommits=new List<Action>(); var moduleCommits=new List<Action>(); var actors=new List<Health>();
+            var ids=new HashSet<string>(StringComparer.Ordinal); var healthCommits=new List<Action>(); var moduleCommits=new List<Action>(); var commitValidations=new List<Action>(); var actors=new List<Health>();
             foreach(var saved in snapshot.Actors)
             {
                 SaveCodec.Need(saved!=null && !string.IsNullOrWhiteSpace(saved.Id) && ids.Add(saved.Id) && (saved.Modules & ~SavedCombatModules.All)==0,"Missing/duplicate actor ID or unknown module flags.");
@@ -126,7 +130,8 @@ namespace EasyCombat
                 healthCommits.Add(actor.PrepareCombatRestore(saved.Health,codec)); var alive=saved.Health.Health.Current>0 || saved.Health.Health.LifeState==CombatLifeState.Downed;
                 Add(actor.GetComponent<CombatResources>(),Present(saved,SavedCombatModules.Resources,saved.Resources),(component,state)=>component.PrepareCombatRestore(state,codec),moduleCommits);
                 Add(actor.GetComponent<CombatStats>(),Present(saved,SavedCombatModules.Stats,saved.Stats),(component,state)=>component.PrepareCombatRestore(state,codec,saved.Id),moduleCommits);
-                Add(actor.GetComponent<StatusController>(),Present(saved,SavedCombatModules.Statuses,saved.Statuses),(component,state)=>component.PrepareCombatRestore(state,codec,alive),moduleCommits);
+                moduleCommits.Add(actor.PrepareStatusesRestore(Present(saved,SavedCombatModules.Statuses,saved.Statuses),codec,alive,out var validateStatuses));
+                commitValidations.Add(validateStatuses);
                 Add(actor.GetComponent<CombatAbilities>(),Present(saved,SavedCombatModules.Abilities,saved.Abilities),(component,state)=>component.PrepareCombatRestore(state,codec,saved.Health.Health.Current>0),moduleCommits);
                 Add(actor.GetComponent<CombatBuildup>(),Present(saved,SavedCombatModules.Buildup,saved.Buildup),(component,state)=>component.PrepareCombatRestore(state,codec),moduleCommits);
                 Add(actor.GetComponent<CombatControl>(),Present(saved,SavedCombatModules.Control,saved.Control),(component,state)=>component.PrepareCombatRestore(state,codec,saved.Id),moduleCommits);
@@ -137,7 +142,7 @@ namespace EasyCombat
                 Add(actor.GetComponent<DamageRedirector>(),Present(saved,SavedCombatModules.Redirector,saved.Redirector),(component,state)=>LinkedStateSaving.Prepare(component,state,codec),moduleCommits);
                 Add(actor.GetComponent<CombatTeam>(),Present(saved,SavedCombatModules.Team,saved.Team),(component,state)=>()=>component.Team=state.Value,moduleCommits);
             }
-            return new RestorePlan { Codec=codec,Actors=actors,HealthCommits=healthCommits,ModuleCommits=moduleCommits };
+            return new RestorePlan { Codec=codec,Actors=actors,HealthCommits=healthCommits,ModuleCommits=moduleCommits,CommitValidations=commitValidations };
         }
         private static void Add<T,S>(T component,S saved,Func<T,S,Action> prepare,List<Action> commits) where T:Component where S:class
         {

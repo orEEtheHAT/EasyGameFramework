@@ -2,7 +2,9 @@
   "name": "EasyCombat.Editor",
   "rootNamespace": "EasyCombat.Editor",
   "references": [
-    "EasyCombat.Runtime"
+    "EasyCombat.Runtime",
+    "EasyResources.Runtime",
+    "EasyFeedbacks.Runtime"
   ],
   "includePlatforms": [
     "Editor"

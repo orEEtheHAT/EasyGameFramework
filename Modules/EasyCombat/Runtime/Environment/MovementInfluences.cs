@@ -10,7 +10,6 @@ namespace EasyCombat
         [Tooltip("Optional timed Slow status key, multiplied once with the strongest spatial slow.")]
         public CombatStatDefinition MovementSpeedStat;
         private readonly Dictionary<Component,float> sources=new Dictionary<Component,float>(4);
-        private StatusController statuses;
         private Health health;
         private long life;
         private float zone=1;
@@ -21,10 +20,10 @@ namespace EasyCombat
             {
                 if(!isActiveAndEnabled) return 1;
                 CheckLife();
-                return zone*(MovementSpeedStat && statuses && statuses.isActiveAndEnabled ? statuses.GetStatMultiplier(MovementSpeedStat) : 1);
+                return zone*(MovementSpeedStat && health ? health.GetStatMultiplier(MovementSpeedStat) : 1);
             }
         }
-        private void OnEnable() { statuses=GetComponent<StatusController>(); health=GetComponent<Health>(); CheckLife(); }
+        private void OnEnable() { health=GetComponent<Health>(); CheckLife(); }
         private void CheckLife() { if(health && life!=health.Identity.Id) { life=health.Identity.Id; CancelForRestore(); } }
         public void Set(Component source,MovementInfluenceDefinition profile)
         {

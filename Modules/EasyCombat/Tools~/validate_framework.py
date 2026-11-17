@@ -42,7 +42,7 @@ def visit(name):
         if ref in assemblies: visit(ref)
     visiting.remove(name); done.add(name)
 for name in assemblies: visit(name)
-check(assemblies['EasyCombat.Runtime'][1]['references']==['Unity.Burst'],'Unexpected combat core dependency')
+check(assemblies['EasyCombat.Runtime'][1]['references']==['Unity.Burst', 'EasyResources.Runtime', 'EasyFeedbacks.Runtime'],'Unexpected combat core dependency')
 library=(MODULE/'Editor/CombatAssetLibrary.cs').read_text(encoding='utf-8-sig')
 sizes={}
 for field in ('Types','Titles','Folders','Codes','Colors'):

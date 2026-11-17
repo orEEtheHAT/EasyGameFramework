@@ -105,7 +105,7 @@ namespace EasyCombat.Tests
         }
         [Test] public void ReusableStatusEffectTargetsSelfWithoutTriggerDamage()
         {
-            var statuses=owner.gameObject.AddComponent<StatusController>(); var status=Asset<StatusDefinition>(); var effect=Asset<ReactionStatusAction>(); effect.Status=status;
+            var statuses=owner.Statuses; var status=Asset<StatusDefinition>(); var effect=Asset<ReactionStatusAction>(); effect.Status=status;
             var step=Asset<AbilityEffectAction>(); step.Effect=effect; step.AffectCaster=true; ability.Actions=new CombatAbilityAction[] { step }; ability.TargetMode=AbilityTargetMode.Self;
             Assert.That(abilities.TryActivate(ability,default),Is.True); Assert.That(statuses.GetStacks(status),Is.EqualTo(1));
         }

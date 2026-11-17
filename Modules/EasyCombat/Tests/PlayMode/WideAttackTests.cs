@@ -135,7 +135,7 @@ namespace EasyCombat.Tests
         {
             var near = Target(4); var far = Target(8);
             var status = Asset<StatusDefinition>();
-            var statuses = near.gameObject.AddComponent<StatusController>();
+            var statuses = near.Statuses;
             attack.OnHitStatuses = new[] { new StatusApplication(status) };
             var front = Box("Front weakpoint", origin + Vector3.forward * 3, Vector3.one * .5f);
             front.transform.SetParent(near.transform, true);

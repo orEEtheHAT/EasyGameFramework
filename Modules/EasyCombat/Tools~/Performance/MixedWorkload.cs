@@ -65,7 +65,7 @@ try
                 positions[i]=center+new Vector3(i%lanes*4,0,3+i/lanes*2); target.transform.position=positions[i];
                 target.AddComponent<BoxCollider>().size=new Vector3(.8f,1,.8f);
                 targets[i]=target.AddComponent<Health>(); targets[i].SetMaximum(1000000,true);
-                statuses[i]=target.AddComponent<StatusController>();
+                statuses[i]=(target.GetComponent<Health>() ?? target.AddComponent<Health>()).Statuses;
                 targets[i].Damaged += result => { damageEvents++; if(result.Damage.IsPeriodic) periodicEvents++; if(result.Damage.Origin.Attack==splash) splashEvents++; if(result.Damage.Origin.Attack==fieldAttack) fieldEvents++; };
             }
             var fields=new DamageArea[lanes];

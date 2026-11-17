@@ -27,7 +27,7 @@ namespace EasyCombat.Tests
         private Health Target(float z = 4, float x = 0)
         {
             var go = Box("Target", origin + new Vector3(x, 0, z), Vector3.one);
-            var hp = go.AddComponent<Health>(); go.AddComponent<StatusController>(); return hp;
+            var hp = go.AddComponent<Health>(); (go.GetComponent<Health>() ?? go.AddComponent<Health>()).StatusesEnabled = true; return hp;
         }
         [SetUp] public void Setup()
         {

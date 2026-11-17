@@ -2,7 +2,11 @@
 
 **Package:** EasyGameFramework. This production integration is shipped and compiled by default.
 
-This adapter lets abilities, beam pulses and paid block layers use the player's existing EasyResources wallet. EasyCombat itself does not depend on EasyResources. Without a provider, the existing `CombatResources` backend behaves as before.
+This adapter lets abilities, beam pulses and paid block layers use the player's existing EasyResources wallet. EasyCombat.Runtime depends on EasyResources.Runtime for native Health death rewards. Paid combat actions use the adapter only when a provider is configured; without one, the existing `CombatResources` backend behaves as before.
+
+## Death rewards
+
+Enable Death Reward directly in the enemy's Health and assign a Resource Reward profile plus the player's ResourceContainer. No extra component is needed. Inclusive ranges are rolled once for a confirmed death; all resources grant atomically before Died observers. See [setup, API and save/pooling lifecycle](../../../Modules/EasyCombat/Documentation~/DeathRewards.ru.md).
 
 ## First setup
 

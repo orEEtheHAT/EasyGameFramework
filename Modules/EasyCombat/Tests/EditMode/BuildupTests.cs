@@ -16,7 +16,7 @@ namespace EasyCombat.Tests
         private T Asset<T>() where T:ScriptableObject { var a=ScriptableObject.CreateInstance<T>(); cleanup.Add(a); return a; }
         [SetUp] public void Setup()
         {
-            var go=new GameObject("Target"); cleanup.Add(go); owner=go.AddComponent<Health>(); statuses=go.AddComponent<StatusController>(); buildup=go.AddComponent<CombatBuildup>();
+            var go=new GameObject("Target"); cleanup.Add(go); owner=go.AddComponent<Health>(); statuses=(go.GetComponent<Health>() ?? go.AddComponent<Health>()).Statuses; buildup=go.AddComponent<CombatBuildup>();
             status=Asset<StatusDefinition>(); var action=Asset<ReactionStatusAction>(); action.Status=status;
             meter=Asset<BuildupDefinition>(); meter.Threshold=20; meter.Actions=new CombatReactionAction[] { action }; Assert.That(buildup.Configure(new[] { meter }),Is.True);
         }

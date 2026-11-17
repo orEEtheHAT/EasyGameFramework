@@ -30,7 +30,7 @@ namespace EasyCombat.Tests
         private DamageInfo Shot(float outgoing = 1) => attack.RollDamage(source, default, Vector3.forward, 0, 0, outgoing);
         private void Status(out StatusController controller, out StatusDefinition status, out PeriodicDamageEffect effect)
         {
-            controller = target.gameObject.AddComponent<StatusController>();
+            controller = target.Statuses;
             effect = Asset<PeriodicDamageEffect>(); effect.Formula = formula;
             status = Asset<StatusDefinition>(); status.Duration = 4; status.TickInterval = 1;
             status.TickEffects = new StatusTickEffect[] { effect };
@@ -101,7 +101,7 @@ namespace EasyCombat.Tests
         [Test] public void ZeroPercentResultStillSupportsContactStatusPolicy()
         {
             formula.Terms = new[] { new DamageFormulaTerm(fire, StatusDamageBasis.TargetMissingHealth, .1f) };
-            var status = Asset<StatusDefinition>(); var controller = target.gameObject.AddComponent<StatusController>();
+            var status = Asset<StatusDefinition>(); var controller = target.Statuses;
             attack.OnHitStatuses = new[] { new StatusApplication(status) };
             Assert.That(target.ApplyDamage(Shot()).StatusesApplied, Is.Zero);
             attack.StatusPolicy = StatusApplyPolicy.OnContact;

@@ -24,8 +24,8 @@ namespace EasyCombat.IntegrationTests
         {
             var actor=Actor(); actor.transform.position=new Vector3(4,5,6);
             var health=actor.AddComponent<Health>(); var provider=actor.AddComponent<RecordingFeedbackContext>();
-            var feedback=actor.AddComponent<HealthFeedbacks>(); feedback.ContextProvider=provider;
-            feedback.Damage=feedback.Death=feedback.Healing=Asset<FeedbackPreset>();
+            health.FeedbackContextProvider=provider;
+            health.DamageFeedback=health.DeathFeedback=health.HealingFeedback=Asset<FeedbackPreset>();
             var impact=new Vector3(1,2,3);
             health.ApplyDamage(new DamageInfo(10,point:impact)); health.Heal(5); health.ApplyDamage(new DamageInfo(500,point:impact));
             Assert.That(provider.Received.Count,Is.EqualTo(3));

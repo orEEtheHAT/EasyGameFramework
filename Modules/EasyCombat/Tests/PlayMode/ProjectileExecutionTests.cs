@@ -157,8 +157,8 @@ namespace EasyCombat.Tests
             var other = ObjectAt(victim.transform.position + Vector3.right * 2);
             other.layer = 10; other.AddComponent<BoxCollider>(); other.AddComponent<SphereCollider>();
             var otherHealth = other.AddComponent<Health>();
-            var statuses = victim.gameObject.AddComponent<StatusController>();
-            var otherStatuses = other.AddComponent<StatusController>();
+            var statuses = victim.Statuses;
+            var otherStatuses = (other.GetComponent<Health>() ?? other.AddComponent<Health>()).Statuses;
             Physics.SyncTransforms();
             for (int i = 0; i < 2; i++)
             {

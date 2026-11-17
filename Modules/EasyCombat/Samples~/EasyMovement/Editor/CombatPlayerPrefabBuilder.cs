@@ -49,7 +49,7 @@ namespace EasyCombat.Integrations.Editor
                     throw new InvalidOperationException("Failed to preserve the player or its camera links.");
                 var actor=player.gameObject;
                 if(!actor.GetComponent<Health>()) actor.AddComponent<Health>();
-                if(!actor.GetComponent<StatusController>()) actor.AddComponent<StatusController>();
+                actor.GetComponent<Health>().StatusesEnabled=true;
                 var influences=actor.GetComponent<MovementInfluences>() ?? actor.AddComponent<MovementInfluences>();
                 influences.MovementSpeedStat=speedStat;
                 PrefabUtility.SaveAsPrefabAsset(local,path);

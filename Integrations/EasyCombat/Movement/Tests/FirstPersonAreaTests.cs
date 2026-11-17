@@ -48,7 +48,7 @@ namespace EasyCombat.Integrations.Tests
             try
             {
                 actor.transform.position = new Vector3(2500, 2500, 2500);
-                var statuses = actor.AddComponent<StatusController>();
+                var statuses = (actor.GetComponent<Health>() ?? actor.AddComponent<Health>()).Statuses;
                 var control = actor.AddComponent<CombatControl>();
                 var player = actor.AddComponent<CombatFirstPersonController>();
                 actor.GetComponent<MovementInfluences>().MovementSpeedStat = speed;

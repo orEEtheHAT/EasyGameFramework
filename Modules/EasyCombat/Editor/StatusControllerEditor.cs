@@ -3,21 +3,19 @@ using UnityEngine;
 
 namespace EasyCombat.Editor
 {
-    [CustomEditor(typeof(StatusController))]
     [UnityEngine.Scripting.APIUpdating.MovedFrom(true, "GamesFactory.Combat.Editor", "GamesFactory.Combat.Editor")]
-    public sealed class StatusControllerEditor : UnityEditor.Editor
+    internal static class HealthStatusesInspector
     {
-        private StatusDefinition selectedStatus;
-        public override void OnInspectorGUI()
+        public static void Draw(Health health, ref StatusDefinition selectedStatus)
         {
-            DrawDefaultInspector();
             if (!Application.isPlaying) return;
-            var controller = (StatusController)target;
             selectedStatus = (StatusDefinition)EditorGUILayout.ObjectField("Статус для проверки", selectedStatus, typeof(StatusDefinition), false);
             using (new EditorGUI.DisabledScope(selectedStatus == null))
-                if (GUILayout.Button("Наложить статус")) controller.Apply(selectedStatus);
+                if (GUILayout.Button("Наложить статус")) health.ApplyStatus(selectedStatus);
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Активные статусы", controller.Count.ToString());
+            EditorGUILayout.LabelField("Активные статусы", health.StatusCount.ToString());
+            if (health.StatusCount == 0) return;
+            var controller = health.Statuses;
             for (var i = 0; i < controller.Count; i++)
             {
                 var status = controller.GetStatus(i);
@@ -47,7 +45,6 @@ namespace EasyCombat.Editor
                 if (status.PendingStacks > 0) EditorGUILayout.LabelField($"Завершение догоняющих тиков: {status.PendingStacks}", EditorStyles.miniLabel);
             }
             if (GUILayout.Button("Снять все")) controller.Clear();
-            Repaint();
         }
     }
 }

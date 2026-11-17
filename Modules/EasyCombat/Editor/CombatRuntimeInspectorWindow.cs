@@ -38,7 +38,7 @@ namespace EasyCombat.Editor
             var resources=target.GetComponent<CombatResources>();
             if(resources!=null) for(var i=0;i<resources.Count;i++) { var resource=resources.GetResource(i); EditorGUILayout.LabelField($"{(resource.Definition!=null ? resource.Definition.name : "Утраченный ресурс")}: {resource.Current:0.##}/{resource.Maximum:0.##} · задержка {resource.RechargeDelay:0.##}"); }
             if(target.Defense!=null) for(var i=0;i<target.Defense.Count;i++) { var state=target.Defense.GetState(i); var layer=target.Defense.GetLayer(i); EditorGUILayout.LabelField($"Слой {i}: {(layer!=null ? layer.name : "утрачен")} · {state.Current:0.##}/{state.Maximum:0.##} · таймер {state.RechargeDelay:0.##} · {state.Enabled}"); }
-            var statuses=target.GetComponent<StatusController>();
+            var statuses=target.Statuses;
             if(statuses!=null)
             {
                 EditorGUILayout.Space(); EditorGUILayout.LabelField($"Статусы: {statuses.Count} · Догоняющих записей: {statuses.OverdueTickRecords} · Ограничения: {statuses.Restrictions}",EditorStyles.boldLabel);

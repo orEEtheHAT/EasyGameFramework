@@ -37,6 +37,7 @@ namespace EasyCombat
             {
                 definition=profile; resistances=resistance; hitRules=rules; defenseProfile=protection; defense=nextDefense;
                 initialized=true; maximumHealth=hp.Maximum; currentHealth=hp.Current; lifeState=life; identity=nextIdentity;
+                RestoreRewardBoundary();
                 manualInvulnerability=saved.ManualInvulnerability; hitInvulnerability=saved.HitInvulnerability; invulnerable=saved.Invulnerable; ReconcileDefenseScheduler();
             };
         }

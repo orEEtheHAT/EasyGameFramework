@@ -134,7 +134,7 @@ namespace EasyCombat.Tests
         }
         [UnityTest] public IEnumerator StatusOnlyProjectileCanApplyWithoutDamage()
         {
-            var target = Target(Vector3.forward * 2); var statuses = target.gameObject.AddComponent<StatusController>();
+            var target = Target(Vector3.forward * 2); var statuses = target.Statuses;
             var slow = Asset<StatusDefinition>(); attack.StatusOnly = true; attack.OnHitStatuses = new[] { new StatusApplication(slow) };
             attack.Delivery = DamageDelivery.Projectile; attack.Area = null; attack.ProjectileSpeed = 10;
             var go = new GameObject("Status projectile"); cleanup.Add(go); var projectile = go.AddComponent<DamageProjectile>();
@@ -166,7 +166,7 @@ namespace EasyCombat.Tests
             attack.Damage = 10;
             var key = Asset<CombatStatDefinition>(); attack.DamageModifierStat = key;
             var buff = Asset<StatusDefinition>(); buff.StatModifiers = new[] { new StatusStatModifier(key, 2) };
-            var statuses = source.AddComponent<StatusController>(); statuses.Apply(buff);
+            var statuses = (source.GetComponent<Health>() ?? source.AddComponent<Health>()).Statuses; statuses.Apply(buff);
             var target = Target(Vector3.forward * 2);
             var recipe = Asset<AreaPulseDefinition>(); recipe.Attack = attack; recipe.Duration = 1; recipe.Interval = 1; recipe.ApplyImmediately = false;
             var go = new GameObject("Buffed field"); cleanup.Add(go); go.transform.position = center;

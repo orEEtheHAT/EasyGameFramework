@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -21,7 +20,7 @@ namespace EasyCombat.Tests
         { var actor = new GameObject(name); cleanup.Add(actor); return actor; }
         [SetUp] public void Setup()
         {
-            health = Actor("Target").AddComponent<Health>(); controller = health.gameObject.AddComponent<StatusController>();
+            health = Actor("Target").AddComponent<Health>(); controller = health.Statuses;
             fire = Asset<DamageTypeDefinition>(); fire.DisplayName = "Fire";
             var effect = Asset<PeriodicDamageEffect>(); effect.DamageType = fire; effect.DamagePerStack = 2;
             status = Asset<StatusDefinition>(); status.DisplayName = "Independent burn"; status.Duration = 4; status.TickInterval = 1;
@@ -36,9 +35,7 @@ namespace EasyCombat.Tests
         }
         private void RecordBudget(int limit)
         {
-            var serialized = new SerializedObject(controller);
-            serialized.FindProperty("maximumIndependentStackRecords").intValue = limit;
-            serialized.ApplyModifiedPropertiesWithoutUndo();
+            health.StatusRecordCapacity = limit;
         }
         [TestCase(StatusStacking.Independent)]
         [TestCase(StatusStacking.IgnoreWhileActive)]
@@ -187,7 +184,7 @@ namespace EasyCombat.Tests
         }
         [Test] public void DefinitionLimitCountsKindsNotIndividualStacks()
         {
-            var serialized = new SerializedObject(controller); serialized.FindProperty("maximumActiveStatuses").intValue = 1; serialized.ApplyModifiedPropertiesWithoutUndo();
+            health.StatusCapacity = 1;
             controller.Apply(status); controller.Apply(status); controller.Apply(status);
             Assert.That(controller.Count, Is.EqualTo(1)); Assert.That(controller.GetStacks(status), Is.EqualTo(3));
             Assert.That(controller.Apply(Asset<StatusDefinition>()), Is.False);

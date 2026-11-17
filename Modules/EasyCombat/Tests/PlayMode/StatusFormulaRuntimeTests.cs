@@ -27,7 +27,7 @@ namespace EasyCombat.Tests
             var source = Actor("Source"); source.transform.position = origin; source.AddComponent<Health>();
             var target = Actor("Target"); target.transform.position = origin + Vector3.forward * 5;
             target.AddComponent<BoxCollider>(); var health = target.AddComponent<Health>(); health.SetMaximum(1000);
-            var statuses = target.AddComponent<StatusController>(); var status = Formula();
+            var statuses = (target.GetComponent<Health>() ?? target.AddComponent<Health>()).Statuses; var status = Formula();
             var attack = Asset<AttackDefinition>(); attack.Delivery = delivery; attack.Damage = 10;
             attack.CriticalChance = 1; attack.RoundsPerMinute = 0; attack.ProjectileSpeed = 20;
             attack.OnHitStatuses = new[] { new StatusApplication(status) };
@@ -50,7 +50,7 @@ namespace EasyCombat.Tests
         {
             var source = Actor("Caster"); source.AddComponent<Health>();
             var target = Actor("Scheduled target"); var health = target.AddComponent<Health>(); health.SetMaximum(1000);
-            var controller = target.AddComponent<StatusController>(); var status = Formula();
+            var controller = (target.GetComponent<Health>() ?? target.AddComponent<Health>()).Statuses; var status = Formula();
             status.Duration = .3f; status.TickInterval = .1f;
             var applications = new[] { new StatusApplication(status) };
             health.ApplyDamage(new DamageInfo(10, source, onHitStatuses: applications));

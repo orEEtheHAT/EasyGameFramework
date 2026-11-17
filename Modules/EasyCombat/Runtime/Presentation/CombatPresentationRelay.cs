@@ -13,7 +13,6 @@ namespace EasyCombat
         [SerializeField] private CombatMelee melee;
         [SerializeField] private CombatBeam beam;
         [SerializeField] private bool statusTickEvents;
-        private StatusController statuses;
         private CombatActorIdentity cachedIdentity;
         public CombatPresentationHub Hub { get=>hub; set=>hub=value; }
         public bool StatusTickEvents { get=>statusTickEvents; set=>statusTickEvents=value; }
@@ -25,13 +24,13 @@ namespace EasyCombat
             if(health==null) health=GetComponent<Health>(); if(emitter==null) emitter=GetComponent<DamageEmitter>();
             if(abilities==null) abilities=GetComponent<CombatAbilities>(); if(area==null) area=GetComponent<DamageArea>();
             if(melee==null) melee=GetComponent<CombatMelee>(); if(beam==null) beam=GetComponent<CombatBeam>();
-            statuses=health!=null ? health.GetComponent<StatusController>() : null; cachedIdentity=CombatActorIdentity.Capture(gameObject);
+            cachedIdentity=CombatActorIdentity.Capture(gameObject);
         }
         private void Bind()
         {
             if(!isActiveAndEnabled) return; Unbind();
             if(health!=null) { health.Resolved+=Resolved; health.Healed+=Healed; }
-            if(statuses!=null) statuses.Lifecycle+=StatusChanged;
+            if(health!=null) health.StatusLifecycle+=StatusChanged;
             if(emitter!=null) { emitter.Fired+=Shot; emitter.Impacted+=Impact; }
             if(abilities!=null) { abilities.Changed+=AbilityChanged; abilities.Impacted+=Impact; }
             if(area!=null) { area.Began+=AreaBegan; area.Ended+=AreaEnded; area.Impacted+=Impact; }
@@ -41,7 +40,7 @@ namespace EasyCombat
         private void Unbind()
         {
             if(health!=null) { health.Resolved-=Resolved; health.Healed-=Healed; }
-            if(statuses!=null) statuses.Lifecycle-=StatusChanged;
+            if(health!=null) health.StatusLifecycle-=StatusChanged;
             if(emitter!=null) { emitter.Fired-=Shot; emitter.Impacted-=Impact; }
             if(abilities!=null) { abilities.Changed-=AbilityChanged; abilities.Impacted-=Impact; }
             if(area!=null) { area.Began-=AreaBegan; area.Ended-=AreaEnded; area.Impacted-=Impact; }

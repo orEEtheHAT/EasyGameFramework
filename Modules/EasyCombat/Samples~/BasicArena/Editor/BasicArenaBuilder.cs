@@ -97,7 +97,7 @@ namespace EasyCombat.Samples.Editor
                     new Vector3(0,1,3+i*3), Vector3.one, i == 1 ? blue : teal);
                 actor.layer = 2; // Ignore Raycast is explicitly included in attack masks, excluded only by ground projection.
                 var health = actor.AddComponent<Health>(); health.ApplyDefinition(healthProfiles[i]);
-                actor.AddComponent<StatusController>(); arena.Targets[i] = health;
+                (actor.GetComponent<Health>() ?? actor.AddComponent<Health>()).StatusesEnabled = true; arena.Targets[i] = health;
             }
             var emitter = new GameObject("Emitter").AddComponent<DamageEmitter>(); emitter.transform.position = new Vector3(0,1,-2);
             emitter.Pool = arena.gameObject.AddComponent<ProjectilePool>(); emitter.Pool.Prefab = projectile;

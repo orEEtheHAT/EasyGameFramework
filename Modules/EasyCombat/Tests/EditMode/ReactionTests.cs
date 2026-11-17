@@ -107,7 +107,7 @@ namespace EasyCombat.Tests
         {
             var source=sourceHasHealth ? a.gameObject : new GameObject("Hazard"); if(!sourceHasHealth) cleanup.Add(source);
             var hp=Asset<HealthDefinition>(); hp.HitRules=Asset<HitRulesDefinition>(); hp.HitRules.AllowSelf=false; b.ApplyDefinition(hp);
-            var controller=b.gameObject.AddComponent<StatusController>(); var status=Asset<StatusDefinition>();
+            var controller=b.Statuses; var status=Asset<StatusDefinition>();
             var tick=Asset<PeriodicDamageEffect>(); tick.Terms=new[] { new StatusDamageTerm(StatusDamageBasis.TriggeringHit,.5f) };
             status.TickEffects=new StatusTickEffect[] { tick }; var action=Asset<ReactionStatusAction>(); action.Status=status;
             var rule=Rule(b,ReactionTrigger.DamageTaken,ReactionTarget.Owner,action); rule.UseTriggerSource=true;

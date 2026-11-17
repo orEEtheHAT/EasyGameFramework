@@ -72,7 +72,7 @@ namespace EasyCombat.Tests
 
         [Test] public void ResetDuringFirstOnHitStatusMustNotRelabelHitOrApplySecondStatusToNewLife()
         {
-            var go=Go("target"); var h=go.AddComponent<Health>(); var statuses=go.AddComponent<StatusController>();
+            var go=Go("target"); var h=go.AddComponent<Health>(); var statuses=(go.GetComponent<Health>() ?? go.AddComponent<Health>()).Statuses;
             var a=Asset<StatusDefinition>(); var b=Asset<StatusDefinition>(); long original=h.Identity.Id,logged=0;
             statuses.Lifecycle+=c=> { if(c.Kind==StatusChangeKind.Applied && c.Definition==a) h.ResetToFull(); };
             h.Resolved+=rec=>logged=rec.Target.Id;

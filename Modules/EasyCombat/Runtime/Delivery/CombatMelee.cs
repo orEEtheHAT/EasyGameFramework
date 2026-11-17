@@ -50,14 +50,14 @@ namespace EasyCombat
             if(this==null || !isActiveAndEnabled || IsRunning || advancing || definition==null || !definition.IsValid || anchors==null || anchors.Length>8
                 || !CombatControl.IsAllowed(OwnerRoot.gameObject,CombatRestriction.Attack)) return false;
             foreach(var anchor in anchors) if(anchor==null || !CombatMath.Finite(anchor.position)) return false;
-            var statuses=OwnerRoot.GetComponent<StatusController>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(definition.Attack.DamageModifierStat) : 1;
+            var statuses=OwnerRoot.GetComponent<Health>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(definition.Attack.DamageModifierStat) : 1;
             return CombatMath.Positive(multiplier) && definition.Attack.RollDamage(OwnerRoot.gameObject,transform.position,transform.forward,0,1,multiplier).IsValid;
         }
         public bool Begin(MeleeDefinition definition,DamageOrigin origin=default)
         {
             if(!CanBegin(definition) || anchors==null || anchors.Length>8) return false;
             source=OwnerRoot; sourceHealth=source.GetComponentInParent<Health>(); sourceLife=sourceHealth!=null ? sourceHealth.Identity.Id : 0;
-            var statuses=source.GetComponent<StatusController>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(definition.Attack.DamageModifierStat) : 1;
+            var statuses=source.GetComponent<Health>(); var multiplier=statuses!=null ? statuses.GetStatMultiplier(definition.Attack.DamageModifierStat) : 1;
             damage=definition.Attack.RollRandom(source.gameObject,transform.position,transform.forward,multiplier,origin);
             if(!damage.IsValid) return false;
             anchorCount=Mathf.Max(1,anchors.Length);

@@ -42,7 +42,7 @@ namespace EasyCombat.Tests
         [Test] public void PercentageUsesCoreHealthAndStatusTransfersOnce()
         {
             var part=Part(out _,100); core.SetMaximum(1000);
-            var controller=core.gameObject.AddComponent<StatusController>(); var local=part.gameObject.AddComponent<StatusController>(); var status=Asset<StatusDefinition>();
+            var controller=core.Statuses; var local=part.LocalHealth.Statuses; var status=Asset<StatusDefinition>();
             var attack=Asset<AttackDefinition>(); attack.Formula=Asset<DamageFormulaDefinition>();
             attack.Formula.Terms=new[] { new DamageFormulaTerm(null,StatusDamageBasis.TargetMaximumHealth,.05f) };
             attack.OnHitStatuses=new[] { new StatusApplication(status) };

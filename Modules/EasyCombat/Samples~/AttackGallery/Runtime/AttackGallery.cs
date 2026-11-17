@@ -28,7 +28,6 @@ namespace EasyCombat.Samples
         public UIDocument Controls;
         public StyleSheet Styles;
 
-        private StatusController[] statuses;
         private Vector3[] home;
         private float[] phases;
         private float swingTime, traceUntil, nextReadout;
@@ -42,11 +41,9 @@ namespace EasyCombat.Samples
         {
             home = new Vector3[Targets.Length];
             phases = new float[Targets.Length];
-            statuses = new StatusController[Targets.Length];
             for (int i = 0; i < Targets.Length; i++)
             {
                 home[i] = Targets[i].transform.position;
-                statuses[i] = Targets[i].GetComponent<StatusController>();
             }
             Melee.AutomaticAdvance = false;
             Melee.SetAnchors(SwordTip);
@@ -116,7 +113,7 @@ namespace EasyCombat.Samples
             for (int i = 0; i < Targets.Length; i++)
             {
                 if (!Targets[i].IsAlive) continue;
-                phases[i] += delta * statuses[i].GetStatMultiplier(SpeedStat);
+                phases[i] += delta * Targets[i].GetStatMultiplier(SpeedStat);
                 Targets[i].transform.position = home[i] + Vector3.right * (.20f * Mathf.Sin(phases[i] * 2));
             }
             if (Melee.IsRunning && delta > 0)
@@ -207,9 +204,9 @@ namespace EasyCombat.Samples
             {
                 text.Append(Targets[i].name).Append("   ").Append(Targets[i].Current.ToString("0.#"))
                     .Append(" / ").Append(Targets[i].Maximum.ToString("0")).Append(" HP");
-                for (int s = 0; s < statuses[i].Count; s++)
+                for (int s = 0; s < Targets[i].StatusCount; s++)
                 {
-                    var status = statuses[i].GetStatus(s);
+                    var status = Targets[i].Statuses.GetStatus(s);
                     text.Append("   ").Append(status.Definition.Label).Append(" ×").Append(status.Stacks);
                 }
                 text.AppendLine();

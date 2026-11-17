@@ -370,10 +370,10 @@ namespace EasyCombat.Editor
             GuideCard(flow, "01 / РЕЦЕПТ", "AttackDefinition", "До 8 частей урона, крит, темп, доставка, радиус, пробивание, AOE и статусы.");
             GuideCard(flow, "02 / ВЫСТРЕЛ", "DamageEmitter", "ЛКМ или AI вызывает TryFire. Луч или снаряд ищет попадание.");
             GuideCard(flow, "03 / ЦЕЛЬ", "Hurtbox → Health", "Зона × множитель, затем сопротивление. HP уменьшается.");
-            GuideCard(flow, "04 / ПОСЛЕДСТВИЯ", "StatusController", "Тики, стаки и усиления. События здоровья запускают Easy Feedbacks.");
+            GuideCard(flow, "04 / ПОСЛЕДСТВИЯ", "Health: статусы и отклик", "Тики, стаки и усиления. Назначенные Health пресеты запускают Easy Feedbacks.");
             var recipe = Box(scroll, "guide-card recipe");
             Text(recipe, "Пример: огненное оружие", "card-title");
-            Text(recipe, "1. В «Типах урона» создай Fire.\n2. Создай «Периодический урон»: тип Fire, урон за стак 3.\n3. Создай Burning: 4 секунды, тик 0.5 с, действие из шага 2.\n4. В оружии выбери Fire и добавь Burning в статусы попадания.\n5. На цели нужны Health + StatusController и Collider / Hurtbox.\n6. В Health Profile задай HP и Resistance Profile. Назначь его компоненту Health.", "guide-text");
+            Text(recipe, "1. В «Типах урона» создай Fire.\n2. Создай «Периодический урон»: тип Fire, урон за стак 3.\n3. Создай Burning: 4 секунды, тик 0.5 с, действие из шага 2.\n4. В оружии выбери Fire и добавь Burning в статусы попадания.\n5. На цели нужны Health с включёнными статусами и Collider / Hurtbox.\n6. В Health Profile задай HP и Resistance Profile. Назначь его компоненту Health.", "guide-text");
             var links = Box(recipe, "row chips");
             foreach (var record in library)
                 if (record.Asset.name == "FireLauncher" || record.Asset.name == "Burning" || record.Asset.name == "FireResistances")

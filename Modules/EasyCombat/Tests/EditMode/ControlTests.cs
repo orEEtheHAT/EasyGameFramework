@@ -26,7 +26,7 @@ namespace EasyCombat.Tests
             var attack=ScriptableObject.CreateInstance<AttackDefinition>(); attack.Cooldown=0;
             try
             {
-                actor.AddComponent<Health>(); var statuses=actor.AddComponent<StatusController>(); var emitter=actor.AddComponent<DamageEmitter>(); emitter.Attack=attack;
+                actor.AddComponent<Health>(); var statuses=(actor.GetComponent<Health>() ?? actor.AddComponent<Health>()).Statuses; var emitter=actor.AddComponent<DamageEmitter>(); emitter.Attack=attack;
                 disarm.Restrictions=CombatRestriction.Attack; disarm.Duration=1;
                 root.Restrictions=CombatRestriction.Move; root.Duration=2;
                 statuses.Apply(disarm); statuses.Apply(root);
@@ -42,7 +42,7 @@ namespace EasyCombat.Tests
             var actor=new GameObject("Control"); var silence=ScriptableObject.CreateInstance<StatusDefinition>();
             try
             {
-                var statuses=actor.AddComponent<StatusController>(); var control=actor.AddComponent<CombatControl>(); silence.Restrictions=CombatRestriction.Cast;
+                var statuses=(actor.GetComponent<Health>() ?? actor.AddComponent<Health>()).Statuses; var control=actor.AddComponent<CombatControl>(); silence.Restrictions=CombatRestriction.Cast;
                 statuses.Apply(silence); control.TryRestrict(CombatRestriction.Move,out var handle); control.ResetRestrictions();
                 Assert.That(handle.Remove(),Is.False); Assert.That(control.Allows(CombatRestriction.Move),Is.True); Assert.That(control.Allows(CombatRestriction.Cast),Is.False);
             }

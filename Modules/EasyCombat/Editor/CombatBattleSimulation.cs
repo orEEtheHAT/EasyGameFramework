@@ -44,7 +44,7 @@ namespace EasyCombat.Editor
                 {
                     var source=Actor("Scenario Source",scene,scenario.AttackFromBehind ? Vector3.back*5 : Vector3.forward*5,scenario.SourceHealth,scenario.SourceStats,scenario.SourceResources,0);
                     var target=Actor("Scenario Target",scene,Vector3.zero,scenario.TargetHealth,scenario.TargetStats,scenario.TargetResources,1);
-                    var sourceStatuses=source.gameObject.AddComponent<StatusController>(); var targetStatuses=target.gameObject.AddComponent<StatusController>();
+                    var sourceStatuses=source.Statuses; var targetStatuses=target.Statuses;
                     if(scenario.SourceOutgoing!=null) source.gameObject.AddComponent<CombatDamageModifiers>().Outgoing=scenario.SourceOutgoing;
                     if(scenario.TargetIncoming!=null) target.gameObject.AddComponent<CombatDamageModifiers>().Incoming=scenario.TargetIncoming;
                     if(scenario.SourceReactions.Length>0) source.gameObject.AddComponent<CombatReactions>().Configure(scenario.SourceReactions);

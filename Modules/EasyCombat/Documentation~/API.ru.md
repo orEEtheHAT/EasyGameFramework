@@ -20,7 +20,7 @@ public sealed class FireInput : MonoBehaviour
 }
 ```
 
-Назначь `Emitter.Attack` SO оружия, `OwnerRoot` корень стрелка, а для projectile/impact-area — соответствующие пулы. У цели нужны Health + Collider, для статусов также StatusController. Hurtbox на дочернем коллайдере задаёт получателя и множитель зоны. Отдельный код пути урона для оружия не требуется.
+Назначь `Emitter.Attack` SO оружия, `OwnerRoot` корень стрелка, а для projectile/impact-area — соответствующие пулы. У цели нужны Health + Collider, поддержка статусов уже включена в Health по умолчанию. Hurtbox на дочернем коллайдере задаёт получателя и множитель зоны. Отдельный код пути урона для оружия не требуется.
 
 Для урона по конкретной уже выбранной цели: `target.ApplyDamage(attack.RollRandom(source, point, direction))`. Это обходит поиск контакта/геометрию доставки, поэтому попадание в Hurtbox, взрыв или создание лужи само не произойдёт. `new DamageInfo(10)` подходит для явного простого запроса. Не вычитай Current вручную.
 
@@ -31,7 +31,7 @@ public sealed class FireInput : MonoBehaviour
 | HP / защита / жизнь | `Health.ApplyDefinition`, `ApplyDamage`, `ApplyHealing`, `ResetToFull`, `Revive`; Current, Maximum, LifeState, Identity, Defense | [Основы](CombatGuide.ru.md), [Защита](AdvancedDefense.ru.md), [Жизнь](LifeAttribution.ru.md) |
 | Характеристики | `CombatStats.SetValue`, `TryAdd`, `Remove(handle)`, `RemoveSource(owner)`; SO-ключи и принадлежащие владельцу модификаторы | [Stats](Stats.ru.md) |
 | Ресурсы | `CombatResources.Configure`, `TryGet`, `TrySpend`, `Restore`, `RefreshMaximums`; стоимость нескольких ресурсов атомарна | [Ресурсы](ResourcesHealing.ru.md) |
-| Статусы | `StatusController.Apply`, `ApplyFromHit`, `Remove`, `Dispel`, `TryConsume`, `TryCombine`; `GetStatus`, `GetStack`, `TryGetStackDamage` | [Статусы](StatusesControl.ru.md) |
+| Статусы | `Health.ApplyStatus`; advanced `Health.Statuses.ApplyFromHit`, `Remove`, `Dispel`, `TryConsume`, `TryCombine`; `GetStatus`, `GetStack`, `TryGetStackDamage` | [Статусы](StatusesControl.ru.md) |
 | Реакции | `CombatReactions.Configure(ReactionDefinition[])`; условия/цель/actions задаются в SO | [Реакции](Reactions.ru.md) |
 | Способности | `CombatAbilities.Configure`, `TryActivate`, `Cancel`; GetAbility, IsCasting, Casting, CastRemaining | [Abilities](AbilitiesDelivery.ru.md) |
 | Доставка | `DamageEmitter.TryFire`; `ProjectilePool.Spawn/Prewarm/ClearActive`; `CombatMelee.Begin/SetAnchors/Stop`; CombatBeam и CombatAreaTrigger | [Доставка](AbilitiesDelivery.ru.md), [Снаряды/2D](ProjectileMotion2D.ru.md) |
@@ -61,3 +61,6 @@ ResetToFull, вызванный из обработчика входящего �
 Имена источников без Health и запасные имена SO для журнала кешируются при первом использовании. Существующие записи не меняются при переименовании. Если игровая логика переименовала объект и новые записи должны использовать новое имя, вызови CombatNames.Invalidate(obj). Явный DisplayName читается непосредственно, без кеша.
 
 В тестах и диагностике Studio измеряются события GC.Alloc (не байты). Положительный и пустой контроли обязательны; недоступный измеритель не даёт нулевого результата. Затраты времени измеряются отдельно от прогона профилировщика.
+
+
+Health-native UI/adapter queries: `StatusCount`, `StatusRecordCount`, `GetStatMultiplier`, `GetStatusResistanceModifier`, `StatusRestrictions`, `StatusesChanged`, `StatusLifecycle`. Они не создают engine на пустом Health. `StatusesEnabled` и `FeedbacksEnabled` независимы, default true. Подробнее: [Health composition](HealthComposition.ru.md).

@@ -28,7 +28,7 @@ namespace EasyCombat.Tests
         [SetUp] public void SetUp()
         {
             health = Actor();
-            statuses = health.gameObject.AddComponent<StatusController>();
+            statuses = health.Statuses;
             fire = Asset<DamageTypeDefinition>();
             poison = Asset<DamageTypeDefinition>();
         }
@@ -128,7 +128,7 @@ namespace EasyCombat.Tests
             health.ApplyDefinition(definition);
             var other = Actor();
             other.ApplyDefinition(definition);
-            var otherStatuses = other.gameObject.AddComponent<StatusController>();
+            var otherStatuses = other.Statuses;
             var burn = Burn();
             statuses.Apply(burn);
             otherStatuses.Apply(burn);

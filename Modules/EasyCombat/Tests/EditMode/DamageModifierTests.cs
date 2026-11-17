@@ -96,7 +96,7 @@ namespace EasyCombat.Tests
             var effect = Asset<PeriodicDamageEffect>(); effect.DamageType = physical; effect.DamagePerStack = 5;
             if (sharedFormula) { effect.Formula = Asset<DamageFormulaDefinition>(); effect.Formula.Terms = new[] { new DamageFormulaTerm(physical,StatusDamageBasis.Fixed,5) }; }
             var status = Asset<StatusDefinition>(); status.TickEffects = new StatusTickEffect[] { effect };
-            var controller = target.gameObject.AddComponent<StatusController>();
+            var controller = target.Statuses;
             Assert.That(controller.Apply(status,source),Is.True); modifier.Rules[0].Multiplier = 3;
             Assert.That(controller.Apply(status,source),Is.True); modifier.Rules[0].Multiplier = 99;
             Assert.That(controller.TryGetStackDamage(status,0,0,out var first),Is.True); Assert.That(first,Is.EqualTo(10));

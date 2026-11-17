@@ -46,7 +46,7 @@ namespace EasyCombat.Tests
         [Test] public void StackModeKeepsIndependentPulsesAndApplications()
         {
             group.Mode = AreaOverlapMode.Stack;
-            var status = Asset<StatusDefinition>(); var controller = target.gameObject.AddComponent<StatusController>();
+            var status = Asset<StatusDefinition>(); var controller = target.Statuses;
             var recipe = Recipe(10); recipe.Attack.OnHitStatuses = new[] { new StatusApplication(status) };
             var a = Start(recipe); var b = Start(recipe); a.Advance(1); b.Advance(1);
             Assert.That(target.Current, Is.EqualTo(80)); Assert.That(controller.GetStacks(status), Is.EqualTo(2));
@@ -54,7 +54,7 @@ namespace EasyCombat.Tests
         [Test] public void PrioritySuppressesBothDamageAndStatusBeforeChanceRoll()
         {
             var lowStatus = Asset<StatusDefinition>(); var highStatus = Asset<StatusDefinition>();
-            var controller = target.gameObject.AddComponent<StatusController>();
+            var controller = target.Statuses;
             var low = Recipe(20); low.Attack.OnHitStatuses = new[] { new StatusApplication(lowStatus) };
             var high = Recipe(5, 10); high.Attack.OnHitStatuses = new[] { new StatusApplication(highStatus) };
             Start(low); Start(high); AreaOverlapScheduler.AdvanceSimulation(1);
@@ -175,7 +175,7 @@ namespace EasyCombat.Tests
         }
         [Test] public void SuppressedFieldDoesNotConsumeRandomStatusChance()
         {
-            target.gameObject.AddComponent<StatusController>(); var status = Asset<StatusDefinition>();
+            target.StatusesEnabled = true; var status = Asset<StatusDefinition>();
             var low = Recipe(10); low.Attack.OnHitStatuses = new[] { new StatusApplication(status, .5f) };
             Start(low); Start(Recipe(5, 1));
             var before = UnityEngine.Random.state;

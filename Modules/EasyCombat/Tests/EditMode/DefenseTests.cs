@@ -46,7 +46,7 @@ namespace EasyCombat.Tests
                 case "neutral": Object.DestroyImmediate(source.GetComponent<CombatTeam>()); rules.AllowNeutralActors = false; break;
                 case "environment": actor = null; rules.AllowEnvironment = false; break;
             }
-            Configure(new DefenseSlot(Shield())); var status = Asset<StatusDefinition>(); var controller = target.gameObject.AddComponent<StatusController>();
+            Configure(new DefenseSlot(Shield())); var status = Asset<StatusDefinition>(); var controller = target.Statuses;
             var result = target.ApplyDamage(new DamageInfo(20, actor, onHitStatuses: new[] { new StatusApplication(status) }, statusPolicy: StatusApplyPolicy.OnContact));
             Assert.That(result.Rejection, Is.EqualTo(expected)); Assert.That(target.Current, Is.EqualTo(100));
             Assert.That(target.ShieldCurrent, Is.EqualTo(50)); Assert.That(controller.Count, Is.Zero);
@@ -126,7 +126,7 @@ namespace EasyCombat.Tests
         [TestCase(StatusApplyPolicy.AfterDamage, 0)] [TestCase(StatusApplyPolicy.OnContact, 1)] [TestCase(StatusApplyPolicy.AfterDamageOrShield, 1)]
         public void StatusPolicyDistinguishesShieldAndHealthLoss(StatusApplyPolicy policy, int expected)
         {
-            Configure(new DefenseSlot(Shield())); var status = Asset<StatusDefinition>(); target.gameObject.AddComponent<StatusController>();
+            Configure(new DefenseSlot(Shield())); var status = Asset<StatusDefinition>(); target.StatusesEnabled = true;
             var result = target.ApplyDamage(new DamageInfo(20, source, onHitStatuses: new[] { new StatusApplication(status) }, statusPolicy: policy));
             Assert.That(result.StatusesApplied, Is.EqualTo(expected));
         }

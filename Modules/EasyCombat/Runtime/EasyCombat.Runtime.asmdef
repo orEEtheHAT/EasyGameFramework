@@ -2,7 +2,9 @@
   "name": "EasyCombat.Runtime",
   "rootNamespace": "EasyCombat",
   "references": [
-    "Unity.Burst"
+    "Unity.Burst",
+    "EasyResources.Runtime",
+    "EasyFeedbacks.Runtime"
   ],
   "autoReferenced": true
 }

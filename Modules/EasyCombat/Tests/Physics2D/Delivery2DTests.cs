@@ -30,7 +30,7 @@ namespace EasyCombat.Tests
         {
             var target=Target(new Vector2(5,.6f)); var fire=Asset<DamageTypeDefinition>(); var poison=Asset<DamageTypeDefinition>();
             attack.DamageChannels=new[] { new DamageChannel(fire,2,2),new DamageChannel(poison,3,3) }; var status=Asset<StatusDefinition>(); attack.OnHitStatuses=new[] { new StatusApplication(status) };
-            var statuses=target.gameObject.AddComponent<StatusController>(); attack.Delivery=delivery; Physics2D.SyncTransforms();
+            var statuses=target.Statuses; attack.Delivery=delivery; Physics2D.SyncTransforms();
             if(delivery==DamageDelivery.Hitscan) Assert.That(emitter.TryFire(origin,Vector2.right),Is.True);
             else { var projectile=Projectile(); projectile.Launch(origin,Vector2.right,attack.RollDamage(source,origin,Vector2.right,0,1),source.transform,attack,returnToPool:p=>p.gameObject.SetActive(false)); projectile.Simulate(1); }
             Assert.That(target.Current,Is.EqualTo(95)); Assert.That(statuses.GetStacks(status),Is.EqualTo(1));
