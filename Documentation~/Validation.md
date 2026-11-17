@@ -1,3 +1,13 @@
+# Release verification
+
+## 0.2.0 — Editor and native-input acceptance
+
+This update is verified in Unity 6000.3.22f1 Windows Editor/Play Mode. Health composition, resource authoring/rewards, simplified carrying and the half-lag defaults have owner and independent coordinator evidence. Setup has a reproduced-before/fixed-after native persistence regression, legacy-marker migration and focused Setup tests.
+
+See [0.2.0 verification scope](Release-0.2.0.md) for the final release checks and limitations. No new Player, Addressables or WebGL build was run. The results below document **0.1.0 only** and are not certification of the changed 0.2.0 implementation.
+
+---
+
 # Release verification — 0.1.0
 
 Verified on 2026-11-13 with Unity 6000.3.22f1, URP/VFX Graph 17.3.0, Cinemachine 3.1.7 and Input System 1.20.0. The independent verification project contained the framework, its declared Unity dependencies, the test/development tools, and a privately installed licensed ECM2 copy. Commercial ECM2 sources are not distributed in this repository.

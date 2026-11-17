@@ -51,11 +51,42 @@ namespace EasySuite.Example.Editor
         private const string MovementPlayer = "Packages/com.oreethehat.easy-game-framework/Modules/EasyMovement/FirstPerson/Prefabs/FP_Player_Sample.prefab";
         private const string MovementCamera = "Packages/com.oreethehat.easy-game-framework/Modules/EasyMovement/FirstPerson/Prefabs/FP_MainCamera_Sample.prefab";
         private const string CollectionName = "Framework Playground";
+        public const int ContentRevision = 10;
+        private const string CarryControlsSignKey = "sign.carry.controls9";
+        private const string CarryControlsSignEnglish = "01 / CARRY\nWalking lag: authored values\nTab · walking lag / Follow Speed";
+        private const string CarryControlsSignRussian = "01 / ПЕРЕНОС\nИнерция ходьбы: из настроек\nTab · ходьба / Follow Speed";
+        private static readonly (string oldKey, string key)[] CarryKeyRenames =
+        {
+            ("menu.carryReturn.authored", EasySuiteLab.CarryFollowAuthoredKey),
+            ("menu.carryReturn.faster", EasySuiteLab.CarryFollowFirmKey),
+            ("lab.carryReturn.authored", EasySuiteLab.CarryFollowSoftKey),
+            ("lab.carryReturn.faster", EasySuiteLab.CarryFollowNoticeKey),
+            ("sign.carry.return7", CarryControlsSignKey)
+        };
+        private const string CarryInertiaSignKey = "sign.carry.inertia5";
+        private const string CarryInertiaSignEnglish = "01 / CARRY CONTROLS\nTab · walking lag / Follow Speed\nE · take / release   G · throw";
+        private const string CarryInertiaSignRussian = "01 / ПЕРЕНОС ПРЕДМЕТА\nTab · ходьба / Follow Speed\nE · взять / отпустить   G · бросить";
+        private static readonly EasySuiteCommand[] OriginalMenuCommands =
+        {
+            EasySuiteCommand.Controls, EasySuiteCommand.Language, EasySuiteCommand.Buildings, EasySuiteCommand.InteractionActions,
+            EasySuiteCommand.Save, EasySuiteCommand.Load, EasySuiteCommand.SavePreferences, EasySuiteCommand.LoadPreferences,
+            EasySuiteCommand.AddResources, EasySuiteCommand.PaidAbility, EasySuiteCommand.DamagePlayer, EasySuiteCommand.Repair,
+            EasySuiteCommand.KillPlayer, EasySuiteCommand.RevivePlayer, EasySuiteCommand.ResetTarget, EasySuiteCommand.Close
+        };
+        private const string CarryPoseKey = "sign.carry.pose";
+        private const string CarryPoseEnglish = "01  /  CARRY POSE\nE · take / release   G · throw\nAuthored hold pose · physical contacts";
+        private const string CarryPoseRussian = "01  /  ПОЗА В РУКАХ\nE · взять / отпустить   G · бросить\nЗаданная поза · физические контакты";
+        private const string CarryUxKey = "sign.carry.ux";
+        private const string CarryUxEnglish = "01  /  FOCUS + CARRY\nE · take / release   G · throw\nHeld scale 65% · adjustable Follow Speed";
+        private const string CarryUxRussian = "01  /  ФОКУС И ПЕРЕНОСКА\nE · взять / отпустить   G · бросить\nРазмер в руках 65% · Follow Speed";
+        private const string RewardSignKey = "sign.combat.rewards";
+        private const string RewardSignEnglish = "03  /  COMBAT + REWARDS\nDefeat target: 3–7 coins + 1–3 crystals\nTab → Reset combat target · repeat";
+        private const string RewardSignRussian = "03  /  БОЙ И НАГРАДЫ\nПобедите: 3–7 монет + 1–3 кристалла\nTab → Сбросить мишень · повторить";
         private static StringTableCollection strings;
         private static Font font;
         private static Material floor, dark, steel, gold, blue, coral, white;
 
-        [MenuItem("Tools/EasyGameFramework/Examples/Create Framework Playground")]
+        [MenuItem("Tools/EasyGameFramework/Examples/Create or Update Framework Playground")]
         public static void CreateAndOpen()
         {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -66,13 +97,14 @@ namespace EasySuite.Example.Editor
 
         public static string Create(bool open = false)
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                throw new InvalidOperationException("Leave Play Mode before creating or updating the Framework Playground.");
             if (File.Exists(ScenePath))
             {
+                UpdateExisting();
                 if (open) OpenExisting();
                 return ScenePath;
             }
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-                throw new InvalidOperationException("Leave Play Mode before creating the Framework Playground.");
             RequireAsset<GameObject>(MovementPlayer);
             RequireAsset<GameObject>(MovementCamera);
             EnsureFolders();
@@ -93,8 +125,7 @@ namespace EasySuite.Example.Editor
                 labObject.SetActive(false);
                 var lab = labObject.AddComponent<EasySuiteLab>();
                 labObject.AddComponent<EasySuiteSmoke>().Lab = lab;
-                lab.Wood = Resource("Wood", "suite.wood", 0);
-                lab.Mana = Resource("Energy", "suite.energy", 2);
+                FrameworkResourceDatabaseMigration.Prepare(lab);
                 lab.InitialWood = 24; lab.InitialMana = 100; lab.StockWood = 20;
                 lab.UiFeedback = lab.ShotFeedback = lab.HitFeedback = feedback;
 
@@ -132,7 +163,8 @@ namespace EasySuite.Example.Editor
                 lab.Player.ControlsCursor = true;
                 lab.PlayerHealth = body.GetComponent<Health>() ?? body.AddComponent<Health>();
                 Profile(lab.PlayerHealth, playerHealth);
-                if (!body.GetComponent<StatusController>()) body.AddComponent<StatusController>();
+                lab.PlayerHealth.StatusesEnabled = true;
+                lab.PlayerHealth.FeedbacksEnabled = true;
                 body.GetComponent<MovementInfluences>().MovementSpeedStat = speed;
                 lab.Wallet = body.AddComponent<ResourceContainer>();
                 var context = body.AddComponent<PlayerFeedbackContext>(); context.Player = lab.Player;
@@ -142,7 +174,7 @@ namespace EasySuite.Example.Editor
 
                 var movement = body.AddComponent<EasyMovementInput>(); movement.Player = lab.Player; movement.Character = lab.Character;
                 lab.Actor = body.AddComponent<InteractionActor>(); lab.Actor.PlayerRoot = body.transform;
-                lab.Actor.View = lab.Character.LookPivot; lab.Actor.Range = 5; lab.Actor.SelectionMode = InteractionSelectionMode.Raycast;
+                lab.Actor.View = lab.Character.LookPivot; lab.Actor.Range = 5; lab.Actor.SelectionMode = InteractionSelectionMode.Focus;
                 lab.Actor.RequireVisibility = true;
                 lab.Actor.HandAnchor = null; // Use centered View + HoldDistance; explicit anchors remain optional.
                 lab.Presenter = body.AddComponent<InteractionPresenter>();
@@ -159,8 +191,7 @@ namespace EasySuite.Example.Editor
                 body.AddComponent<CombatInteractionGuard>().health = lab.PlayerHealth;
                 var interactionFeedback = body.AddComponent<InteractionFeedbacks>();
                 interactionFeedback.ContextProvider = context; interactionFeedback.completed = feedback; interactionFeedback.failed = feedback;
-                var healthFeedback = body.AddComponent<HealthFeedbacks>();
-                healthFeedback.Damage = healthFeedback.Death = healthFeedback.Healing = feedback; healthFeedback.ContextProvider = context;
+                lab.PlayerHealth.ConfigureFeedbacks(feedback, feedback, feedback, context);
 
                 var actor = body.AddComponent<BuildingActor>(); actor.SetIdentity("suite.player");
                 body.AddComponent<BuildingInteractionContext>();
@@ -189,9 +220,11 @@ namespace EasySuite.Example.Editor
                 CreateRoom(); CreateStations(lab, targetHealth, feedback);
                 CreateFeedbackManagers(); CreateHudAndWindows(lab);
                 CreateCombatCatalog(lab, playerHealth, targetHealth, buildingHealth, fireball, speed);
+                ApplyContentUpdates(lab);
                 player.SetActive(true); labObject.SetActive(true);
                 EditorUtility.SetDirty(lab); AssetDatabase.SaveAssets();
                 if (!EditorSceneManager.SaveScene(scene, ScenePath)) throw new IOException("Could not save " + ScenePath);
+                FrameworkResourceDatabaseMigration.FinalizeSavedScene(lab, true);
                 saved = true;
             }
             finally
@@ -212,9 +245,469 @@ namespace EasySuite.Example.Editor
             SceneManager.SetActiveScene(existing);
         }
 
+        // Explicit, versioned sample updates. Never runs on import or overwrites a current revision.
+        private static void UpdateExisting()
+        {
+            var previous = SceneManager.GetActiveScene();
+            var scene = SceneManager.GetSceneByPath(ScenePath);
+            bool openedHere = !scene.IsValid() || !scene.isLoaded;
+            if (openedHere) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Additive);
+            try
+            {
+                var labs = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<EasySuiteLab>(true)).ToArray();
+                if (labs.Length != 1) throw new InvalidOperationException("Expected one Framework Playground lab. Restore the sample's lab before updating.");
+                var lab = labs[0];
+                if (lab.ContentRevision >= ContentRevision)
+                {
+                        FrameworkResourceDatabaseMigration.FinalizeSavedScene(lab);
+                    return;
+                }
+                if (scene.isDirty) throw new InvalidOperationException("Save your Framework Playground edits before updating the example.");
+                SceneManager.SetActiveScene(scene);
+                ApplyContentUpdates(lab);
+                EditorSceneManager.MarkSceneDirty(scene);
+                if (!EditorSceneManager.SaveScene(scene)) throw new IOException("Could not save the updated Framework Playground.");
+                FrameworkResourceDatabaseMigration.FinalizeSavedScene(lab, true);
+            }
+            finally
+            {
+                if (openedHere) EditorSceneManager.CloseScene(scene, true);
+                if (previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous);
+            }
+        }
+
+        private static void ApplyContentUpdates(EasySuiteLab lab)
+        {
+            if (lab.ContentRevision >= ContentRevision) return;
+            EnsureCarryControlsTranslations(lab);
+            if (lab.ContentRevision < 1) ApplyCarryPoseRevision(lab);
+            if (lab.ContentRevision < 2) ApplyInteractionUxRevision(lab);
+            if (lab.ContentRevision < 3) ApplyResourceDatabaseRevision(lab);
+            if (lab.ContentRevision < 4) ApplyHealthCompositionRevision(lab);
+            if (lab.ContentRevision < 5) ApplyCarryInertiaRevision(lab);
+            // Revision6's experimental carry path was withdrawn. Do not create it on a fresh sample.
+            if (lab.ContentRevision < 6) { lab.ContentRevision = 6; EditorUtility.SetDirty(lab); }
+            if (lab.ContentRevision < 7) ApplyCarryControlsRevision(lab);
+            if (lab.ContentRevision < 8) ApplyWalkingDefaultRevision(lab);
+            if (lab.ContentRevision < 9) ApplyCarrySimplifyRevision(lab);
+            if (lab.ContentRevision < 10) ApplyHalfWalkingDefaultRevision(lab);
+        }
+
+        private static void ApplyCarryPoseRevision(EasySuiteLab lab)
+        {
+            // Revision 1: EGF-001. Keep the crate identity, world transform and all unrelated content.
+            var grab = lab.Crate ? lab.Crate.GetComponent<GrabAction>() : null;
+            var collection = LocalizationEditorSettings.GetStringTableCollection(CollectionName);
+            if (!collection) throw new InvalidOperationException("Restore the Framework Playground localization collection before updating.");
+            var english = collection.GetTable(new LocaleIdentifier("en")) as StringTable;
+            var russian = collection.GetTable(new LocaleIdentifier("ru")) as StringTable;
+            var oldEntry = collection.SharedData.GetEntry("sign.carry");
+            var poseEntry = collection.SharedData.GetEntry(CarryPoseKey);
+            var sign = lab.gameObject.scene.GetRootGameObjects()
+                .SelectMany(root => root.GetComponentsInChildren<LocalizedText>(true))
+                .FirstOrDefault(text => text.text.TableReference.TableCollectionNameGuid == collection.SharedData.TableCollectionNameGuid
+                    && (text.text.TableEntryReference.KeyId == oldEntry?.Id || text.text.TableEntryReference.KeyId == poseEntry?.Id));
+            if (!grab || !english || !russian || !sign)
+                throw new InvalidOperationException("The carry crate, its sign and English/Russian localization are required to update this Playground.");
+            var markerMaterial = RequireAsset<Material>(Content + "/Materials/Blue.mat");
+            if (english.GetEntry(CarryPoseKey) == null) english.AddEntry(CarryPoseKey, CarryPoseEnglish);
+            if (russian.GetEntry(CarryPoseKey) == null) russian.AddEntry(CarryPoseKey, CarryPoseRussian);
+            EditorUtility.SetDirty(english); EditorUtility.SetDirty(russian); EditorUtility.SetDirty(collection.SharedData);
+            AssetDatabase.SaveAssetIfDirty(english); AssetDatabase.SaveAssetIfDirty(russian); AssetDatabase.SaveAssetIfDirty(collection.SharedData);
+            grab.PoseMode = GrabPoseMode.AuthoredPose;
+            grab.LocalPosition = new Vector3(.25f, -.25f, 0);
+            grab.LocalEulerAngles = new Vector3(8, -20, 5);
+            if (!lab.Crate.Find("Carry Pose Front Marker"))
+                RemoveCollider(Primitive("Carry Pose Front Marker", PrimitiveType.Cube, lab.Crate,
+                    new Vector3(.2f, .15f, -.505f), new Vector3(.25f, .45f, .025f), markerMaterial));
+            if (!lab.Crate.Find("Carry Pose Top Marker"))
+                RemoveCollider(Primitive("Carry Pose Top Marker", PrimitiveType.Cube, lab.Crate,
+                    new Vector3(.2f, .505f, -.2f), new Vector3(.25f, .025f, .45f), markerMaterial));
+            sign.text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(CarryPoseKey).Id);
+            sign.fallback = CarryPoseEnglish;
+            if (sign.TryGetComponent<TextMesh>(out var mesh)) { mesh.text = CarryPoseEnglish; EditorUtility.SetDirty(mesh); }
+            EditorUtility.SetDirty(grab); EditorUtility.SetDirty(sign);
+            lab.ContentRevision = 1;
+            EditorUtility.SetDirty(lab);
+        }
+
+        private static void ApplyInteractionUxRevision(EasySuiteLab lab)
+        {
+            var grab = lab.Crate ? lab.Crate.GetComponent<GrabAction>() : null;
+            if (!grab || !lab.Actor || !lab.TargetHealth || !lab.Wallet || !lab.SaveWorkbench || !lab.Texts || !lab.Texts.catalog || !lab.Hud)
+                throw new InvalidOperationException("Restore the Playground actor, crate, target, wallet, workbench, localization and HUD references before updating.");
+            var collection = LocalizationEditorSettings.GetStringTableCollection(CollectionName);
+            if (!collection) throw new InvalidOperationException("Restore the Framework Playground localization collection before updating.");
+            var english = collection.GetTable(new LocaleIdentifier("en")) as StringTable;
+            var russian = collection.GetTable(new LocaleIdentifier("ru")) as StringTable;
+            if (!english || !russian) throw new InvalidOperationException("The Playground English and Russian tables are required.");
+            var carrySign = FindSign(lab, collection, CarryPoseKey, CarryUxKey);
+            var rewardSign = FindSign(lab, collection, "sign.combat", RewardSignKey);
+            if (!carrySign || !rewardSign) throw new InvalidOperationException("Restore the carry and combat signs before updating the Playground.");
+
+            EnsureFolders();
+            FrameworkResourceDatabaseMigration.Prepare(lab);
+            string rewardPath = Content + "/Definitions/Rewards/EnemyRewards_Sample.asset";
+            lab.EnemyRewardProfile = AssetDatabase.LoadAssetAtPath<ResourceRewardProfile>(rewardPath);
+            if (!lab.EnemyRewardProfile)
+            {
+                lab.EnemyRewardProfile = ResourceRewardProfile.Create("EnemyRewards_Sample", lab.ResourceDatabase,
+                    new ResourceRewardRange(lab.Coin, 3, 7), new ResourceRewardRange(lab.Crystal, 1, 3));
+                AssetDatabase.CreateAsset(lab.EnemyRewardProfile, rewardPath);
+            }
+            ConfigureHealthReward(lab);
+
+            // Revision 1's authored position/rotation, object identities and world transforms stay intact.
+            lab.Actor.SelectionMode = InteractionSelectionMode.Focus;
+            var highlighter = lab.Actor.GetComponent<InteractionFocusHighlighter>() ?? lab.Actor.gameObject.AddComponent<InteractionFocusHighlighter>();
+            highlighter.Actor = lab.Actor;
+            highlighter.OutlineColor = new Color(.1f, .8f, 1f, 1f);
+            highlighter.Width = .015f;
+            highlighter.CameraOverride = lab.Placer.ViewCamera;
+            ConfigureOutline(grab.Target);
+            ConfigureOutline(lab.SaveWorkbench);
+            grab.HeldScaleMultiplier = .65f;
+            EditorUtility.SetDirty(lab.Actor); EditorUtility.SetDirty(highlighter); EditorUtility.SetDirty(grab);
+
+            var rows = new (string key, string en, string ru)[]
+            {
+                (CarryUxKey, CarryUxEnglish, CarryUxRussian),
+                (RewardSignKey, RewardSignEnglish, RewardSignRussian),
+                ("lab.coins", "COINS", "МОНЕТЫ"),
+                ("lab.crystals", "CRYSTALS", "КРИСТАЛЛЫ"),
+                ("lab.rewarded", "Target defeated. Coins and crystals added. Tab > Reset combat target starts another life.", "Мишень побеждена. Монеты и кристаллы получены. Tab > Сбросить мишень — новая жизнь."),
+                ("lab.rewardFailed", "The target reward was rejected; inspect Death Resource Reward on Combat Target.", "Награда отклонена; проверьте Death Resource Reward на Combat Target."),
+                ("resource.framework.coin.sample", "Coins", "Монеты"),
+                ("resource.framework.crystal.sample", "Crystals", "Кристаллы")
+            };
+            var entries = new List<CatalogTranslation>(lab.Texts.catalog.entries ?? Array.Empty<CatalogTranslation>());
+            foreach (var row in rows)
+            {
+                if (english.GetEntry(row.key) == null) english.AddEntry(row.key, row.en);
+                if (russian.GetEntry(row.key) == null) russian.AddEntry(row.key, row.ru);
+                if (!entries.Any(entry => entry != null && entry.id == row.key))
+                    entries.Add(new CatalogTranslation { id = row.key, text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(row.key).Id) });
+            }
+            lab.Texts.catalog.SetEntries(entries.ToArray());
+            EditorUtility.SetDirty(lab.Texts.catalog);
+            EditorUtility.SetDirty(english); EditorUtility.SetDirty(russian); EditorUtility.SetDirty(collection.SharedData);
+            AssetDatabase.SaveAssetIfDirty(lab.Texts.catalog); AssetDatabase.SaveAssetIfDirty(english);
+            AssetDatabase.SaveAssetIfDirty(russian); AssetDatabase.SaveAssetIfDirty(collection.SharedData);
+            BindSign(carrySign, collection, CarryUxKey, CarryUxEnglish);
+            BindSign(rewardSign, collection, RewardSignKey, RewardSignEnglish);
+
+            var header = lab.Hud.rectTransform.parent as RectTransform;
+            if (header)
+            {
+                header.sizeDelta = new Vector2(header.sizeDelta.x, 128);
+                header.anchoredPosition = new Vector2(header.anchoredPosition.x, -64);
+                var title = header.Find("Title") as RectTransform;
+                if (title) { title.anchoredPosition = new Vector2(title.anchoredPosition.x, 43); EditorUtility.SetDirty(title); }
+                if (lab.Performance) { var performance = lab.Performance.rectTransform; performance.anchoredPosition = new Vector2(performance.anchoredPosition.x, 43); EditorUtility.SetDirty(performance); }
+                EditorUtility.SetDirty(header);
+            }
+            lab.Hud.rectTransform.sizeDelta = new Vector2(890, 72);
+            lab.Hud.rectTransform.anchoredPosition = new Vector2(24, -15);
+            EditorUtility.SetDirty(lab.Hud.rectTransform);
+            lab.ContentRevision = 2;
+            EditorUtility.SetDirty(lab);
+        }
+
+        private static void ApplyResourceDatabaseRevision(EasySuiteLab lab)
+        {
+            FrameworkResourceDatabaseMigration.Prepare(lab);
+            ConfigureHealthReward(lab);
+            var collection = LocalizationEditorSettings.GetStringTableCollection(CollectionName);
+            if (!collection || !lab.Texts || !lab.Texts.catalog) throw new InvalidOperationException("Restore the sample localization before updating.");
+            var english = collection.GetTable(new LocaleIdentifier("en")) as StringTable;
+            var russian = collection.GetTable(new LocaleIdentifier("ru")) as StringTable;
+            if (!english || !russian) throw new InvalidOperationException("The sample English and Russian tables are required.");
+            const string key = "lab.rewardFailed.health";
+            if (english.GetEntry(key) == null) english.AddEntry(key, "The target reward was rejected; inspect Health > Enable Death Reward on Combat Target.");
+            if (russian.GetEntry(key) == null) russian.AddEntry(key, "Награда отклонена; проверьте Health > Enable Death Reward на Combat Target.");
+            var entries = new List<CatalogTranslation>(lab.Texts.catalog.entries ?? Array.Empty<CatalogTranslation>());
+            if (!entries.Any(entry => entry != null && entry.id == key))
+            {
+                entries.Add(new CatalogTranslation { id = key, text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(key).Id) });
+                lab.Texts.catalog.SetEntries(entries.ToArray());
+                EditorUtility.SetDirty(lab.Texts.catalog); AssetDatabase.SaveAssetIfDirty(lab.Texts.catalog);
+            }
+            EditorUtility.SetDirty(english); EditorUtility.SetDirty(russian); EditorUtility.SetDirty(collection.SharedData);
+            AssetDatabase.SaveAssetIfDirty(english); AssetDatabase.SaveAssetIfDirty(russian); AssetDatabase.SaveAssetIfDirty(collection.SharedData);
+            lab.ContentRevision = 3; EditorUtility.SetDirty(lab);
+        }
+
+        private static void ApplyHealthCompositionRevision(EasySuiteLab lab)
+        {
+            if (!lab.PlayerHealth || !lab.TargetHealth)
+                throw new InvalidOperationException("Restore the Playground player and target Health references before updating.");
+
+            // Old component settings were transferred to native Health fields before their script types were removed.
+            // Keep those feature switches, status budgets, exact player presets and context references.
+            lab.PlayerHealth.ConfigureFeedbacks(lab.PlayerHealth.DamageFeedback, lab.PlayerHealth.DeathFeedback,
+                lab.PlayerHealth.HealingFeedback, lab.PlayerHealth.FeedbackContextProvider);
+
+            // The training target deliberately demonstrates its Damage feedback as well as Death/Healing.
+            var targetDamage = lab.TargetHealth.DamageFeedback ? lab.TargetHealth.DamageFeedback :
+                lab.TargetHealth.DeathFeedback ? lab.TargetHealth.DeathFeedback : lab.HitFeedback;
+            lab.TargetHealth.ConfigureFeedbacks(targetDamage, lab.TargetHealth.DeathFeedback,
+                lab.TargetHealth.HealingFeedback, lab.TargetHealth.FeedbackContextProvider);
+            EditorUtility.SetDirty(lab.PlayerHealth); EditorUtility.SetDirty(lab.TargetHealth);
+
+            if (!lab.Actor || !lab.Placer || !lab.Placer.ViewCamera || !lab.Crate || !lab.SaveWorkbench)
+                throw new InvalidOperationException("Restore the Playground Actor, output camera and interactive targets before updating.");
+            var highlighter = lab.Actor.GetComponent<InteractionFocusHighlighter>() ?? lab.Actor.gameObject.AddComponent<InteractionFocusHighlighter>();
+            highlighter.Actor = lab.Actor;
+            highlighter.CameraOverride = lab.Placer.ViewCamera;
+            highlighter.OutlineColor = new Color(.1f, .8f, 1f, 1f);
+            highlighter.Width = .015f;
+            // The explicit pre-import migration copied each target's old enabled state and renderer list.
+            // Updating the demo must not re-enable an intentionally disabled target outline.
+            var crateTarget = lab.Crate.GetComponent<InteractionTarget>();
+            crateTarget.RefreshOutlineRenderers();
+            lab.SaveWorkbench.RefreshOutlineRenderers();
+            EditorUtility.SetDirty(crateTarget); EditorUtility.SetDirty(lab.SaveWorkbench);
+            EditorUtility.SetDirty(highlighter);
+            UpdateCompositionSign(lab, "sign.carry.health4",
+                "01  /  FOCUS + CARRY\nE · take / release   G · throw\nNo outline while held · size 65%",
+                "01  /  ФОКУС И ПЕРЕНОСКА\nE · взять / отпустить   G · бросить\nВ руках без обводки · размер 65%", CarryUxKey, CarryPoseKey);
+            UpdateCompositionSign(lab, "sign.combat.health4",
+                "03  /  HEALTH + REWARDS\nClick · hit feedback + burn\n3–7 coins + 1–3 crystals · Tab resets",
+                "03  /  ЗДОРОВЬЕ И НАГРАДЫ\nЩелчок · отклик попадания + ожог\n3–7 монет + 1–3 кристалла · Tab сброс", RewardSignKey, "sign.combat");
+            lab.ContentRevision = 4; EditorUtility.SetDirty(lab);
+        }
+
+        private static void ApplyCarryInertiaRevision(EasySuiteLab lab)
+        {
+            if (!lab.Crate || !lab.Crate.GetComponent<GrabAction>() || !lab.MenuWindow || !lab.MenuWindow.Prefab)
+                throw new InvalidOperationException("Restore the Playground crate and lab menu before updating the carry-inertia demonstration.");
+            UpdateLegacyWalkingDefault(lab.Crate.GetComponent<GrabAction>());
+            EnsureCarryInertiaTranslations(lab);
+            UpdateCarryInertiaMenu(lab.MenuWindow);
+            UpdateCompositionSign(lab, CarryInertiaSignKey, CarryInertiaSignEnglish, CarryInertiaSignRussian,
+                "sign.carry.health4", CarryUxKey, CarryPoseKey, "sign.carry");
+            // Update only the owned sample's legacy all-one default. Custom authored vectors remain intact.
+            // The A/B switch changes a transient copy of that captured vector during play.
+            lab.ContentRevision = 5;
+            EditorUtility.SetDirty(lab);
+        }
+
+        private static void UpdateLegacyWalkingDefault(GrabAction grab)
+        {
+            if (!grab || !grab.MovementLag.Equals(Vector3.one)) return;
+            grab.MovementLag = Vector3.one * .5f;
+            EditorUtility.SetDirty(grab);
+        }
+
+        private static void ApplyHalfWalkingDefaultRevision(EasySuiteLab lab)
+        {
+            var grab = lab.Crate ? lab.Crate.GetComponent<GrabAction>() : null;
+            if (!grab || !lab.MenuWindow || !lab.MenuWindow.Prefab)
+                throw new InvalidOperationException("Restore the Playground crate and menu before updating its walking-lag default.");
+            UpdateLegacyWalkingDefault(grab);
+            EnsureCarryControlsTranslations(lab);
+            UpdateCarryInertiaMenu(lab.MenuWindow, updateWalkingDefault: true);
+            UpdateCompositionSign(lab, CarryControlsSignKey, CarryControlsSignEnglish, CarryControlsSignRussian,
+                CarryInertiaSignKey, "sign.carry.health4", CarryUxKey, CarryPoseKey, "sign.carry");
+            lab.ContentRevision = 10; EditorUtility.SetDirty(lab);
+        }
+
+        private static void ApplyWalkingDefaultRevision(EasySuiteLab lab)
+        {
+            EnsureCarryControlsTranslations(lab);
+            UpdateCarryInertiaMenu(lab.MenuWindow, updateWalkingDefault: true);
+            UpdateCompositionSign(lab, CarryControlsSignKey, CarryControlsSignEnglish, CarryControlsSignRussian,
+                CarryInertiaSignKey, "sign.carry.health4", CarryUxKey, CarryPoseKey, "sign.carry");
+            lab.ContentRevision = 8; EditorUtility.SetDirty(lab);
+        }
+
+        private static void ApplyCarryControlsRevision(EasySuiteLab lab)
+        {
+            EnsureCarryControlsTranslations(lab);
+            UpdateCarryInertiaMenu(lab.MenuWindow, includeFollow: true);
+            UpdateCompositionSign(lab, CarryControlsSignKey, CarryControlsSignEnglish, CarryControlsSignRussian,
+                CarryInertiaSignKey, "sign.carry.health4", CarryUxKey, CarryPoseKey, "sign.carry");
+            lab.ContentRevision = 7; EditorUtility.SetDirty(lab);
+        }
+
+        private static void ApplyCarrySimplifyRevision(EasySuiteLab lab)
+        {
+            if (!lab.Crate || !lab.Crate.GetComponent<GrabAction>() || !lab.MenuWindow || !lab.MenuWindow.Prefab)
+                throw new InvalidOperationException("Restore the Playground crate and menu before updating carry controls.");
+            var grab = lab.Crate.GetComponent<GrabAction>();
+            var authoredWalking = grab.MovementLag;
+            float authoredFollow = grab.FollowSpeed;
+            EnsureCarryControlsTranslations(lab);
+            // Existing FollowSpeed values belong to the author; this migration changes presentation only.
+            UpdateCarryInertiaMenu(lab.MenuWindow, updateFollowDefault: true);
+            UpdateCompositionSign(lab, CarryControlsSignKey, CarryControlsSignEnglish, CarryControlsSignRussian,
+                CarryInertiaSignKey, "sign.carry.health4", CarryUxKey, CarryPoseKey, "sign.carry");
+            if (!grab.MovementLag.Equals(authoredWalking) || !grab.FollowSpeed.Equals(authoredFollow))
+                throw new InvalidOperationException("The carry-controls migration must retain the authored walking vector and Follow Speed.");
+            // Serialize the same component with its current API, retiring obsolete owned fields without changing its values.
+            EditorUtility.SetDirty(grab);
+            lab.ContentRevision = 9; EditorUtility.SetDirty(lab);
+        }
+
+        private static (string key, string en, string ru)[] CarryControlsTranslations() => new[]
+        {
+            (EasySuiteLab.CarryFollowAuthoredKey, "Follow speed: authored · {0:0.##}", "Скорость следования: исходная · {0:0.##}"),
+            (EasySuiteLab.CarryFollowSoftKey, "Follow speed: soft · {0:0.##}", "Скорость следования: мягкая · {0:0.##}"),
+            (EasySuiteLab.CarryFollowFirmKey, "Follow speed: firm · {0:0.##}", "Скорость следования: плотная · {0:0.##}"),
+            (EasySuiteLab.CarryFollowNoticeKey, "Close Tab: compare soft (0) and firm (1) follow. Walking lag is separate. E release · G throw.", "Закройте Tab: сравните мягкое (0) и плотное (1) следование. Инерция ходьбы отдельно. E отпустить · G бросить."),
+            (CarryControlsSignKey, CarryControlsSignEnglish, CarryControlsSignRussian)
+        };
+
+        private static void RenameCarryTableKeys(StringTableCollection collection)
+        {
+            foreach (var rename in CarryKeyRenames)
+            {
+                var oldEntry = collection.SharedData.GetEntry(rename.oldKey);
+                var newEntry = collection.SharedData.GetEntry(rename.key);
+                if (oldEntry != null && newEntry != null && oldEntry.Id != newEntry.Id)
+                    throw new InvalidOperationException("Duplicate carry translation keys '" + rename.oldKey + "' and '" + rename.key + "'. Restore the original shared entry before updating.");
+            }
+            foreach (var rename in CarryKeyRenames)
+            {
+                var oldEntry = collection.SharedData.GetEntry(rename.oldKey);
+                if (oldEntry == null) continue;
+                // Native IDs are unchanged, so saved ID-based scene/prefab references remain valid even on retry.
+                collection.SharedData.RenameKey(oldEntry.Id, rename.key);
+                EditorUtility.SetDirty(collection.SharedData);
+            }
+        }
+
+        private static void EnsureCarryControlsTranslations(EasySuiteLab lab)
+        {
+            var collection = LocalizationEditorSettings.GetStringTableCollection(CollectionName);
+            var english = collection ? collection.GetTable(new LocaleIdentifier("en")) as StringTable : null;
+            var russian = collection ? collection.GetTable(new LocaleIdentifier("ru")) as StringTable : null;
+            if (!collection || !english || !russian || !lab.Texts || !lab.Texts.catalog)
+                throw new InvalidOperationException("Restore the Playground localization before updating carry controls.");
+            var renames = CarryKeyRenames.ToDictionary(row => row.oldKey, row => row.key);
+            bool catalogChanged = false;
+            var entries = new List<CatalogTranslation>();
+            foreach (var entry in lab.Texts.catalog.entries ?? Array.Empty<CatalogTranslation>())
+            {
+                if (entry != null && renames.TryGetValue(entry.id, out string key))
+                { entries.Add(new CatalogTranslation { id = key, text = entry.text }); catalogChanged = true; }
+                else entries.Add(entry);
+            }
+            foreach (var key in CarryKeyRenames.Select(row => row.key))
+                if (entries.Count(entry => entry != null && entry.id == key) > 1)
+                    throw new InvalidOperationException("Duplicate carry catalog entry '" + key + "'. Restore its original entry before updating.");
+            RenameCarryTableKeys(collection);
+            var walking = CarryInertiaTranslations().Single(row => row.key == EasySuiteLab.CarryWalkingLagNoticeKey);
+            var rows = CarryControlsTranslations().Concat(new[]
+            {
+                walking, (key: CarryPoseKey, en: CarryPoseEnglish, ru: CarryPoseRussian),
+                (key: CarryUxKey, en: CarryUxEnglish, ru: CarryUxRussian),
+                (key: CarryInertiaSignKey, en: CarryInertiaSignEnglish, ru: CarryInertiaSignRussian)
+            });
+            foreach (var row in rows)
+            {
+                if (collection.SharedData.GetEntry(row.key) == null) EditorUtility.SetDirty(collection.SharedData);
+                var en = english.GetEntry(row.key); var ru = russian.GetEntry(row.key);
+                if (en == null) { en = english.AddEntry(row.key, row.en); EditorUtility.SetDirty(english); }
+                if (ru == null) { ru = russian.AddEntry(row.key, row.ru); EditorUtility.SetDirty(russian); }
+                if (en.Value != row.en) { en.Value = row.en; EditorUtility.SetDirty(english); }
+                if (ru.Value != row.ru) { ru.Value = row.ru; EditorUtility.SetDirty(russian); }
+                if (!entries.Any(entry => entry != null && entry.id == row.key))
+                {
+                    entries.Add(new CatalogTranslation { id = row.key, text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(row.key).Id) });
+                    catalogChanged = true;
+                }
+            }
+            if (catalogChanged) { lab.Texts.catalog.SetEntries(entries.ToArray()); EditorUtility.SetDirty(lab.Texts.catalog); }
+            foreach (var asset in new Object[] { english, russian, collection.SharedData, lab.Texts.catalog }) AssetDatabase.SaveAssetIfDirty(asset);
+        }
+
+        private static (string key, string en, string ru)[] CarryInertiaTranslations() => new[]
+        {
+            (EasySuiteLab.CarryWalkingLagAllKey, "Carry walking lag: all axes", "Инерция ходьбы: все оси"),
+            (EasySuiteLab.CarryWalkingLagNoForwardKey, "Carry walking lag: no forward / back", "Инерция ходьбы: без вперёд / назад"),
+            (EasySuiteLab.CarryWalkingLagNoneKey, "Carry walking lag: off", "Инерция ходьбы: выключена"),
+            (EasySuiteLab.CarryWalkingLagNoticeKey, "Close Tab: compare W/S and A/D. The walking-lag setting changes movement axes; Follow Speed changes physical response.", "Закройте Tab: сравните W/S и A/D. Инерция ходьбы меняет оси перемещения; Follow Speed меняет физическое следование."),
+            (CarryInertiaSignKey, CarryInertiaSignEnglish, CarryInertiaSignRussian)
+        };
+
+        private static void EnsureCarryInertiaTranslations(EasySuiteLab lab)
+        {
+            var collection = LocalizationEditorSettings.GetStringTableCollection(CollectionName);
+            var english = collection ? collection.GetTable(new LocaleIdentifier("en")) as StringTable : null;
+            var russian = collection ? collection.GetTable(new LocaleIdentifier("ru")) as StringTable : null;
+            if (!collection || !english || !russian || !lab.Texts || !lab.Texts.catalog)
+                throw new InvalidOperationException("Restore the Playground localization before updating carry-inertia labels.");
+            var entries = new List<CatalogTranslation>(lab.Texts.catalog.entries ?? Array.Empty<CatalogTranslation>());
+            foreach (var row in CarryInertiaTranslations())
+            {
+                if (english.GetEntry(row.key) == null) english.AddEntry(row.key, row.en);
+                if (russian.GetEntry(row.key) == null) russian.AddEntry(row.key, row.ru);
+                if (!entries.Any(entry => entry != null && entry.id == row.key))
+                    entries.Add(new CatalogTranslation { id = row.key, text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(row.key).Id) });
+            }
+            lab.Texts.catalog.SetEntries(entries.ToArray());
+            foreach (var asset in new Object[] { english, russian, collection.SharedData, lab.Texts.catalog })
+            { EditorUtility.SetDirty(asset); AssetDatabase.SaveAssetIfDirty(asset); }
+        }
+
+        private static void UpdateCompositionSign(EasySuiteLab lab, string key, string englishText, string russianText, params string[] previousKeys)
+        {
+            var collection = LocalizationEditorSettings.GetStringTableCollection(CollectionName);
+            var english = collection ? collection.GetTable(new LocaleIdentifier("en")) as StringTable : null;
+            var russian = collection ? collection.GetTable(new LocaleIdentifier("ru")) as StringTable : null;
+            if (!collection || !english || !russian || !lab.Texts || !lab.Texts.catalog)
+                throw new InvalidOperationException("Restore the Playground localization collection before updating its signs.");
+            var sign = FindSign(lab, collection, previousKeys.Concat(new[] { key }).ToArray());
+            if (!sign) throw new InvalidOperationException("Restore the Playground sign for " + key + ".");
+            if (english.GetEntry(key) == null) english.AddEntry(key, englishText);
+            if (russian.GetEntry(key) == null) russian.AddEntry(key, russianText);
+            var entries = new List<CatalogTranslation>(lab.Texts.catalog.entries ?? Array.Empty<CatalogTranslation>());
+            if (!entries.Any(entry => entry != null && entry.id == key))
+                entries.Add(new CatalogTranslation { id = key, text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(key).Id) });
+            lab.Texts.catalog.SetEntries(entries.ToArray());
+            BindSign(sign, collection, key, englishText);
+            foreach (var asset in new Object[] { english, russian, collection.SharedData, lab.Texts.catalog })
+            { EditorUtility.SetDirty(asset); AssetDatabase.SaveAssetIfDirty(asset); }
+        }
+
+        private static void ConfigureHealthReward(EasySuiteLab lab)
+        {
+            if (!lab.TargetHealth || !lab.EnemyRewardProfile || !lab.Wallet || !lab.ResourceDatabase)
+                throw new InvalidOperationException("Restore the sample target, reward profile, wallet and resource database before updating.");
+            lab.EnemyRewardProfile.Database = lab.ResourceDatabase;
+            EditorUtility.SetDirty(lab.EnemyRewardProfile); AssetDatabase.SaveAssetIfDirty(lab.EnemyRewardProfile);
+            lab.TargetHealth.RewardProfile = lab.EnemyRewardProfile;
+            lab.TargetHealth.RewardRecipient = lab.Wallet;
+            lab.TargetHealth.RewardEnabled = true;
+            EditorUtility.SetDirty(lab.TargetHealth);
+        }
+
+        private static void ConfigureOutline(InteractionTarget target)
+        {
+            target.HighlightWhenFocused = true;
+            target.RefreshOutlineRenderers();
+            EditorUtility.SetDirty(target);
+        }
+
+        private static LocalizedText FindSign(EasySuiteLab lab, StringTableCollection collection, params string[] keys)
+        {
+            var ids = keys.Select(key => collection.SharedData.GetEntry(key)?.Id).Where(id => id.HasValue).Select(id => id.Value).ToArray();
+            return lab.gameObject.scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<LocalizedText>(true))
+                .FirstOrDefault(text => text.text.TableReference.TableCollectionNameGuid == collection.SharedData.TableCollectionNameGuid && ids.Contains(text.text.TableEntryReference.KeyId));
+        }
+
+        private static void BindSign(LocalizedText sign, StringTableCollection collection, string key, string fallback)
+        {
+            sign.text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(key).Id);
+            sign.fallback = fallback;
+            if (sign.TryGetComponent<TextMesh>(out var mesh)) { mesh.text = fallback; EditorUtility.SetDirty(mesh); }
+            EditorUtility.SetDirty(sign);
+        }
+
         private static void EnsureFolders()
         {
-            foreach (string folder in new[] { "", "/Materials", "/Definitions", "/Prefabs", "/Input", "/Localization", "/UI" })
+            foreach (string folder in new[] { "", "/Materials", "/Definitions", "/Definitions/Resources", "/Definitions/Rewards", "/Prefabs", "/Input", "/Localization", "/UI" })
                 Directory.CreateDirectory(Content + folder);
             AssetDatabase.Refresh();
         }
@@ -227,13 +720,6 @@ namespace EasySuite.Example.Editor
             string path = Content + "/Definitions/" + name + ".asset";
             var asset = AssetDatabase.LoadAssetAtPath<T>(path); if (asset) return asset;
             asset = ScriptableObject.CreateInstance<T>(); asset.name = name; configure(asset); AssetDatabase.CreateAsset(asset, path); return asset;
-        }
-
-        private static ResourceDefinition Resource(string name, string id, int precision)
-        {
-            string path = Content + "/Definitions/" + name + ".asset";
-            var value = AssetDatabase.LoadAssetAtPath<ResourceDefinition>(path); if (value) return value;
-            value = ResourceDefinition.Create(name, id, decimalPlaces: precision); AssetDatabase.CreateAsset(value, path); return value;
         }
 
         private static void Profile(Health health, HealthDefinition definition)
@@ -458,10 +944,10 @@ namespace EasySuite.Example.Editor
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             var grab = crate.AddComponent<GrabAction>(); grab.ActionId = "suite.grab"; grab.GrabRange = 3.5f; grab.ThrowSpeed = 8;
             grab.RotationMode = GrabRotation.Stabilized; grab.IgnoreOwnerCollisions = true;
-            grab.HoldDistance = 2f; grab.HoldOffset = Vector3.zero; grab.Inertia = .12f;
+            grab.HoldDistance = 2f; grab.HoldOffset = Vector3.zero; grab.FollowSpeed = .5f; grab.MovementLag = Vector3.one * .5f;
             grab.Target.DisplayName = "Carry crate"; grab.Target.FocusPoint = crate.transform;
             lab.Crate = crate.transform;
-            Sign(stations, new Vector3(-4.7f, 1.6f, 1.4f), "sign.carry", "01  /  INTERACT\nE · carry  /  R · rotate", 5.2f, gold);
+            Sign(stations, new Vector3(-4.7f, 1.6f, 1.4f), CarryPoseKey, CarryPoseEnglish, 5.2f, gold);
 
             var workbench = new GameObject("Workbench"); workbench.SetActive(false); workbench.transform.SetParent(stations, false);
             workbench.transform.position = new Vector3(-7, 0, 4);
@@ -492,9 +978,10 @@ namespace EasySuite.Example.Editor
             target.transform.position = new Vector3(7, 0, 4);
             Primitive("Target base", PrimitiveType.Cylinder, target.transform, new Vector3(0, .15f, 0), new Vector3(2, .15f, 2), dark);
             Primitive("Target body", PrimitiveType.Capsule, target.transform, new Vector3(0, 1.45f, 0), new Vector3(1, 1.15f, 1), coral);
-            lab.TargetHealth = target.AddComponent<Health>(); Profile(lab.TargetHealth, targetProfile); target.AddComponent<StatusController>();
-            var targetFeedback = target.AddComponent<HealthFeedbacks>(); targetFeedback.Death = targetFeedback.Healing = feedback;
-            targetFeedback.ContextProvider = lab.FeedbackContextProvider; target.SetActive(true);
+            lab.TargetHealth = target.AddComponent<Health>(); Profile(lab.TargetHealth, targetProfile);
+            lab.TargetHealth.StatusesEnabled = true; lab.TargetHealth.FeedbacksEnabled = true;
+            lab.TargetHealth.ConfigureFeedbacks(feedback, feedback, feedback, lab.FeedbackContextProvider);
+            target.SetActive(true);
             Sign(stations, new Vector3(7, 3.4f, 5.4f), "sign.combat", "03  /  COMBAT\nClick · fireball + burn", 5.4f, coral);
 
             var field = new GameObject("Slow Field"); field.transform.SetParent(stations, false); field.transform.position = new Vector3(6.5f, .6f, -2.3f);
@@ -621,10 +1108,7 @@ namespace EasySuite.Example.Editor
                 Localize(title.gameObject, "menu.title", "LAB CONTROL");
                 var subtitle = Text("Subtitle", rect, new Vector2(.5f, 1), new Vector2(0, -78), new Vector2(660, 30), 16, TextAnchor.MiddleCenter);
                 Localize(subtitle.gameObject, "menu.subtitle", "Experiment, save, restore. Each window owns its input request.");
-                var commands = new[] { EasySuiteCommand.Controls, EasySuiteCommand.Language, EasySuiteCommand.Buildings, EasySuiteCommand.InteractionActions,
-                    EasySuiteCommand.Save, EasySuiteCommand.Load, EasySuiteCommand.SavePreferences, EasySuiteCommand.LoadPreferences, EasySuiteCommand.AddResources, EasySuiteCommand.PaidAbility,
-                    EasySuiteCommand.DamagePlayer, EasySuiteCommand.Repair, EasySuiteCommand.KillPlayer, EasySuiteCommand.RevivePlayer,
-                    EasySuiteCommand.ResetTarget, EasySuiteCommand.Close };
+                var commands = OriginalMenuCommands;
                 var labels = new[] { "Settings", "Change language", "Building catalog", "Interaction actions", "Save progress  ·  F5", "Load progress  ·  F9", "Save preferences", "Load preferences",
                     "+20 wood / energy", "Energy strike  ·  2.50", "Damage player  ·  25", "Repair nearest building", "Defeat player", "Revive player", "Reset combat target", "Return to lab" };
                 for (int i = 0; i < commands.Length; i++)
@@ -639,11 +1123,287 @@ namespace EasySuite.Example.Editor
                     Localize(label.gameObject, "menu." + commands[i], labels[i]);
                     if (i == 0) window.FirstSelected = button;
                 }
+                ConfigureCarryInertiaMenu(root, strings);
                 var prefab = PrefabUtility.SaveAsPrefabAsset(root, Content + "/UI/Lab Menu.prefab");
                 var definition = ScriptableObject.CreateInstance<WindowDefinition>(); definition.Prefab = prefab.GetComponent<UIWindow>(); definition.Policy = window.Policy.Copy();
                 AssetDatabase.CreateAsset(definition, definitionPath); return definition;
             }
             finally { Object.DestroyImmediate(root); }
+        }
+
+        private static void UpdateCarryInertiaMenu(WindowDefinition definition, bool includeFollow = false, bool updateWalkingDefault = false, bool updateFollowDefault = false)
+        {
+            string path = Content + "/UI/Lab Menu.prefab";
+            if (AssetDatabase.GetAssetPath(definition.Prefab) != path)
+                throw new InvalidOperationException("Restore the original Lab Menu prefab reference before updating the example.");
+            var collection = LocalizationEditorSettings.GetStringTableCollection(CollectionName);
+            var persistent = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            var beforeButtons = SnapshotMenuButtons(persistent, updateWalkingDefault);
+            var beforeBindings = updateWalkingDefault || updateFollowDefault ? SnapshotOtherMenuBindings(persistent, updateFollowDefault ? EasySuiteCommand.CycleCarryFollowSpeed : EasySuiteCommand.CycleCarryWalkingLag) : null;
+            var beforeIds = SnapshotMenuObjectIds(persistent);
+            string beforeWindow = PersistentMenuId(definition.Prefab);
+            string beforeSelection = PersistentMenuId(definition.Prefab.FirstSelected);
+            byte[] beforeBytes = File.ReadAllBytes(path);
+            GameObject contents = null;
+            bool saveAttempted = false;
+            try
+            {
+                contents = PrefabUtility.LoadPrefabContents(path);
+                bool changed = updateWalkingDefault ? ConfigureWalkingDefault(contents, collection) : updateFollowDefault ? ConfigureCarryFollowButton(contents, collection, contents.GetComponentsInChildren<EasySuiteButton>(true)) : ConfigureCarryInertiaMenu(contents, collection, includeFollow);
+                if (changed)
+                {
+                    saveAttempted = true;
+                    if (!PrefabUtility.SaveAsPrefabAsset(contents, path))
+                        throw new IOException("Could not save the updated Lab Menu prefab.");
+                }
+                PrefabUtility.UnloadPrefabContents(contents); contents = null;
+                if (saveAttempted) AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+                var reloaded = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                var afterButtons = SnapshotMenuButtons(reloaded, updateWalkingDefault);
+                foreach (var pair in beforeButtons)
+                    if (!afterButtons.TryGetValue(pair.Key, out var value) || value != pair.Value)
+                        throw new InvalidOperationException("The Lab Menu update changed an existing button identity or translation: " + pair.Key + ".");
+                if (updateWalkingDefault || updateFollowDefault)
+                {
+                    var afterBindings = SnapshotOtherMenuBindings(reloaded, updateFollowDefault ? EasySuiteCommand.CycleCarryFollowSpeed : EasySuiteCommand.CycleCarryWalkingLag);
+                    foreach (var pair in beforeBindings)
+                        if (!afterBindings.TryGetValue(pair.Key, out var value) || value != pair.Value)
+                            throw new InvalidOperationException("The carry-label update changed another menu translation: " + pair.Key + ".");
+                    if (updateWalkingDefault) ValidateWalkingDefault(reloaded, collection);
+                    if (updateFollowDefault) ValidateFollowDefault(reloaded, collection);
+                }
+                if (!beforeIds.IsSubsetOf(SnapshotMenuObjectIds(reloaded)) ||
+                    PersistentMenuId(reloaded.GetComponent<UIWindow>()) != beforeWindow ||
+                    PersistentMenuId(reloaded.GetComponent<UIWindow>().FirstSelected) != beforeSelection)
+                    throw new InvalidOperationException("The Lab Menu update changed existing prefab object identities or its initial selection.");
+            }
+            catch
+            {
+                if (contents) { PrefabUtility.UnloadPrefabContents(contents); contents = null; }
+                if (saveAttempted)
+                {
+                    // The source asset and its meta stay at the same path. Restore the bytes if Unity's
+                    // name matching ever changes an old fileID rather than committing a broken update.
+                    File.WriteAllBytes(path, beforeBytes);
+                    AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+                }
+                throw;
+            }
+            finally { if (contents) PrefabUtility.UnloadPrefabContents(contents); }
+        }
+
+        private static Dictionary<EasySuiteCommand, string> SnapshotMenuButtons(GameObject prefab, bool allowWalkingDefaultRemap = false)
+        {
+            if (!prefab) throw new InvalidOperationException("Restore the Lab Menu prefab before updating its buttons.");
+            var all = prefab.GetComponentsInChildren<EasySuiteButton>(true);
+            var snapshot = new Dictionary<EasySuiteCommand, string>();
+            foreach (var command in OriginalMenuCommands)
+                if (all.Count(button => button.Command == command) != 1)
+                    throw new InvalidOperationException("Expected one existing Lab Menu button for " + command + ".");
+            foreach (var command in all.Select(button => button.Command).Distinct())
+            {
+                var matching = all.Where(button => button.Command == command).ToArray();
+                if (matching.Length != 1) throw new InvalidOperationException("Expected one existing Lab Menu button for " + command + ".");
+                var button = matching[0];
+                var label = button.transform.Find("Label")?.GetComponent<LocalizedText>();
+                if (!label) throw new InvalidOperationException("Restore the localized Label of the " + command + " button.");
+                string componentIds = string.Join(",", button.GetComponentsInChildren<Component>(true).Select(PersistentMenuId).OrderBy(id => id));
+                string identity = ((int)command) + "|" + PersistentMenuId(button.gameObject) + "|" + componentIds;
+                // Ordinary migrations retain the existing guards. Revision8 additionally owns one walking-label remap.
+                if (command != EasySuiteCommand.CycleCarryFollowSpeed && (!allowWalkingDefaultRemap || command != EasySuiteCommand.CycleCarryWalkingLag))
+                    identity += "|" + label.text.TableReference.TableCollectionNameGuid + "|" + label.text.TableEntryReference.KeyId + "|" + label.fallback;
+                snapshot.Add(command, identity);
+            }
+            return snapshot;
+        }
+
+        private static Dictionary<EasySuiteCommand, string> SnapshotOtherMenuBindings(GameObject prefab, EasySuiteCommand ignored = EasySuiteCommand.CycleCarryWalkingLag)
+        {
+            var result = new Dictionary<EasySuiteCommand, string>();
+            foreach (var button in prefab.GetComponentsInChildren<EasySuiteButton>(true))
+            {
+                if (button.Command == ignored) continue;
+                var label = button.transform.Find("Label")?.GetComponent<LocalizedText>();
+                if (!label) throw new InvalidOperationException("Restore the localized Label of the " + button.Command + " button.");
+                result.Add(button.Command, label.text.TableReference.TableCollectionNameGuid + "|" + label.text.TableEntryReference.KeyId + "|" + label.fallback);
+            }
+            return result;
+        }
+
+        private static LocalizedText WalkingDefaultLabel(GameObject root)
+        {
+            var buttons = root.GetComponentsInChildren<EasySuiteButton>(true).Where(button => button.Command == EasySuiteCommand.CycleCarryWalkingLag).ToArray();
+            if (buttons.Length != 1) throw new InvalidOperationException("Restore the single existing walking-lag button before updating its default.");
+            var label = buttons[0].transform.Find("Label")?.GetComponent<LocalizedText>();
+            if (!label) throw new InvalidOperationException("Restore the localized Label of the walking-lag button.");
+            return label;
+        }
+
+        private static bool ConfigureWalkingDefault(GameObject root, StringTableCollection collection)
+        {
+            var entry = collection ? collection.SharedData.GetEntry(EasySuiteLab.CarryWalkingLagAllKey) : null;
+            if (entry == null) throw new InvalidOperationException("Restore the existing walking-lag All translation before updating its button.");
+            var label = WalkingDefaultLabel(root);
+            bool changed = false;
+            if (label.text.TableReference.TableCollectionNameGuid != collection.SharedData.TableCollectionNameGuid || label.text.TableEntryReference.KeyId != entry.Id || label.fallback != "Carry walking lag: all axes")
+            {
+                label.text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, entry.Id);
+                label.fallback = "Carry walking lag: all axes";
+                changed = true;
+            }
+            var preview = label.GetComponent<Text>();
+            if (preview && preview.text != label.fallback) { preview.text = label.fallback; changed = true; }
+            return changed;
+        }
+
+        private static void ValidateWalkingDefault(GameObject root, StringTableCollection collection)
+        {
+            var label = WalkingDefaultLabel(root);
+            var entry = collection ? collection.SharedData.GetEntry(EasySuiteLab.CarryWalkingLagAllKey) : null;
+            var preview = label.GetComponent<Text>();
+            if (entry == null || label.text.TableReference.TableCollectionNameGuid != collection.SharedData.TableCollectionNameGuid ||
+                label.text.TableEntryReference.KeyId != entry.Id || label.fallback != "Carry walking lag: all axes" || (preview && preview.text != label.fallback))
+                throw new InvalidOperationException("The saved walking-lag button must retain its identity and reference the existing All translation.");
+        }
+
+        private static HashSet<string> SnapshotMenuObjectIds(GameObject prefab)
+        {
+            var ids = new HashSet<string>();
+            foreach (var transform in prefab.GetComponentsInChildren<Transform>(true))
+            {
+                ids.Add(PersistentMenuId(transform.gameObject));
+                foreach (var component in transform.GetComponents<Component>()) ids.Add(PersistentMenuId(component));
+            }
+            return ids;
+        }
+
+        private static string PersistentMenuId(Object value)
+        {
+            if (!value) return "null";
+            if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(value, out string guid, out long fileId) || string.IsNullOrEmpty(guid) || fileId == 0)
+                throw new InvalidOperationException("Expected a persistent prefab object identity for " + value.name + ".");
+            return guid + ":" + fileId;
+        }
+
+        private static bool ConfigureCarryInertiaMenu(GameObject root, StringTableCollection collection, bool includeFollow = false)
+        {
+            if (!collection || collection.SharedData.GetEntry(EasySuiteLab.CarryWalkingLagAllKey) == null || collection.SharedData.GetEntry(EasySuiteLab.CarryWalkingLagNoneKey) == null)
+                throw new InvalidOperationException("Create the carry-inertia translations before configuring the Lab Menu.");
+            var buttons = root.GetComponentsInChildren<EasySuiteButton>(true);
+            // A previous attempt may have saved the shared prefab before the scene revision.
+            // Preserve its known new command when resuming an earlier migration.
+            bool hasFollowButton = buttons.Any(button => button.Command == EasySuiteCommand.CycleCarryFollowSpeed);
+            bool twoColumns = includeFollow || hasFollowButton;
+            if (includeFollow && collection.SharedData.GetEntry(EasySuiteLab.CarryFollowAuthoredKey) == null)
+                throw new InvalidOperationException("Create the follow-speed translations before updating its menu button.");
+            if (buttons.Any(button => !OriginalMenuCommands.Contains(button.Command) && button.Command != EasySuiteCommand.CycleCarryWalkingLag &&
+                button.Command != EasySuiteCommand.CycleCarryFollowSpeed))
+                throw new InvalidOperationException("The Lab Menu has custom commands; adjust its layout explicitly before updating the example.");
+            bool changed = false;
+            for (int i = 0; i < OriginalMenuCommands.Length; i++)
+            {
+                var matching = buttons.Where(button => button.Command == OriginalMenuCommands[i]).ToArray();
+                if (matching.Length != 1) throw new InvalidOperationException("Expected one Lab Menu button for " + OriginalMenuCommands[i] + ".");
+                var rect = matching[0].transform as RectTransform;
+                changed |= SetMenuRect(rect, new Vector2(i % 2 == 0 ? -174 : 174, -126 - i / 2 * 57), new Vector2(326, 44));
+                var label = rect.Find("Label") as RectTransform;
+                if (!label) throw new InvalidOperationException("Restore the Label of the " + OriginalMenuCommands[i] + " button.");
+                changed |= SetMenuRect(label, Vector2.zero, new Vector2(308, 38), true);
+            }
+            var cycleButtons = buttons.Where(button => button.Command == EasySuiteCommand.CycleCarryWalkingLag).ToArray();
+            if (cycleButtons.Length > 1) throw new InvalidOperationException("Remove duplicate carry-inertia buttons before updating the example.");
+            RectTransform cycleRect;
+            if (cycleButtons.Length == 0)
+            {
+                if (!font) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                cycleRect = Rect(EasySuiteCommand.CycleCarryWalkingLag.ToString(), root.transform, new Vector2(.5f, 1), new Vector2(0, -582), new Vector2(674, 44));
+                var image = cycleRect.gameObject.AddComponent<Image>(); image.color = new Color(.12f, .2f, .27f);
+                var button = cycleRect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
+                var colors = button.colors; colors.normalColor = Color.white; colors.highlightedColor = new Color(1.3f, 1.5f, 1.55f);
+                colors.selectedColor = new Color(1.4f, 1.65f, 1.75f); colors.pressedColor = new Color(.7f, .9f, 1); button.colors = colors;
+                cycleRect.gameObject.AddComponent<EasySuiteButton>().Command = EasySuiteCommand.CycleCarryWalkingLag;
+                var label = Text("Label", cycleRect, new Vector2(.5f, .5f), Vector2.zero, new Vector2(656, 38), 18, TextAnchor.MiddleCenter);
+                var source = label.gameObject.AddComponent<LocalizedText>();
+                source.text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(EasySuiteLab.CarryWalkingLagAllKey).Id);
+                source.fallback = "Carry walking lag: all axes";
+                label.gameObject.AddComponent<EasySuiteLabel>();
+                changed = true;
+            }
+            else cycleRect = cycleButtons[0].transform as RectTransform;
+            changed |= SetMenuRect(cycleRect, new Vector2(twoColumns ? -174 : 0, -582), new Vector2(twoColumns ? 326 : 674, 44));
+            var cycleLabel = cycleRect.Find("Label") as RectTransform;
+            if (!cycleLabel) throw new InvalidOperationException("Restore the Label of the carry-inertia button.");
+            changed |= SetMenuRect(cycleLabel, Vector2.zero, new Vector2(twoColumns ? 308 : 656, 38), true);
+            if (twoColumns)
+            {
+                var cycleText = cycleLabel.GetComponent<Text>();
+                if (cycleText && cycleText.fontSize != 16) { cycleText.fontSize = 16; changed = true; }
+            }
+            if (includeFollow) changed |= ConfigureCarryFollowButton(root, collection, buttons);
+            return changed;
+        }
+
+        private static bool ConfigureCarryFollowButton(GameObject root, StringTableCollection collection, EasySuiteButton[] buttons)
+        {
+            var matching = buttons.Where(button => button.Command == EasySuiteCommand.CycleCarryFollowSpeed).ToArray();
+            if (matching.Length > 1) throw new InvalidOperationException("Remove duplicate follow-speed buttons before updating the example.");
+            bool changed = false;
+            RectTransform rect;
+            if (matching.Length == 0)
+            {
+                if (!font) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                rect = Rect(EasySuiteCommand.CycleCarryFollowSpeed.ToString(), root.transform, new Vector2(.5f, 1), new Vector2(174, -582), new Vector2(326, 44));
+                var image = rect.gameObject.AddComponent<Image>(); image.color = new Color(.12f, .2f, .27f);
+                var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
+                var colors = button.colors; colors.normalColor = Color.white; colors.highlightedColor = new Color(1.3f, 1.5f, 1.55f);
+                colors.selectedColor = new Color(1.4f, 1.65f, 1.75f); colors.pressedColor = new Color(.7f, .9f, 1); button.colors = colors;
+                rect.gameObject.AddComponent<EasySuiteButton>().Command = EasySuiteCommand.CycleCarryFollowSpeed;
+                var label = Text("Label", rect, new Vector2(.5f, .5f), Vector2.zero, new Vector2(308, 38), 16, TextAnchor.MiddleCenter);
+                var source = label.gameObject.AddComponent<LocalizedText>();
+                source.text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, collection.SharedData.GetEntry(EasySuiteLab.CarryFollowAuthoredKey).Id);
+                source.fallback = "Follow speed: authored";
+                label.gameObject.AddComponent<EasySuiteLabel>();
+                changed = true;
+            }
+            else rect = matching[0].transform as RectTransform;
+            if (rect.gameObject.name != nameof(EasySuiteCommand.CycleCarryFollowSpeed)) { rect.gameObject.name = nameof(EasySuiteCommand.CycleCarryFollowSpeed); changed = true; }
+            var translated = rect.Find("Label")?.GetComponent<LocalizedText>();
+            if (!translated) throw new InvalidOperationException("Restore the localized Label of the follow-speed button.");
+            long entryId = collection.SharedData.GetEntry(EasySuiteLab.CarryFollowAuthoredKey).Id;
+            if (translated.text.TableReference.TableCollectionNameGuid != collection.SharedData.TableCollectionNameGuid || translated.text.TableEntryReference.KeyId != entryId || translated.fallback != "Follow speed: authored")
+            {
+                translated.text = new LocalizedString(collection.SharedData.TableCollectionNameGuid, entryId);
+                translated.fallback = "Follow speed: authored";
+                changed = true;
+            }
+            var previewText = translated.GetComponent<Text>();
+            if (previewText && previewText.text != translated.fallback) { previewText.text = translated.fallback; changed = true; }
+            changed |= SetMenuRect(rect, new Vector2(174, -582), new Vector2(326, 44));
+            var text = rect.Find("Label") as RectTransform;
+            if (!text) throw new InvalidOperationException("Restore the Label of the follow-speed button.");
+            changed |= SetMenuRect(text, Vector2.zero, new Vector2(308, 38), true);
+            return changed;
+        }
+
+        private static void ValidateFollowDefault(GameObject root, StringTableCollection collection)
+        {
+            var button = root.GetComponentsInChildren<EasySuiteButton>(true).SingleOrDefault(item => item.Command == EasySuiteCommand.CycleCarryFollowSpeed);
+            var label = button ? button.transform.Find("Label")?.GetComponent<LocalizedText>() : null;
+            var entry = collection ? collection.SharedData.GetEntry(EasySuiteLab.CarryFollowAuthoredKey) : null;
+            var preview = label ? label.GetComponent<Text>() : null;
+            if (!label || entry == null || label.text.TableReference.TableCollectionNameGuid != collection.SharedData.TableCollectionNameGuid || label.text.TableEntryReference.KeyId != entry.Id ||
+                label.fallback != "Follow speed: authored" || (preview && preview.text != label.fallback))
+                throw new InvalidOperationException("The saved Follow Speed button must retain its identity and reference the authored follow translation.");
+        }
+
+        private static bool SetMenuRect(RectTransform rect, Vector2 position, Vector2 size, bool centered = false)
+        {
+            if (!rect) throw new InvalidOperationException("Restore the Lab Menu RectTransforms before updating their layout.");
+            Vector2 anchor = new Vector2(.5f, centered ? .5f : 1);
+            if (rect.anchoredPosition == position && rect.sizeDelta == size && rect.anchorMin == anchor && rect.anchorMax == anchor && rect.pivot == new Vector2(.5f, .5f)) return false;
+            rect.anchorMin = rect.anchorMax = anchor; rect.pivot = new Vector2(.5f, .5f);
+            rect.anchoredPosition = position; rect.sizeDelta = size;
+            return true;
         }
 
         private static RectTransform Rect(string name, Transform parent, Vector2 anchor, Vector2 position, Vector2 size)
@@ -672,8 +1432,12 @@ namespace EasySuite.Example.Editor
         {
             var mapping = LocalizationSetup.Create(Content + "/Localization", "en", new[] { "ru" }, CollectionName);
             strings = mapping.collection;
+            RenameCarryTableKeys(strings);
             var rows = new List<(string key, string en, string ru)>();
             void Add(string key, string en, string ru) => rows.Add((key, en, ru));
+            rows.AddRange(CarryInertiaTranslations());
+            rows.AddRange(CarryControlsTranslations());
+            Add(CarryPoseKey, CarryPoseEnglish, CarryPoseRussian);
             Add("lab.title", "EASY GAME FRAMEWORK  /  PLAYGROUND", "EASY GAME FRAMEWORK  /  ЛАБОРАТОРИЯ");
             Add("lab.ready", "Explore the lab. Tab opens the menu; E interacts; T opens building.", "Исследуйте стенд. Tab — меню; E — действие; T — строительство.");
             Add("lab.hp", "HEALTH", "ЗДОРОВЬЕ"); Add("lab.wood", "WOOD", "ДЕРЕВО"); Add("lab.energy", "ENERGY", "ЭНЕРГИЯ");

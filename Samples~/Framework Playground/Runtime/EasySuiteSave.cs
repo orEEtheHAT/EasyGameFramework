@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyCombat;
@@ -24,14 +25,14 @@ namespace EasySuite.Example
         public EasySuiteSave(EasySuiteLab lab)
         {
             this.lab = lab ? lab : throw new ArgumentNullException(nameof(lab));
-            if (!lab.SaveWorkbench || !lab.GraphicsSettings) throw new InvalidOperationException("Assign the explicit SaveWorkbench and GraphicsSettings references on the Playground Lab.");
+            if (!lab.SaveWorkbench || !lab.GraphicsSettings || !lab.ResourceDatabase) throw new InvalidOperationException("Assign SaveWorkbench, GraphicsSettings and ResourceDatabase on the Playground Lab.");
             var references = new CombatReferenceRegistry();
             references.RegisterActor("player", lab.PlayerHealth); references.RegisterActor("target", lab.TargetHealth);
             service = new SaveService(new LocalFileStorage(Path.Combine(Application.persistentDataPath, "easygameframework-playground")));
             try
             {
                 service.RegisterAll(
-                    ResourceLedgerSave.Create("world/resources", new[] { "wallet", "stock" }, new[] { lab.Wallet.Store, lab.Stock.Store }, new[] { lab.Wood, lab.Mana }),
+                    ResourceLedgerSave.Create("world/resources", new[] { "wallet", "stock" }, new[] { lab.Wallet.Store, lab.Stock.Store }, lab.ResourceDatabase.Resources),
                     EasySaveAdapters.Buildings("world/buildings", lab.Placer.System, lab.Buildings),
                     EasySaveAdapters.Combat("world/combat", lab.CombatCatalog, references),
                     EasySaveAdapters.Interaction("world/workbench", lab.SaveWorkbench),

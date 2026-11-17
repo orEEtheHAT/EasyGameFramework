@@ -23,9 +23,9 @@ namespace EasyGameFramework.Editor
         public static void Open()
         {
             var installed = FrameworkSetupCatalog.FindPackage();
-            FrameworkSetupWelcome.MarkShown(installed?.version);
             var window = GetWindow<FrameworkSetupWindow>("EasyGameFramework");
             window.minSize = new Vector2(720, 560); window.Show();
+            FrameworkSetupWelcome.MarkShown(installed?.version);
         }
         private void OnEnable()
         { minSize = new Vector2(720, 560); refreshPending = true; EditorApplication.projectChanged += MarkRefresh; }

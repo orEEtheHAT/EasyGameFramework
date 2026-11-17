@@ -23,9 +23,13 @@ using ResourceDefinition = EasyResources.ResourceDefinition;
 
 namespace EasySuite.Example
 {
+    public enum EasySuiteCarryWalkingLag { All, NoForward, NoWalking }
+    public enum EasySuiteCarryFollowPreset { Authored, Soft, Firm }
+
     // Project-local composition. Each mechanism remains implemented by its owning package.
     public sealed class EasySuiteLab : MonoBehaviour
     {
+        [HideInInspector] public int ContentRevision;
         public PlayerInputSettings Player;
         public CombatFirstPersonController Character;
         public Health PlayerHealth, TargetHealth;
@@ -37,7 +41,9 @@ namespace EasySuite.Example
         public BuildingCatalog BuildingCatalog;
         public EasyBuilding.Integrations.BuildingResources BuildingResources;
         public ResourceContainer Wallet, Stock;
-        public ResourceDefinition Wood, Mana;
+        public ResourceDatabase ResourceDatabase;
+        public ResourceDefinition Wood, Mana, Coin, Crystal;
+        public ResourceRewardProfile EnemyRewardProfile;
         public WindowManager Windows;
         public WindowDefinition MenuWindow, ControlsWindow, BuildWindow, InteractionWindow;
         public IntegrationWindowSet IntegrationWindows;
@@ -63,6 +69,22 @@ namespace EasySuite.Example
         public InteractionTarget SaveWorkbench;
         public EasySettings.SettingsController GraphicsSettings;
         public event Action Changed;
+        public event Action CarryWalkingLagChanged;
+        public event Action CarryFollowSpeedChanged;
+        public const string CarryFollowAuthoredKey = "menu.carryFollowSpeed.authored";
+        public const string CarryFollowSoftKey = "menu.carryFollowSpeed.soft";
+        public const string CarryFollowFirmKey = "menu.carryFollowSpeed.firm";
+        public const string CarryFollowNoticeKey = "lab.carryFollowSpeed.changed";
+        public EasySuiteCarryFollowPreset CarryFollowPreset { get; private set; }
+        private float carryFollowSpeedBaseline = .5f;
+        public EasySuiteCarryWalkingLag CarryWalkingLagMode { get; private set; } = EasySuiteCarryWalkingLag.All;
+        public const string CarryWalkingLagAllKey = "menu.carryWalkingLag.all";
+        public const string CarryWalkingLagNoForwardKey = "menu.carryWalkingLag.noForward";
+        public const string CarryWalkingLagNoneKey = "menu.carryWalkingLag.none";
+        public const string CarryWalkingLagNoticeKey = "lab.carryWalkingLag.changed";
+        private GrabAction carryWalkingLagGrab;
+        private Vector3 carryWalkingLagBaseline;
+        private bool carryWalkingLagCaptured;
         private CancellationTokenSource lifetime;
         private bool worldInitialized, subscribed, closeAfterSelection;
         private InputAction menu, build, save, load, interactionMenu;
@@ -73,7 +95,6 @@ namespace EasySuite.Example
         private readonly List<PlacedBuilding> nearBuildings = new List<PlacedBuilding>();
         private readonly Dictionary<WindowDefinition, UIWindow> preparedWindows = new Dictionary<WindowDefinition, UIWindow>();
         private BuildingSession observedSession;
-        private StatusController targetStatuses;
         private string noticeKey, noticeFallback;
 
         private void OnEnable()
@@ -90,8 +111,8 @@ namespace EasySuite.Example
                 if (Abilities && PaidAbility) Abilities.Configure(new[] { PaidAbility });
                 menu = Player.Action("Suite/Menu"); build = Player.Action("Suite/Build");
                 save = Player.Action("Suite/Save"); load = Player.Action("Suite/Load"); interactionMenu = Player.Action("Suite/InteractionMenu");
+                CaptureCarryWalkingLagBaseline();
                 Saves = new EasySuiteSave(this);
-                targetStatuses = TargetHealth.GetComponent<StatusController>();
                 worldInitialized = true; Connect(); InitializePresentation(lifetime.Token);
             }
             catch (Exception exception) { Message(exception.Message); Debug.LogException(exception, this); }
@@ -103,7 +124,8 @@ namespace EasySuite.Example
                 save.performed += SavePressed; load.performed += LoadPressed; interactionMenu.performed += InteractionMenuPressed;
                 Wallet.Changed += Dirty; Stock.Changed += Dirty; Player.PresentationChanged += Dirty;
                 PlayerHealth.Changed += HealthChanged; TargetHealth.Changed += HealthChanged;
-                if (targetStatuses) targetStatuses.Changed += Dirty;
+                TargetHealth.RewardCompleted += RewardCompleted;
+                TargetHealth.StatusesChanged += Dirty;
                 Presenter.Changed += PromptChanged; Texts.Changed += TextsChanged;
                 Placer.System.Placed += BuildingPlaced; Placer.System.Removed += BuildingRemoved;
                 Placer.SessionChanged += SessionChanged; SessionChanged(Placer.Session);
@@ -134,6 +156,14 @@ namespace EasySuite.Example
             if (Notice) Notice.text = LastMessage;
         }
         private void HealthChanged(HealthChange _) => Dirty();
+        private void RewardCompleted(DeathResourceRewardResult result)
+        {
+            if (IsRestoring) return;
+            Message(result.Granted
+                ? T("lab.rewarded", "Target defeated. Coins and crystals were added to your wallet. Tab > Reset combat target starts another life.")
+                : T("lab.rewardFailed.health", "The target reward was rejected; inspect Health > Enable Death Reward on Combat Target.") + " " + result.Failure + " " + result.Error);
+            Dirty();
+        }
         private void PromptChanged(InteractionPrompt _) => Dirty();
         private void BuildingPlaced(PlacedBuilding _) { if (!IsRestoring) PlacedCount++; Dirty(); }
         private void BuildingRemoved(PlacedBuilding _) => Dirty();
@@ -238,11 +268,65 @@ namespace EasySuite.Example
             catch (OperationCanceledException) { }
             catch (Exception e) { if (this && isActiveAndEnabled && ReferenceEquals(Saves, session)) Message(e.Message); }
         }
+        public string CarryWalkingLagLabelKey => CarryWalkingLagMode == EasySuiteCarryWalkingLag.NoForward ? CarryWalkingLagNoForwardKey :
+            CarryWalkingLagMode == EasySuiteCarryWalkingLag.NoWalking ? CarryWalkingLagNoneKey : CarryWalkingLagAllKey;
+        public string CarryWalkingLagLabelFallback => CarryWalkingLagMode == EasySuiteCarryWalkingLag.NoForward ? "Carry walking lag: no forward / back" :
+            CarryWalkingLagMode == EasySuiteCarryWalkingLag.NoWalking ? "Carry walking lag: off" : "Carry walking lag: all axes";
+
+        private void CaptureCarryWalkingLagBaseline()
+        {
+            if (carryWalkingLagCaptured) return;
+            carryWalkingLagGrab = Crate ? Crate.GetComponent<GrabAction>() : null;
+            if (!carryWalkingLagGrab) throw new InvalidOperationException("Restore the Playground crate's Grab Action before comparing carry inertia.");
+            carryWalkingLagBaseline = ReadMovementInertia(carryWalkingLagGrab);
+            CarryWalkingLagMode = EasySuiteCarryWalkingLag.All;
+            carryFollowSpeedBaseline = carryWalkingLagGrab.FollowSpeed;
+            CarryFollowPreset = EasySuiteCarryFollowPreset.Authored;
+            carryWalkingLagCaptured = true;
+        }
+
+        public void CycleCarryWalkingLag()
+        {
+            CaptureCarryWalkingLagBaseline();
+            var next = (EasySuiteCarryWalkingLag)(((int)CarryWalkingLagMode + 1) % 3);
+            var mask = next == EasySuiteCarryWalkingLag.NoForward ? new Vector3(1, 1, 0) :
+                next == EasySuiteCarryWalkingLag.NoWalking ? Vector3.zero : Vector3.one;
+            // All restores the exact authored vector captured at startup, including custom per-axis values.
+            WriteMovementInertia(carryWalkingLagGrab, Vector3.Scale(carryWalkingLagBaseline, mask));
+            CarryWalkingLagMode = next;
+            CarryWalkingLagChanged?.Invoke();
+            noticeKey = CarryWalkingLagNoticeKey;
+            noticeFallback = "Close Tab: compare W/S and A/D. The walking-lag setting changes movement axes; Follow Speed changes physical response.";
+            RefreshLocalizedNotice();
+        }
+
+        public float CarryFollowSpeedValue => carryWalkingLagGrab ? carryWalkingLagGrab.FollowSpeed : carryFollowSpeedBaseline;
+        public string CarryFollowSpeedLabelKey => CarryFollowPreset == EasySuiteCarryFollowPreset.Soft ? CarryFollowSoftKey :
+            CarryFollowPreset == EasySuiteCarryFollowPreset.Firm ? CarryFollowFirmKey : CarryFollowAuthoredKey;
+        public string CarryFollowSpeedLabelFallback => string.Format(System.Globalization.CultureInfo.InvariantCulture,
+            CarryFollowPreset == EasySuiteCarryFollowPreset.Soft ? "Follow speed: soft · {0:0.##}" :
+            CarryFollowPreset == EasySuiteCarryFollowPreset.Firm ? "Follow speed: firm · {0:0.##}" : "Follow speed: authored · {0:0.##}", CarryFollowSpeedValue);
+
+        public void CycleCarryFollowSpeed()
+        {
+            CaptureCarryWalkingLagBaseline();
+            CarryFollowPreset = (EasySuiteCarryFollowPreset)(((int)CarryFollowPreset + 1) % 3);
+            carryWalkingLagGrab.FollowSpeed = CarryFollowPreset == EasySuiteCarryFollowPreset.Soft ? 0 :
+                CarryFollowPreset == EasySuiteCarryFollowPreset.Firm ? 1 : carryFollowSpeedBaseline;
+            CarryFollowSpeedChanged?.Invoke();
+            noticeKey = CarryFollowNoticeKey;
+            noticeFallback = "Close Tab: compare soft (0) and firm (1) follow. Walking lag is separate. E release · G throw.";
+            RefreshLocalizedNotice();
+        }
+
+        private static Vector3 ReadMovementInertia(GrabAction grab) => grab.MovementLag;
+        private static void WriteMovementInertia(GrabAction grab, Vector3 value) => grab.MovementLag = value;
+
         public void AddResources() { Wallet.Add(Wood, 20 * Wood.UnitsPerWhole); Wallet.Add(Mana, 20 * Mana.UnitsPerWhole); Message(T("lab.added", "Added 20 wood and 20 energy.")); }
         public void DamagePlayer() { PlayerHealth.ApplyDamage(new DamageInfo(25)); Dirty(); }
         public void KillPlayer() { PlayerHealth.ApplyDamage(new DamageInfo(PlayerHealth.Maximum + 1)); Message(T("lab.dead", "Player defeated. F9 loads your save; Tab still opens the lab menu.")); }
         public void RevivePlayer() { PlayerHealth.ResetToFull(); Dirty(); }
-        public void ResetTarget() { TargetHealth.ResetToFull(); TargetHealth.GetComponent<StatusController>()?.Clear(); Dirty(); }
+        public void ResetTarget() { TargetHealth.ResetToFull(); TargetHealth.ClearStatuses(); Dirty(); }
         public void RepairNearest()
         {
             Placer.System.GetBuildings(nearBuildings);
@@ -288,14 +372,15 @@ namespace EasySuite.Example
             if (closeAfterSelection) { closeAfterSelection = false; Windows.CloseAll(); }
             if (!Ready || !hudDirty) return; hudDirty = false;
             string statusText = "";
-            if (targetStatuses && targetStatuses.Count > 0)
+            if (TargetHealth.StatusCount > 0)
             {
-                var active = targetStatuses.GetStatus(0);
+                var active = TargetHealth.Statuses.GetStatus(0);
                 statusText = "  ·  " + (string.IsNullOrWhiteSpace(active.Definition.DisplayName) ? active.Definition.name : active.Definition.DisplayName) + " ×" + active.Stacks;
             }
             Hud.text = T("lab.hp", "HEALTH") + " " + PlayerHealth.Current.ToString("F0") + " / " + PlayerHealth.Maximum.ToString("F0") +
                 "     " + T("lab.wood", "WOOD") + " " + Wood.Format(Wallet.GetAvailable(Wood)) + "     " + T("lab.energy", "ENERGY") + " " + Mana.Format(Wallet.GetAvailable(Mana)) +
-                "\n" + T("lab.target", "TARGET") + " " + TargetHealth.Current.ToString("F0") + statusText + "     " + T("lab.built", "BUILT") + " " + Placer.System.Count + "     " + Character.GetMaxSpeed().ToString("F1") + " m/s";
+                "\n" + T("lab.target", "TARGET") + " " + TargetHealth.Current.ToString("F0") + statusText + "     " + T("lab.built", "BUILT") + " " + Placer.System.Count + "     " + Character.GetMaxSpeed().ToString("F1") + " m/s" +
+                (Coin && Crystal ? "\n" + T("lab.coins", "COINS") + " " + Coin.Format(Wallet.GetAvailable(Coin)) + "     " + T("lab.crystals", "CRYSTALS") + " " + Crystal.Format(Wallet.GetAvailable(Crystal)) : "");
             var prompt = Presenter.Prompt;
             Prompt.text = prompt.Action ? (prompt.Available ? "[" + prompt.Binding + "] " : "") + prompt.Label + (prompt.Running ? "  " + (prompt.Progress * 100).ToString("F0") + "%" : "") +
                 (prompt.Available ? "" : "\n" + prompt.Reason) : T("lab.hint", "E · interact   H · actions   T · build   Tab · menu   F5 / F9 · save / load");
@@ -319,7 +404,8 @@ namespace EasySuite.Example
             if (Wallet) Wallet.Changed -= Dirty; if (Stock) Stock.Changed -= Dirty;
             if (Player) Player.PresentationChanged -= Dirty;
             if (PlayerHealth) PlayerHealth.Changed -= HealthChanged; if (TargetHealth) TargetHealth.Changed -= HealthChanged;
-            if (targetStatuses) targetStatuses.Changed -= Dirty;
+            if (TargetHealth) TargetHealth.RewardCompleted -= RewardCompleted;
+            if (TargetHealth) TargetHealth.StatusesChanged -= Dirty;
             if (Presenter) Presenter.Changed -= PromptChanged; if (Texts) Texts.Changed -= TextsChanged;
             if (Placer && Placer.System) { Placer.System.Placed -= BuildingPlaced; Placer.System.Removed -= BuildingRemoved; }
             if (Placer) Placer.SessionChanged -= SessionChanged;

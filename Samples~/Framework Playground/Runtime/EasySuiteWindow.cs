@@ -4,12 +4,14 @@ using UnityEngine.UI;
 
 namespace EasySuite.Example
 {
-    public enum EasySuiteCommand { Controls, Buildings, InteractionActions, Language, Save, Load, AddResources, DamagePlayer, KillPlayer, RevivePlayer, ResetTarget, Repair, Close, PaidAbility, SavePreferences, LoadPreferences }
+    // Append new commands: existing prefab values 0..16 must keep their meaning.
+    public enum EasySuiteCommand { Controls, Buildings, InteractionActions, Language, Save, Load, AddResources, DamagePlayer, KillPlayer, RevivePlayer, ResetTarget, Repair, Close, PaidAbility, SavePreferences, LoadPreferences, CycleCarryWalkingLag, CycleCarryFollowSpeed }
 
     [RequireComponent(typeof(UIWindow))]
     public sealed class EasySuiteWindow : MonoBehaviour
     {
         private EasySuiteLab lab;
+        public EasySuiteLab Lab => lab;
         private WindowHandle handle;
         public void Bind(EasySuiteLab owner, WindowHandle window)
         {
@@ -36,6 +38,8 @@ namespace EasySuite.Example
                 case EasySuiteCommand.ResetTarget: lab.ResetTarget(); break;
                 case EasySuiteCommand.Repair: lab.RepairNearest(); break;
                 case EasySuiteCommand.PaidAbility: lab.CastPaidAbility(); break;
+                case EasySuiteCommand.CycleCarryWalkingLag: lab.CycleCarryWalkingLag(); break;
+                case EasySuiteCommand.CycleCarryFollowSpeed: lab.CycleCarryFollowSpeed(); break;
                 case EasySuiteCommand.Close: handle?.Close(); break;
             }
         }

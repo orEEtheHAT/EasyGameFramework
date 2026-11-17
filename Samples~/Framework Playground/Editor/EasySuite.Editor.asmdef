@@ -45,7 +45,8 @@
     "Unity.InputSystem",
     "Unity.Localization",
     "Unity.Localization.Editor",
-    "UnityEngine.UI"
+    "UnityEngine.UI",
+    "EasyResources.Editor"
   ],
   "includePlatforms": [
     "Editor"

@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using EasyGameFramework.Editor;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 
 namespace EasyUI.Tests.Setup
@@ -46,12 +47,18 @@ namespace EasyUI.Tests.Setup
             foreach (var module in modules) Assert.IsNotNull(FrameworkSetupCatalog.DocumentationPath(package, module.Guide), module.Name);
             Assert.IsNull(FrameworkSetupCatalog.DocumentationPath(package, "../manifest.json"), "Links cannot escape the package.");
         }
-        [Test] public void WelcomeIsOncePerProjectVersionAndDoesNotUsePlayerPreferences()
+        [Test] public void WelcomeIsOncePerProjectIncludingPackageUpdates()
         {
-            Assert.IsTrue(FrameworkSetupWelcome.ShouldShow("0.1.0", null));
-            Assert.IsFalse(FrameworkSetupWelcome.ShouldShow("0.1.0", "0.1.0"));
-            Assert.IsTrue(FrameworkSetupWelcome.ShouldShow("0.2.0", "0.1.0"));
-            Assert.IsFalse(FrameworkSetupWelcome.ShouldShow(null, "0.1.0"));
+            Assert.IsTrue(FrameworkSetupWelcome.ShouldShow("0.1.0", false));
+            Assert.IsFalse(FrameworkSetupWelcome.ShouldShow("0.1.0", true));
+            Assert.IsFalse(FrameworkSetupWelcome.ShouldShow("0.2.0", true));
+            Assert.IsFalse(FrameworkSetupWelcome.ShouldShow(null, false));
+        }
+        [Test] public void PersistentWelcomeStateHasItsOwnReloadableScript()
+        {
+            var script = MonoScript.FromScriptableObject(FrameworkSetupWelcomeState.instance);
+            Assert.IsNotNull(script, "Welcome state must have a persistent script association.");
+            Assert.AreEqual(typeof(FrameworkSetupWelcomeState), script.GetClass(), "Keep the state in its own matching script file so native reload can restore it.");
         }
         [Test] public void OpeningRefreshingAndClosingSetupKeepsCombatSelectionAndAssetUnchanged()
         {

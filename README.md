@@ -5,10 +5,10 @@ An integrated Unity 6.3 URP toolkit with twelve focused modules. Install one pac
 ## First project
 
 1. Create a Unity 6.3 **URP** project and install your licensed **Easy Character Movement 2 (ECM2)** asset.
-2. In Package Manager, choose **Install package from git URL** and enter `https://github.com/orEEtheHAT/EasyGameFramework.git#v0.1.0`. Unity Input System, Cinemachine, VFX Graph, Localization and the other declared Unity dependencies are resolved by the package manifest.
+2. In Package Manager, choose **Install package from git URL** and enter `https://github.com/orEEtheHAT/EasyGameFramework.git#v0.2.0`. Unity Input System, Cinemachine, VFX Graph, Localization and the other declared Unity dependencies are resolved by the package manifest.
 3. Select **Input System Package (New)** for Active Input Handling if the project does not already use it; complete Unity's requested restart.
-4. Open **Tools > EasyGameFramework > Setup**. Resolve the actionable diagnostics. Projectile processing defaults to **Parallel**; select **Single Thread** when needed. Closing Setup does not overwrite your choice.
-5. Import **Framework Playground** from this package's Samples tab, then choose **Tools > EasyGameFramework > Examples > Create Framework Playground**. Enter Play Mode. The example creates its own definitions, feedbacks and localization content.
+4. Open **Tools > EasyGameFramework > Setup**. Resolve the actionable diagnostics. Projectile processing defaults to **Parallel**; select **Single Thread** when needed. Setup opens automatically once per project; later access is through the menu. Closing it does not overwrite your choice.
+5. Import **Framework Playground** from this package's Samples tab, then choose **Tools > EasyGameFramework > Examples > Create or Update Framework Playground**. Enter Play Mode. The example creates its own definitions, feedbacks and localization content.
 
 The standalone Easy packages and this framework define overlapping assemblies. Use the framework as the single source of these modules in a project. Existing standalone EasyFeedbacks installations in other projects can continue using their own releases.
 
@@ -23,7 +23,7 @@ The standalone Easy packages and this framework define overlapping assemblies. U
 | [EasyCombat](Modules/EasyCombat/README.md) | Health, protection, damage delivery, statuses, areas and abilities |
 | [EasyInteraction](Modules/EasyInteraction/README.md) | Selection, actions, physical carrying and interaction presentation |
 | [EasyBuilding](Modules/EasyBuilding/README.md) | Free, zone, grid and socket placement with transactional costs |
-| [EasyResources](Modules/EasyResources/README.md) | Resource definitions, containers, reservations and operations |
+| [EasyResources](Modules/EasyResources/README.md) | Resource database, containers, reservations and ranged rewards |
 | [EasyFeedbacks](Modules/EasyFeedbacks/README.md) | Audio, visuals, camera shake, haptics and music |
 | [EasyInput](Modules/EasyInput/README.md) | Player input, rebinding, sensitivity, devices and button presentation |
 | [EasyUI](Modules/EasyUI/README.md) | Windows, focus, nested navigation, dialogs and radial menus |

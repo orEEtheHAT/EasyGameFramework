@@ -1,7 +1,7 @@
 {
   "name": "com.oreethehat.easy-game-framework",
   "displayName": "EasyGameFramework",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "unity": "6000.3",
   "description": "Twelve integrated game-development modules: movement, combat, interaction, building, resources, feedbacks, input, UI, localization, saving, URP settings and a small shared core.",
   "author": {

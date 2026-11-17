@@ -469,12 +469,11 @@ namespace EasySuite.Example
             bool sawArea = false, sawStatus = false, sawProjectile = false;
             Require(Lab.Weapon.TryFire(origin, direction), "The public emitter rejected a controlled shot near the target.");
             double end = Time.realtimeSinceStartupAsDouble + 7;
-            var statuses = Lab.TargetHealth.GetComponent<StatusController>();
             while (Time.realtimeSinceStartupAsDouble < end)
             {
                 sawProjectile |= Lab.Weapon.Pool.ActiveCount > 0;
                 sawArea |= Lab.Weapon.AreaPool.ActiveCount > areasBefore;
-                sawStatus |= statuses && statuses.Count > 0;
+                sawStatus |= Lab.TargetHealth.StatusCount > 0;
                 if (Lab.TargetHealth.Current < before && sawStatus && (!attack.ImpactArea || sawArea)) break;
                 yield return null;
             }
