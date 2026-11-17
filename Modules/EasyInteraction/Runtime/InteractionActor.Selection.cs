@@ -9,7 +9,7 @@ namespace EasyInteraction
     public sealed partial class InteractionActor
     {
         [SerializeField]
-        private InteractionSelectionMode selectionMode;
+        private InteractionSelectionMode selectionMode = InteractionSelectionMode.Focus;
         [SerializeField, Min(.1f)]
         private float range = 3;
         [SerializeField, Range(1, 179)]

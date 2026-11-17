@@ -93,6 +93,8 @@ namespace EasyInteraction.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+            if (!actor.GetComponent<InteractionFocusHighlighter>() && GUILayout.Button("Add focus outline highlighter (opt-in)"))
+                Undo.AddComponent<InteractionFocusHighlighter>(actor.gameObject);
             bool hasInput = false;
             foreach (var component in actor.GetComponents<MonoBehaviour>())
                 if (component is IInteractionInputSource) { hasInput = true; break; }
@@ -142,11 +144,11 @@ namespace EasyInteraction.Editor
             "onCancelled",
             "onProgress"
         };
-        private void Field(string name)
+        private void Field(string name, string label = null, string tooltip = null)
         {
             var property = serializedObject.FindProperty(name);
             if (property != null)
-                EditorGUILayout.PropertyField(property, true);
+                EditorGUILayout.PropertyField(property, label == null ? null : new GUIContent(label, tooltip), true);
         }
 
         public override void OnInspectorGUI()
@@ -169,11 +171,25 @@ namespace EasyInteraction.Editor
 
             if (action is GrabAction)
             {
-                Field("rotationMode");
-                Field("holdOffset");
-                if (serializedObject.FindProperty("rotationMode").intValue == (int)GrabRotation.Stabilized)
-                    Field("inertia");
-                EditorGUILayout.HelpBox("Hold Point overrides Actor Hand Anchor; either anchor overrides Hold Distance and inspection distance. Without an anchor, zero Hold Offset holds the item centred in front of View at Hold Distance. Offset uses the chosen point's local axes in metres. Grip Point selects the point on the item (otherwise centre of mass).", MessageType.Info);
+                Field("poseMode");
+                bool authored = serializedObject.FindProperty("poseMode").intValue == (int)GrabPoseMode.AuthoredPose;
+                if (authored)
+                {
+                    Field("localPosition");
+                    Field("localEulerAngles");
+                }
+                else
+                {
+                    Field("rotationMode");
+                    Field("holdOffset");
+                }
+                Field("followSpeed", "Follow Speed", "0 = soft, slower return; 1 = firm, faster return. Controls both position and driven rotation. Contacts can still block the dynamic Rigidbody.");
+                Field("movementLag", "Movement Lag (XYZ)", "Walking lag per movement-reference axis: X side, Y up, Z forward. 0 compensates walking velocity damping on that axis; 1 keeps it. Contacts and body damping can still delay the body. Independent of camera turning.");
+                Field("heldScaleMultiplier");
+                if (authored) GrabPoseAuthoring.DrawInspector((GrabAction)action, serializedObject);
+                EditorGUILayout.HelpBox(authored
+                    ? "Authored Pose is the default. Edit Hold Pose opens Scene View handles without moving the scene item. Local Position uses Hold Point > Hand Anchor > View axes in metres, without frame scale. View adds Hold Distance; anchors replace distance. Rotation is for the Rigidbody root; Grip Point changes only the positioned point. Follow Speed controls the physical return; contacts can block the item. Movement Lag controls walking separately."
+                    : "Hold Point overrides Actor Hand Anchor; either anchor overrides Hold Distance and inspection distance. Without an anchor, zero Hold Offset holds the item centred in front of View at Hold Distance. Offset uses the chosen point's local axes in metres. Grip Point selects the point on the item (otherwise centre of mass).", MessageType.Info);
             }
 
             EditorGUI.BeginChangeCheck();
@@ -209,12 +225,8 @@ namespace EasyInteraction.Editor
                     {
                         "gripPoint",
                         "holdPoint",
+                        "movementReference",
                         "ignoreOwnerCollisions",
-                        "maximumPositionLag",
-                        "maximumRotationLag",
-                        "frequency",
-                        "dampingRatio",
-                        "maximumAcceleration",
                         "breakDistance",
                         "minimumDistance",
                         "maximumDistance",
@@ -283,7 +295,12 @@ namespace EasyInteraction.Editor
             if (action is GrabAction grab && grab.Body && grab.Body.isKinematic)
                 EditorGUILayout.HelpBox("Grab requires a dynamic Rigidbody. Turn off Is Kinematic. A socket temporarily makes an inserted item kinematic.", MessageType.Warning);
             if (action is GrabAction configuredGrab && configuredGrab.GripPoint && configuredGrab.GripPoint.GetComponentInParent<Rigidbody>() != configuredGrab.Body)
-                EditorGUILayout.HelpBox("Grip Point must belong to this item's Rigidbody. Move it under the held body or clear the reference to use its centre of mass.", MessageType.Error);
+                EditorGUILayout.HelpBox("Grip Point must belong to this item's Rigidbody. Move it under the held body or clear it to use the root (Authored Pose) or centre of mass (Preserve Pickup Pose).", MessageType.Error);
+            if (action is GrabAction anchoredGrab && anchoredGrab.HoldPoint && anchoredGrab.HoldPoint.IsChildOf(anchoredGrab.transform))
+                EditorGUILayout.HelpBox("Hold Point must be outside the held item. Clear it to use Actor Hand Anchor or View; use Grip Point for a point on the item.", MessageType.Error);
+            if (action is GrabAction referencedGrab && referencedGrab.MovementReference &&
+                (referencedGrab.MovementReference == referencedGrab.transform || referencedGrab.MovementReference.IsChildOf(referencedGrab.transform)))
+                EditorGUILayout.HelpBox("Movement Reference must move the rig, not the held body. Do not assign this item or its children. Clear the reference to use automatic PlayerRoot / hold-frame resolution.", MessageType.Error);
             if (action is MechanicalAction mechanical && mechanical.Motion == MechanicalMotion.Linear && mechanical.Maximum <= mechanical.Minimum)
                 EditorGUILayout.HelpBox("Set Maximum above Minimum to give the handle a visible drag distance. Axis is local to Moving Part; input uses the Analog gesture.", MessageType.Warning);
             if (action.Execution == InteractionExecutionMode.AnimationEvent)
@@ -296,7 +313,7 @@ namespace EasyInteraction.Editor
     [CustomEditor(typeof(InteractionTarget))]
     public sealed class InteractionTargetEditor : UnityEditor.Editor
     {
-        private bool persistence;
+        private bool persistence, outlineSettings;
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
@@ -310,6 +327,10 @@ namespace EasyInteraction.Editor
 
             )
                 EditorGUILayout.PropertyField(serializedObject.FindProperty(name), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("highlightWhenFocused"), new GUIContent("Focus Outline"));
+            outlineSettings = EditorGUILayout.Foldout(outlineSettings, "Advanced outline geometry", true);
+            if (outlineSettings)
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("outlineRenderers"), new GUIContent("Outline Renderers (optional)"), true);
             var item = (InteractionTarget)target;
             bool usable = false;
             foreach (var collider in item.GetComponentsInChildren<Collider>())

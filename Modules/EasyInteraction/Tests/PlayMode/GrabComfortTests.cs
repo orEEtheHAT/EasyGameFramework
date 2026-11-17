@@ -138,7 +138,7 @@ namespace EasyInteraction.Tests
 
         [Test] public void CentredOffsetAndExplicitAnchorPriorityConverge()
         {
-            var grab = Crate(); Begin(grab); Steps(grab, 100);
+            var grab = Crate(); grab.PoseMode = GrabPoseMode.PreservePickupPose; Begin(grab); Steps(grab, 100);
             Assert.Less(Vector3.Distance(grab.GripPosition, actor.View.position + actor.View.forward * 2), .02f);
             grab.HoldOffset = new Vector3(.25f, -.15f, .1f); actor.View.rotation = Quaternion.Euler(0, 35, 0); Steps(grab, 150);
             Assert.Less(Vector3.Distance(grab.GripPosition, actor.View.position + actor.View.rotation * new Vector3(.25f, -.15f, 2.1f)), .025f);
@@ -166,21 +166,33 @@ namespace EasyInteraction.Tests
             Assert.Less(Vector3.Distance(grab.GripPosition, actor.View.position + actor.View.forward * .65f), .035f);
         }
 
-        [Test] public void InertiaIsBoundedAndZeroDisablesTargetLagWithoutTeleporting()
+        [Test] public void ChangingFollowSpeedWhileHeldPreservesMomentumAndUsesBoundedPhysicalMotion()
         {
-            var grab = Crate(); Begin(grab); var original = grab.Body.position;
-            actor.View.rotation = Quaternion.Euler(0, 90, 0); Steps(grab, 1);
-            var field = typeof(GrabAction).GetField("smoothedPosition", BindingFlags.Instance | BindingFlags.NonPublic);
-            var target = actor.View.position + actor.View.forward * 2;
-            Assert.LessOrEqual(Vector3.Distance((Vector3)field.GetValue(grab), target), grab.MaximumPositionLag + .001f);
+            var grab = Crate(); Begin(grab); Steps(grab, 100);
+            grab.Body.linearVelocity = new Vector3(.3f, -.2f, .1f); grab.Body.angularVelocity = Vector3.up * .2f;
+            var original = grab.Body.position; var rotation = grab.Body.rotation;
+            var velocity = grab.Body.linearVelocity; var angular = grab.Body.angularVelocity;
+            foreach (float speed in new[] { 0f, 1f, .5f })
+            {
+                grab.FollowSpeed = speed;
+                Assert.AreEqual(original, grab.Body.position); Assert.AreEqual(rotation, grab.Body.rotation);
+                Assert.AreEqual(velocity, grab.Body.linearVelocity); Assert.AreEqual(angular, grab.Body.angularVelocity);
+            }
+            actor.View.rotation = Quaternion.Euler(0, 90, 0); Call(grab, "FixedUpdate")();
+            Assert.AreEqual(original, grab.Body.position); Assert.AreEqual(velocity, grab.Body.linearVelocity);
+            Assert.LessOrEqual(grab.Body.GetAccumulatedForce(Time.fixedDeltaTime).magnitude / grab.Body.mass, 80.002f);
+            Physics.Simulate(Time.fixedDeltaTime);
+            Assert.Greater(Vector3.Distance(grab.Body.position, original), .001f);
             Assert.Less(Vector3.Distance(grab.Body.position, original), .1f, "Only forces may move the body.");
-            grab.Inertia = 0; Steps(grab, 1); Assert.Less(Vector3.Distance((Vector3)field.GetValue(grab), target), .001f);
+            Steps(grab, 150);
+            Assert.IsTrue(grab.IsHeld); Assert.IsFalse(grab.Body.isKinematic);
+            Assert.Less(Vector3.Distance(grab.GripPosition, actor.View.position + actor.View.forward * 2), .03f);
             Assert.AreEqual(0, (int)GrabRotation.Free); Assert.AreEqual(1, (int)GrabRotation.KeepInitial); Assert.AreEqual(2, (int)GrabRotation.FollowView);
         }
 
         [Test] public void FreeModeKeepsItsUnconstrainedAngularMotion()
         {
-            var grab = Crate(); grab.RotationMode = GrabRotation.Free; Begin(grab); grab.Body.angularVelocity = Vector3.up * 6;
+            var grab = Crate(); grab.PoseMode = GrabPoseMode.PreservePickupPose; grab.RotationMode = GrabRotation.Free; Begin(grab); grab.Body.angularVelocity = Vector3.up * 6;
             Steps(grab, 50); Assert.Greater(grab.Body.angularVelocity.magnitude, 4);
         }
 
@@ -213,9 +225,12 @@ namespace EasyInteraction.Tests
             Assert.IsTrue(grab.Body.useGravity); Assert.IsFalse(Physics.GetIgnoreCollision(grab.GetComponent<Collider>(), wall));
         }
 
-        [Test] public void WarmStableHoldAndCollisionMaintenanceHaveNoMainThreadAllocations()
+        [TestCase(GrabPoseMode.PreservePickupPose), TestCase(GrabPoseMode.AuthoredPose)]
+        public void WarmStableHoldAndCollisionMaintenanceHaveNoMainThreadAllocations(GrabPoseMode poseMode)
         {
-            var grab = Crate(); Begin(grab); var tick = Call(grab, "FixedUpdate"); var cleanup = CleanupCall();
+            var grab = Crate(); grab.PoseMode = poseMode; grab.LocalPosition = new Vector3(.2f, -.1f, .1f); grab.LocalEulerAngles = new Vector3(15, 70, -20);
+            grab.HeldScaleMultiplier = .5f;
+            Begin(grab); var tick = Call(grab, "FixedUpdate"); var cleanup = CleanupCall();
             bool previous = Profiler.enabled;
             try
             {

@@ -16,6 +16,10 @@ namespace EasyInteraction
         private int focusPriority;
         [SerializeField]
         private Transform[] extraFocusPoints = Array.Empty<Transform>();
+        [SerializeField, Tooltip("Allow an observing Actor's Focus Highlighter to outline this target. Held Grab items remain suppressed for every observer.")]
+        private bool highlightWhenFocused = true;
+        [SerializeField, Tooltip("Optional static MeshRenderers for focus outline geometry. Empty discovers child meshes belonging to this nearest Target. Style and camera belong to the observing Actor's Focus Highlighter.")]
+        private Renderer[] outlineRenderers = Array.Empty<Renderer>();
         [SerializeField, Tooltip("Stable identity for saving/networking. Assign unique IDs to runtime spawns from their world data.")]
         private string persistentId;
         private static readonly Dictionary<Collider, InteractionTarget> owners = new Dictionary<Collider, InteractionTarget>();
@@ -28,6 +32,7 @@ namespace EasyInteraction
         private readonly List<QueueEntry> queue = new List<QueueEntry>(4);
         private System.Collections.ObjectModel.ReadOnlyCollection<InteractionAction> actionView;
         private string cachedObjectName;
+        private FocusOutlineGeometry outlineGeometry;
         private struct Claim
         {
             public InteractionActor Actor;
@@ -58,6 +63,47 @@ namespace EasyInteraction
         public Transform FocusPoint { get => focusPoint; set => focusPoint = value; }
         public int FocusPriority { get => focusPriority; set => focusPriority = value; }
         public Transform[] ExtraFocusPoints { get => extraFocusPoints; set => extraFocusPoints = value ?? Array.Empty<Transform>(); }
+        public bool HighlightWhenFocused
+        {
+            get => highlightWhenFocused;
+            set
+            {
+                highlightWhenFocused = value;
+                if (!value) ReleaseOutlineGeometry();
+            }
+        }
+        public Renderer[] OutlineRenderers
+        {
+            get => outlineRenderers;
+            set { outlineRenderers = value ?? Array.Empty<Renderer>(); RefreshOutlineRenderers(); }
+        }
+        public void RefreshOutlineRenderers()
+        {
+            if (!highlightWhenFocused || !isActiveAndEnabled) ReleaseOutlineGeometry();
+            else outlineGeometry?.Refresh();
+        }
+
+        internal bool IsHeldForHighlight
+        {
+            get
+            {
+                for (int i = 0; i < actions.Count; i++)
+                    if (actions[i] && actions[i] is GrabAction grab && grab.IsHeld) return true;
+                return false;
+            }
+        }
+
+        internal FocusOutlineGeometry GetFocusOutlineGeometry()
+        {
+            if (!highlightWhenFocused || !isActiveAndEnabled) return null;
+            return outlineGeometry ?? (outlineGeometry = new FocusOutlineGeometry(this));
+        }
+
+        private void ReleaseOutlineGeometry()
+        {
+            outlineGeometry?.Dispose();
+            outlineGeometry = null;
+        }
         public IReadOnlyList<InteractionAction> Actions => actionView ?? (actionView = actions.AsReadOnly());
         internal List<InteractionCondition> Conditions => conditions;
         internal List<InteractionCost> Costs => costs;
@@ -180,6 +226,7 @@ namespace EasyInteraction
 
         private void OnDisable()
         {
+            ReleaseOutlineGeometry();
             InteractionWorld.Unregister(this);
             Unregister();
             for (int i = 0; i < actions.Count; i++)
@@ -191,6 +238,8 @@ namespace EasyInteraction
             queue.Clear();
         }
 
+        private void OnDestroy() => ReleaseOutlineGeometry();
+
         private void OnTransformChildrenChanged()
         {
             if (isActiveAndEnabled)
@@ -199,6 +248,7 @@ namespace EasyInteraction
 
         public void Refresh()
         {
+            RefreshOutlineRenderers();
             cachedObjectName = gameObject.name;
             Unregister();
             GetComponents(actions);
@@ -311,6 +361,9 @@ namespace EasyInteraction
 
         private void Update()
         {
+            // Geometry has no update component. Maintain cached sources even when no queue/focus exists.
+            if (!highlightWhenFocused) ReleaseOutlineGeometry();
+            else outlineGeometry?.Maintain();
             if (queue.Count == 0)
                 return;
             var first = queue[0];

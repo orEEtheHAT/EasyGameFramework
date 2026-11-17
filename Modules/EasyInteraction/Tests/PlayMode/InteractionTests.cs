@@ -179,6 +179,7 @@ namespace EasyInteraction.Tests
         [Test]
         public void RayBufferOverflowStillIgnoresAllPlayerColliders()
         {
+            actor.SelectionMode = InteractionSelectionMode.Raycast;
             for (int i = 0; i < 40; i++)
             {
                 var child = Cube("Self", new Vector3(0, 10, .3f + i * .04f), new Vector3(.1f, .1f, .01f));

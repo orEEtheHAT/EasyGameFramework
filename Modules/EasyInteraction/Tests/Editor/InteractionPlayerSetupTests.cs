@@ -65,6 +65,7 @@ namespace EasyInteraction.Tests.Editor
         {
             var character = NewRoot("Player").AddComponent<FirstPersonCharacterController>();
             var actor = InteractionPlayerSetup.Configure(character);
+            Assert.AreEqual(InteractionSelectionMode.Focus, actor.SelectionMode);
             Assert.AreSame(actor, InteractionPlayerSetup.Configure(character));
             Assert.AreEqual(1, character.GetComponentsInChildren<InteractionActor>(true).Length);
             Assert.AreEqual(1, actor.GetComponents<EasyInteractionInput>().Length);
@@ -116,6 +117,12 @@ namespace EasyInteraction.Tests.Editor
         public void NewGrabAndLinearHandleHaveUsableDefaults()
         {
             var grab = NewRoot("Grab").AddComponent<GrabAction>();
+            Assert.AreEqual(GrabPoseMode.AuthoredPose, grab.PoseMode);
+            Assert.AreEqual(Vector3.zero, grab.LocalPosition);
+            Assert.AreEqual(Vector3.zero, grab.LocalEulerAngles);
+            Assert.AreEqual(.5f, grab.FollowSpeed);
+            Assert.AreEqual(1, grab.HeldScaleMultiplier);
+            Assert.IsFalse(grab.Body.isKinematic);
             Assert.AreEqual(GrabRotation.Stabilized, grab.RotationMode);
             Assert.IsTrue(grab.IgnoreOwnerCollisions);
             Assert.AreEqual(Vector3.zero, grab.HoldOffset);
@@ -127,6 +134,41 @@ namespace EasyInteraction.Tests.Editor
             action.SetValue(1);
             Assert.AreEqual(Vector3.right, handle.transform.localPosition);
         // All fixture objects stay alive until scoped teardown has cleared their Undo records.
+        }
+
+        [Test]
+        public void SetupKeepsAnExistingExplicitRaycastSelection()
+        {
+            var character = NewRoot("Raycast player").AddComponent<FirstPersonCharacterController>();
+            var actor = character.gameObject.AddComponent<InteractionActor>();
+            actor.SelectionMode = InteractionSelectionMode.Raycast;
+            Assert.AreSame(actor, InteractionPlayerSetup.Configure(character));
+            Assert.AreSame(actor, InteractionPlayerSetup.Configure(character));
+            Assert.AreEqual(InteractionSelectionMode.Raycast, actor.SelectionMode);
+        }
+
+        [Test]
+        public void ExplicitPreserveSerializedModeSurvivesReloadWithoutChangingEnumValues()
+        {
+            var grab = NewRoot("Serialized grab").AddComponent<GrabAction>();
+            Assert.AreEqual(GrabPoseMode.AuthoredPose, grab.PoseMode);
+            Assert.AreEqual(1, new SerializedObject(grab).FindProperty("poseMode").intValue);
+            Assert.AreEqual(0, (int)GrabPoseMode.PreservePickupPose);
+            Assert.AreEqual(1, (int)GrabPoseMode.AuthoredPose);
+            grab.PoseMode = GrabPoseMode.PreservePickupPose;
+            grab.RotationMode = GrabRotation.Free;
+            grab.HoldOffset = new Vector3(.1f, -.2f, .3f);
+            grab.LocalEulerAngles = new Vector3(0, 45, 0);
+            var serialized = EditorJsonUtility.ToJson(grab);
+            grab.PoseMode = GrabPoseMode.AuthoredPose;
+            grab.RotationMode = GrabRotation.Stabilized;
+            grab.HoldOffset = Vector3.zero;
+            EditorJsonUtility.FromJsonOverwrite(serialized, grab);
+            Assert.AreEqual(GrabPoseMode.PreservePickupPose, grab.PoseMode);
+            Assert.AreEqual(0, new SerializedObject(grab).FindProperty("poseMode").intValue);
+            Assert.AreEqual(GrabRotation.Free, grab.RotationMode);
+            Assert.AreEqual(new Vector3(.1f, -.2f, .3f), grab.HoldOffset);
+            Assert.AreEqual(new Vector3(0, 45, 0), grab.LocalEulerAngles);
         }
 
         [Test]

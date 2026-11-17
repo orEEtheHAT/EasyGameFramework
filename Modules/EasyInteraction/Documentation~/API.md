@@ -57,13 +57,50 @@ CooperativeAction хранит WorkProgress у объекта. Пауза уча
 
 Grab требует динамический Rigidbody со столкновениями и допустимой массой. Ограниченная пружина работает в FixedUpdate. Grip Point находится на предмете, Hold Point/Hand Anchor — у участника. Отпускание возвращает изменённые настройки Rigidbody и сохраняет скорость. Пауза Grab не поддерживается.
 
-`GrabRotation.Stabilized`, `HoldOffset` и `Inertia` задают устойчивое удержание с ограниченным отставанием целевой позы. Нулевой offset с camera fallback означает точку перед View на HoldDistance; HoldPoint/HandAnchor сохраняют приоритет и заменяют расстояние. `IgnoreOwnerCollisions` по умолчанию исключает твёрдые пары владельца, а EasyMovement Motor через `IInteractionCollisionFilter.AcquireCollisionExclusion(Rigidbody)` дополнительно фильтрует ECM2 queries. Внутри игрока восстановление откладывается до расхождения. [Настройка, приоритеты, lifecycle и границы владения](GrabComfort.md).
+В `PreservePickupPose` режим поворота и HoldOffset сохраняют позу взятия; `AuthoredPose` задаёт LocalPosition/LocalEulerAngles. Нулевой offset с View fallback означает точку на HoldDistance; HoldPoint/HandAnchor заменяют расстояние. `IgnoreOwnerCollisions` по умолчанию исключает твёрдые пары владельца, а штатный EasyMovement Motor дополнительно фильтрует ECM2 queries. Восстановление внутри игрока откладывается до расхождения. [Приоритеты и lifecycle](GrabComfort.md).
 
-AdjustDistance, Rotate, Throw, TryTransferTo доступны из кода. Для двух рук: Max Participants = 2 и разные Hand Anchor. Передача проверяет получателя без промежуточного падения. Inspect работает с физически удерживаемым предметом.
+`AdjustDistance`, `Rotate`, `SetInspection`, `Throw`, `TryTransferTo` доступны из кода. Для двух рук: Max Participants = 2 и разные Hand Anchor. Передача проверяет получателя без промежуточного падения.
+
+```csharp
+grab.FollowSpeed = .5f;                    // 0 мягко/медленно, 1 плотно/быстро.
+grab.MovementLag = new Vector3(1, 1, 0);   // Убрать продольный walking drift.
+Transform reference = grab.GetMovementReference(actor);
+// После согласованного телепорта rig и удерживаемого тела:
+grab.ResetMotionTracking();               // Не перемещает тело и не меняет скорость.
+```
+
+`FollowSpeed` (0…1, default0.5) — единственная настройка физического возврата позиции и включённого поворота. Ноль задаёт мягкое удержание, не отключает его. Дополнительного фильтра цели нет. Внутренний демпфированный solver и пределы коррекции не являются публичной конфигурацией.
+
+`MovementLag` (XYZ0…1, default `(0.5,0.5,0.5)`) компенсирует выбранную постоянную поступательную скорость в демпфировании:0 убирает walking drift оси,1 оставляет его. Reference: явный override → Actor.PlayerRoot для своего hold frame → сам внешний frame. Неподвижный внешний HoldPoint не получает скорость несвязанного Actor. Поворот камеры остаётся обычной физической ошибкой пружины; автоматической camera velocity/acceleration поддержки нет. Контакты, разгон и fixed step могут задерживать тело. [Параметры](GrabActionParameters.ru.md#два-параметра-поведения).
 
 Socketable задаёт категорию, SocketAction — совместимость и Anchor. Вставка отпускает предмет у единственного владельца, выравнивает и фиксирует Rigidbody. Извлечение восстанавливает настройки. Предмет не становится дочерним сокета и переживает его уничтожение. Отложенная вставка повторно проверяет исходный предмет.
 
 MechanicalAction хранит Value в 0..1. Axis/Minimum/Maximum отображают его в перемещение/поворот; Resistance замедляет изменение, Detents фиксирует значение при отпускании. ConfigurableJoint должен иметь настроенные оси и привод. `mechanical.SetValue(0..1)` задаёт состояние; `actor.SetValue(mechanical, -1..1)` задаёт пользовательское направление изменения.
+
+## Авторская поза удержания
+
+```csharp
+grab.PoseMode = GrabPoseMode.AuthoredPose; // default нового компонента (1)
+grab.LocalPosition = new Vector3(.2f, -.1f, 0);
+grab.LocalEulerAngles = new Vector3(0, 90, 0);
+```
+
+Новый компонент начинает с Authored Pose, нулевых LocalPosition/LocalEulerAngles, HoldDistance 2, FollowSpeed 0.5 и IgnoreOwnerCollisions=true. Local Position задаёт позицию root (или назначенного GripPoint), Local Euler Angles — поворот root в frame HoldPoint > HandAnchor > View без scale frame. View добавляет текущую дистанцию по Z. Authored Pose использует Stabilized physics; HoldOffset/RotationMode остаются настройками Preserve Pickup Pose. Числовые значения enum сохранены: PreservePickupPose=0, AuthoredPose=1; явно сериализованный выбор режима не перезаписывается. Rotate добавляется поверх позы и сбрасывается при новом захвате. [Grip semantics, multi-owner и миграция HoldPoint](GrabComfort.md#одинаковая-поза-при-каждом-взятии).
+
+## Настройка позы, масштаба и отклика
+
+```csharp
+grab.HeldScaleMultiplier = .65f; // default1; исходный localScale вернётся при последнем release
+grab.FollowSpeed = .5f; // единственный control физического возврата
+var pose = GrabPoseUtility.GetRootPose(grab, new Pose(view.position, view.rotation), usesViewDistance: true);
+// GetLocalPose переводит желаемый мировой root Pose обратно в LocalPosition/local rotation.
+```
+
+`UnheldLocalScale` — исходный snapshot в активном удержании, иначе текущий localScale. Utility учитывает root/GripPoint, HeldScaleMultiplier и полный parent matrix; frame scale игнорируется. Editor-only `EasyInteraction.Editor.GrabPoseAuthoring.Begin/End`, `SetPreviewFrame`, `SetSceneViewFrame`, `TryGetPreviewPose` и `ApplyRootPose` доступны для инструментов Editor; Inspector уже вызывает их через кнопку. [First run](GrabComfort.md#визуальная-настройка-позы).
+
+Новые Actor используют `InteractionSelectionMode.Focus` (enum1); `Raycast` остаётся enum0 и выбирается явно. Явно сериализованный режим сохраняется, Setup его не переписывает.
+
+Обводка: `InteractionTarget.HighlightWhenFocused` включает её для предмета; `OutlineRenderers` и `RefreshOutlineRenderers()` задают геометрию. На Actor используется один `InteractionFocusHighlighter` с `OutlineColor`, `Width`, `CameraOverride`, `HighlightedTarget` и `RefreshHighlight()`. Без override берётся Camera непосредственно на Actor.View; глобального fallback нет. [URP, диагностика и ограничения](FocusOutline.md).
 
 ## Сохранение
 

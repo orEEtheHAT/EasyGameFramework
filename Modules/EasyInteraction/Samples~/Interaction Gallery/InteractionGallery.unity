@@ -2918,9 +2918,7 @@ MonoBehaviour:
   holdDistance: 2
   gripPoint: {fileID: 0}
   holdPoint: {fileID: 0}
-  frequency: 3
-  dampingRatio: 1
-  maximumAcceleration: 80
+  followSpeed: 0.5
   breakDistance: 5
   rotationMode: 3
   minimumDistance: 0.5

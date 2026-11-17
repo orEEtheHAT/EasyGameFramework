@@ -108,6 +108,7 @@ namespace EasyInteraction.Tests
         [Test]
         public void SphereCastAssistsSmallTargetsOutsideTheThinRay()
         {
+            actor.SelectionMode = InteractionSelectionMode.Raycast;
             var action = Event(new Vector3(.25f, 50, 3));
             Assert.IsNull(actor.RefreshTarget());
             actor.SelectionMode = InteractionSelectionMode.SphereCast;
@@ -810,6 +811,7 @@ namespace EasyInteraction.Tests
         [Test]
         public void RaycastCanUseTheReachableSurfaceOfALargeObject()
         {
+            actor.SelectionMode = InteractionSelectionMode.Raycast;
             var action = Event(new Vector3(0, 50, 5));
             action.transform.localScale = new Vector3(1, 1, 8);
             actor.Range = 3;

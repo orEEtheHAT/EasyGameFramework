@@ -61,8 +61,17 @@ namespace EasyInteraction.Tests.SharedInput
             for (int i = 0; i < 6; i++) Send(false, 15);
             Assert.IsNull(actor.CurrentTarget);
         }
-        [TestCase(false), TestCase(true)] public void SharedEAndSustainedMouseLookReleaseGrabInsteadOfHoveredAction(bool otherHover)
+        private void ConfigurePose(GrabPoseMode mode)
         {
+            grab.PoseMode = mode;
+            grab.LocalPosition = new Vector3(.2f, -.1f, -.15f);
+            grab.LocalEulerAngles = new Vector3(15, 70, -20);
+        }
+        [TestCase(false, GrabPoseMode.PreservePickupPose), TestCase(true, GrabPoseMode.PreservePickupPose)]
+        [TestCase(false, GrabPoseMode.AuthoredPose), TestCase(true, GrabPoseMode.AuthoredPose)]
+        public void SharedEAndSustainedMouseLookReleaseGrabInsteadOfHoveredAction(bool otherHover, GrabPoseMode mode)
+        {
+            ConfigurePose(mode);
             PickUpAndTurn(); int calls = 0;
             if (otherHover)
             {
@@ -72,8 +81,10 @@ namespace EasyInteraction.Tests.SharedInput
             Send(true, 2); Assert.IsFalse(grab.IsHeld, "Shared primary input must reach the actor even when SelectedAction is null.");
             Send(true, 2); Send(false, 2); Assert.AreEqual(0, calls);
         }
-        [Test] public void ModalContextPreventsDispatchThenFreshInteractCanReleaseExternallyStartedGrab()
+        [TestCase(GrabPoseMode.PreservePickupPose), TestCase(GrabPoseMode.AuthoredPose)]
+        public void ModalContextPreventsDispatchThenFreshInteractCanReleaseExternallyStartedGrab(GrabPoseMode mode)
         {
+            ConfigurePose(mode);
             Assert.IsTrue(actor.TryExecuteDirect(grab));
             var window = Go("Modal window owner", Vector3.zero);
             using (player.AcquireContext(window, InputContextRequest.UI()))
@@ -83,8 +94,10 @@ namespace EasyInteraction.Tests.SharedInput
             for (int i = 0; i < 6; i++) Send(false, 15);
             Send(true, 2); Assert.IsFalse(grab.IsHeld); Send(false);
         }
-        [Test] public void ReboundPrimaryKeyReleasesDuringLookAndOldKeyDoesNothing()
+        [TestCase(GrabPoseMode.PreservePickupPose), TestCase(GrabPoseMode.AuthoredPose)]
+        public void ReboundPrimaryKeyReleasesDuringLookAndOldKeyDoesNothing(GrabPoseMode mode)
         {
+            ConfigurePose(mode);
             PickUpAndTurn(); player.Action("Gameplay/Interact").ApplyBindingOverride(0, "<Keyboard>/k");
             Send(true, 2); Send(false, 2); Assert.IsTrue(grab.IsHeld);
             Send(true, 2, Key.K); Assert.IsFalse(grab.IsHeld); Send(false);

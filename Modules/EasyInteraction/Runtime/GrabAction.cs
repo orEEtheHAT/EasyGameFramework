@@ -11,6 +11,12 @@ namespace EasyInteraction
         Stabilized = 3
     }
 
+    public enum GrabPoseMode
+    {
+        PreservePickupPose = 0,
+        AuthoredPose = 1
+    }
+
     [DisallowMultipleComponent, RequireComponent(typeof(Rigidbody))]
     [AddComponentMenu("EasyGameFramework/Interaction/Grab Action")]
     public sealed class GrabAction : InteractionAction
@@ -25,22 +31,24 @@ namespace EasyInteraction
         private bool ignoreOwnerCollisions = true;
         [SerializeField, Tooltip("Metres in Hold Point, Hand Anchor or View local axes (without scale). With View, added to the point Hold Distance in front of the camera.")]
         private Vector3 holdOffset;
-        [SerializeField, Range(0, .5f), Tooltip("Stabilized mode only. Target follow time in seconds; zero disables target inertia. Physical damping remains active.")]
-        private float inertia = .12f;
-        [SerializeField, Min(0), Tooltip("Maximum lag of the smoothed position target, in metres. World contacts can still stop the actual body.")]
-        private float maximumPositionLag = .35f;
-        [SerializeField, Range(0, 90), Tooltip("Maximum lag of the smoothed orientation target, in degrees.")]
-        private float maximumRotationLag = 35;
-        [SerializeField]
+        [SerializeField, Tooltip("New components default to Authored Pose: Local Position/Local Euler Angles with stabilized physics, independent of pickup rotation. Preserve Pickup Pose uses Rotation Mode/Hold Offset. Existing serialized choices are retained.")]
+        private GrabPoseMode poseMode = GrabPoseMode.AuthoredPose;
+        [SerializeField, Tooltip("Authored Pose only. Metres along Hold Point > Actor Hand Anchor > View axes, ignoring frame scale. View adds Hold Distance (or inspection distance) on Z. Positions the Rigidbody root, or Grip Point when assigned.")]
+        private Vector3 localPosition;
+        [SerializeField, Tooltip("Authored Pose only. Rigidbody root rotation in degrees relative to Hold Point > Actor Hand Anchor > View. Grip Point rotation is ignored. Manual rotation is added during this hold only.")]
+        private Vector3 localEulerAngles;
+        [SerializeField, Range(0, 1), Tooltip("Physical follow response for position and driven rotation. Lower is softer/slower; higher is firmer/faster. Contacts and body limits still apply.")]
+        private float followSpeed = .5f;
+        [SerializeField, Tooltip("Walking position lag along the movement reference's local X (side), Y (up), Z (forward). 1 retains velocity-damping drift; 0 compensates that walking source in damping. Contacts and the physical acceleration limit still apply.")]
+        private Vector3 movementLag = Vector3.one * .5f;
+        [SerializeField, Tooltip("Optional movement source and local walking axes. By default uses Actor Player Root for a descendant hold frame, otherwise the external hold frame itself. Custom rigs should assign a source that actually carries their hold frame.")]
+        private Transform movementReference;
+        [SerializeField, Range(.1f, 1), Tooltip("Uniform multiplier of the Rigidbody root's captured local scale while held. Scales visuals, colliders and grip geometry together. Original scale and mass properties return on final release. Mass is unchanged; transfer/additional holders do not multiply again.")]
+        private float heldScaleMultiplier = 1;
+        [SerializeField, Tooltip("Optional point on this Rigidbody to position at the hold destination; its rotation is ignored. Without it, Authored Pose positions the Rigidbody root and Preserve Pickup Pose positions the centre of mass.")]
         private Transform gripPoint;
-        [SerializeField]
+        [SerializeField, Tooltip("Optional external hold frame. Overrides Actor Hand Anchor and View, including distance/inspection positioning. Keep it outside the held Rigidbody hierarchy.")]
         private Transform holdPoint;
-        [SerializeField, Range(.5f, 12)]
-        private float frequency = 3;
-        [SerializeField, Range(.2f, 2)]
-        private float dampingRatio = 1;
-        [SerializeField, Min(1)]
-        private float maximumAcceleration = 80;
         [SerializeField, Min(.1f)]
         private float breakDistance = 5;
         [SerializeField]
@@ -60,8 +68,19 @@ namespace EasyInteraction
         private float currentDistance;
         private Quaternion initialRotation, viewOffset, manualRotation = Quaternion.identity, twoHandRotation;
         private Vector3 initialHandAxis;
-        private Vector3 smoothedPosition;
-        private Quaternion smoothedRotation;
+        private Vector3 oldLocalScale, oldCenterOfMass, oldInertiaTensor;
+        private Quaternion oldInertiaTensorRotation;
+        private bool oldAutomaticCenterOfMass, oldAutomaticInertiaTensor, scaleChanged;
+        private struct MotionSample
+        {
+            public InteractionActor actor;
+            public Transform frame, frameParent, playerRoot, reference, referenceOverride;
+            public Vector3 referencePosition;
+            public bool valid;
+        }
+        private MotionSample[] motionSamples = System.Array.Empty<MotionSample>();
+        private bool motionHistoryValid;
+        private const float MaxCorrectiveAcceleration = 80;
         private static readonly ProfilerMarker marker = new ProfilerMarker("EasyInteraction.HoldPhysics");
         protected override string DefaultChannel => "carry";
         public override bool CanPause => false;
@@ -76,13 +95,13 @@ namespace EasyInteraction
             get => holdDistance;
             set
             {
-                holdDistance = Mathf.Max(.1f, value);
-                currentDistance = holdDistance;
+                float next = Mathf.Max(.1f, value);
+                holdDistance = currentDistance = next;
             }
         }
 
         public Transform GripPoint { get => gripPoint; set => gripPoint = value; }
-        public Transform HoldPoint { get => holdPoint; set => holdPoint = value; }
+        public Transform HoldPoint { get => holdPoint; set { if (holdPoint == value) return; holdPoint = value; InvalidateMotionHistory(); } }
         public bool IgnoreOwnerCollisions
         {
             get => ignoreOwnerCollisions;
@@ -95,16 +114,58 @@ namespace EasyInteraction
             }
         }
         public Vector3 HoldOffset { get => holdOffset; set => holdOffset = value; }
-        public float Inertia { get => inertia; set => inertia = Mathf.Clamp(value, 0, .5f); }
-        public float MaximumPositionLag { get => maximumPositionLag; set => maximumPositionLag = Mathf.Max(0, value); }
-        public float MaximumRotationLag { get => maximumRotationLag; set => maximumRotationLag = Mathf.Clamp(value, 0, 90); }
-        public float Frequency { get => frequency; set => frequency = Mathf.Clamp(value, .5f, 12); }
-        public float DampingRatio { get => dampingRatio; set => dampingRatio = Mathf.Clamp(value, .2f, 2); }
-        public float MaximumAcceleration { get => maximumAcceleration; set => maximumAcceleration = Mathf.Max(1, value); }
+        public GrabPoseMode PoseMode { get => poseMode; set { if (poseMode == value) return; poseMode = value; InvalidateMotionHistory(); } }
+        public Vector3 LocalPosition { get => localPosition; set => localPosition = value; }
+        public Vector3 LocalEulerAngles { get => localEulerAngles; set => localEulerAngles = value; }
+        public float FollowSpeed { get => FollowSpeedValue(followSpeed); set => followSpeed = FollowSpeedValue(value); }
+        public Vector3 MovementLag
+        {
+            get => movementLag;
+            set
+            {
+                var next = new Vector3(LagCoefficient(value.x), LagCoefficient(value.y), LagCoefficient(value.z));
+                if (movementLag == next) return;
+                movementLag = next;
+                ResetMotionTracking();
+            }
+        }
+        public Transform MovementReference { get => movementReference; set { if (movementReference == value) return; movementReference = value; ResetMotionTracking(); } }
+
+        private static float LagCoefficient(float value) => float.IsFinite(value) ? Mathf.Clamp01(value) : 1;
+        private static float FollowSpeedValue(float value) => float.IsFinite(value) ? Mathf.Clamp01(value) : .5f;
+
+        /// <summary>Rebase walking-source history after moving the rig and held body. Does not change the body's pose or velocity.</summary>
+        public void ResetMotionTracking() => InvalidateMotionHistory();
+
+        private void InvalidateMotionHistory()
+        {
+            motionHistoryValid = false;
+            // Keep capacity for pooling, without retaining previous holders or rig hierarchies.
+            System.Array.Clear(motionSamples, 0, motionSamples.Length);
+        }
+        public float HeldScaleMultiplier
+        {
+            get => heldScaleMultiplier;
+            set
+            {
+                heldScaleMultiplier = float.IsFinite(value) ? Mathf.Clamp(value, .1f, 1) : 1;
+                if (captured) ApplyHeldScale();
+            }
+        }
+        public Vector3 UnheldLocalScale => captured ? oldLocalScale : transform.localScale;
         public float BreakDistance { get => breakDistance; set => breakDistance = Mathf.Max(.1f, value); }
-        public GrabRotation RotationMode { get => rotationMode; set => rotationMode = value; }
+        public GrabRotation RotationMode { get => rotationMode; set { if (rotationMode == value) return; rotationMode = value; InvalidateMotionHistory(); } }
         public float ThrowSpeed { get => throwSpeed; set => throwSpeed = Mathf.Max(0, value); }
-        public Vector3 GripPosition => gripPoint ? gripPoint.position : Body ? Body.worldCenterOfMass : transform.position;
+        public Vector3 GripPosition
+        {
+            get
+            {
+                if (gripPoint) return gripPoint.position;
+                var heldBody = Body;
+                if (!heldBody) return transform.position;
+                return poseMode == GrabPoseMode.AuthoredPose ? heldBody.position : heldBody.worldCenterOfMass;
+            }
+        }
 
         public override string GetLabel(InteractionActor actor) => IsHeld && Owns(actor) ? "Release" : "Grab";
         public bool Owns(InteractionActor actor)
@@ -139,14 +200,19 @@ namespace EasyInteraction
                 oldGravity = body.useGravity;
                 oldInterpolation = body.interpolation;
                 oldCollisionMode = body.collisionDetectionMode;
+                oldLocalScale = transform.localScale;
+                oldAutomaticCenterOfMass = body.automaticCenterOfMass;
+                oldAutomaticInertiaTensor = body.automaticInertiaTensor;
+                oldCenterOfMass = body.centerOfMass;
+                oldInertiaTensor = body.inertiaTensor;
+                oldInertiaTensorRotation = body.inertiaTensorRotation;
                 captured = true;
+                ApplyHeldScale();
                 currentDistance = holdDistance;
                 inspecting = false;
                 manualRotation = Quaternion.identity;
                 initialRotation = body.rotation;
                 viewOffset = Quaternion.Inverse(RotationFrame(actor).rotation) * body.rotation;
-                smoothedPosition = GripPosition;
-                smoothedRotation = body.rotation;
                 body.useGravity = false;
                 body.interpolation = RigidbodyInterpolation.Interpolate;
                 body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
@@ -154,10 +220,13 @@ namespace EasyInteraction
             }
 
             GrabCollisionExclusions.Acquire(this, actor);
+            // Acquisition is the only place this array can grow; the physics loop never allocates.
+            if (motionSamples.Length < OwnerCount) System.Array.Resize(ref motionSamples, OwnerCount);
+            InvalidateMotionHistory();
             if (OwnerCount == 2)
             {
                 initialHandAxis = Destination(GetOwner(1)) - Destination(GetOwner(0));
-                twoHandRotation = body.rotation;
+                twoHandRotation = poseMode == GrabPoseMode.AuthoredPose ? AuthoredRotation(GetOwner(0)) : body.rotation;
             }
 
             return true;
@@ -165,18 +234,76 @@ namespace EasyInteraction
 
         private Transform PositionFrame(InteractionActor actor) => holdPoint ? holdPoint : actor.HandAnchor ? actor.HandAnchor : actor.View;
         private Transform RotationFrame(InteractionActor actor) => rotationMode == GrabRotation.Stabilized ? PositionFrame(actor) : actor.View;
+        private Quaternion AuthoredRotation(InteractionActor actor) => PositionFrame(actor).rotation * Quaternion.Euler(localEulerAngles);
+        public Transform GetMovementReference(InteractionActor actor)
+        {
+            if (movementReference) return movementReference;
+            if (!actor) return null;
+            var frame = PositionFrame(actor);
+            var root = actor.PlayerRoot;
+            return frame == root || frame.IsChildOf(root) ? root : frame;
+        }
+
+        private Vector3 LocalDestination(InteractionActor actor)
+        {
+            var local = poseMode == GrabPoseMode.AuthoredPose ? localPosition : holdOffset;
+            if (!holdPoint && !actor.HandAnchor)
+                local.z += inspecting ? inspectionDistance : currentDistance;
+            return local;
+        }
         private Vector3 Destination(InteractionActor actor)
         {
             var frame = PositionFrame(actor);
-            var local = holdOffset;
-            if (!holdPoint && !actor.HandAnchor)
-                local.z += inspecting ? inspectionDistance : currentDistance;
-            return frame.position + frame.rotation * local;
+            return frame.position + frame.rotation * LocalDestination(actor);
+        }
+
+        private bool SampleMotion(int index, InteractionActor actor, Transform frame, out Vector3 compensation)
+        {
+            ref var sample = ref motionSamples[index];
+            var root = actor.PlayerRoot;
+            bool sameSource = motionHistoryValid && sample.valid && sample.actor == actor && sample.frame == frame && sample.frameParent == frame.parent && sample.playerRoot == root
+                && sample.referenceOverride == movementReference && sample.reference;
+            // Hierarchy resolution happens only when the source changes, not every warmed physics step.
+            var reference = sameSource ? sample.reference : GetMovementReference(actor);
+            var referencePosition = reference.position;
+            var referenceRotation = reference.rotation;
+            compensation = Vector3.zero;
+            bool discontinuity = false;
+            if (motionHistoryValid && sameSource && sample.valid)
+            {
+                var movement = referencePosition - sample.referencePosition;
+                discontinuity = movement.sqrMagnitude > breakDistance * breakDistance;
+                if (!discontinuity)
+                {
+                    var cancelledLocal = Vector3.Scale(Quaternion.Inverse(referenceRotation) * movement, Vector3.one - movementLag);
+                    compensation = referenceRotation * cancelledLocal;
+                }
+            }
+            sample.actor = actor;
+            sample.frame = frame;
+            sample.frameParent = frame.parent;
+            sample.playerRoot = root;
+            sample.referenceOverride = movementReference;
+            sample.reference = reference;
+            sample.referencePosition = referencePosition;
+            sample.valid = true;
+            return discontinuity;
+        }
+
+        private static Vector3 AngularDisplacement(Quaternion delta)
+        {
+            if (delta.w < 0) delta = new Quaternion(-delta.x, -delta.y, -delta.z, -delta.w);
+            var imaginary = new Vector3(delta.x, delta.y, delta.z);
+            float length = imaginary.magnitude;
+            return length > .000001f ? imaginary * (2 * Mathf.Atan2(length, Mathf.Max(0, delta.w)) / length) : Vector3.zero;
         }
         public void AdjustDistance(float delta)
         {
             if (IsHeld)
-                currentDistance = Mathf.Clamp(currentDistance + delta, minimumDistance, maximumDistance);
+            {
+                float next = Mathf.Clamp(currentDistance + delta, minimumDistance, maximumDistance);
+                currentDistance = next;
+            }
         }
 
         public void Rotate(Vector2 degrees)
@@ -187,8 +314,10 @@ namespace EasyInteraction
 
         public void SetInspection(bool value)
         {
-            if (IsHeld)
+            if (IsHeld && inspecting != value)
+            {
                 inspecting = value;
+            }
         }
 
         public bool Throw(InteractionActor actor)
@@ -223,18 +352,26 @@ namespace EasyInteraction
                 }
 
                 Vector3 destination = Vector3.zero;
+                Vector3 compensation = Vector3.zero;
+                bool discontinuity = false;
+                bool ownersChanged = false;
                 int count = 0;
                 for (int i = OwnerCount - 1; i >= 0; i--)
                 {
                     var actor = GetOwner(i);
                     if (!actor || !actor.isActiveAndEnabled)
                     {
+                        ownersChanged = true;
                         if (actor)
                             actor.Cancel(this);
                         continue;
                     }
 
-                    destination += Destination(actor);
+                    var frame = PositionFrame(actor);
+                    var local = LocalDestination(actor);
+                    destination += frame.position + frame.rotation * local;
+                    discontinuity |= SampleMotion(i, actor, frame, out var actorCompensation);
+                    compensation += actorCompensation;
                     GrabCollisionExclusions.Acquire(this, actor);
                     count++;
                 }
@@ -246,6 +383,10 @@ namespace EasyInteraction
                 }
 
                 destination /= count;
+                compensation /= count;
+                motionHistoryValid = true;
+                if (discontinuity || ownersChanged)
+                    compensation = Vector3.zero;
                 var point = GripPosition;
                 var error = destination - point;
                 if (error.sqrMagnitude > breakDistance * breakDistance)
@@ -254,50 +395,35 @@ namespace EasyInteraction
                     return;
                 }
 
-                bool stabilized = rotationMode == GrabRotation.Stabilized;
+                bool authored = poseMode == GrabPoseMode.AuthoredPose;
+                bool stabilized = authored || rotationMode == GrabRotation.Stabilized;
                 float dt = Time.fixedDeltaTime;
-                float blend = inertia > 0 ? 1 - Mathf.Exp(-dt / inertia) : 1;
-                if (stabilized)
-                {
-                    smoothedPosition = Vector3.Lerp(smoothedPosition, destination, blend);
-                    smoothedPosition = destination + Vector3.ClampMagnitude(smoothedPosition - destination, maximumPositionLag);
-                    error = smoothedPosition - point;
-                }
-                float omega = 2 * Mathf.PI * frequency, kp = omega * omega, kd = 2 * (stabilized ? Mathf.Max(1, dampingRatio) : dampingRatio) * omega;
+                float omega = 2 * Mathf.PI * Mathf.Lerp(1, 5, FollowSpeed), kp = omega * omega, kd = 2 * omega;
                 float denominator = 1 + kd * dt + kp * dt * dt;
-                var force = Vector3.ClampMagnitude((kp * error - kd * body.GetPointVelocity(point)) / denominator, maximumAcceleration);
+                var trackingVelocity = compensation / dt;
+                var force = Vector3.ClampMagnitude((kp * error - kd * (body.GetPointVelocity(point) - trackingVelocity)) / denominator, MaxCorrectiveAcceleration);
                 if (stabilized)
                     body.AddForce(force, ForceMode.Acceleration);
                 else
                     body.AddForceAtPosition(force, point, ForceMode.Acceleration);
-                bool rotated = rotationMode != GrabRotation.Free || inspecting || manualRotation != Quaternion.identity || count > 1;
+                bool rotated = authored || rotationMode != GrabRotation.Free || inspecting || manualRotation != Quaternion.identity || count > 1;
                 if (rotated)
                 {
-                    var desired = rotationMode == GrabRotation.KeepInitial ? initialRotation : RotationFrame(Owner).rotation * viewOffset;
+                    var desired = authored ? AuthoredRotation(Owner) : rotationMode == GrabRotation.KeepInitial ? initialRotation : RotationFrame(Owner).rotation * viewOffset;
                     if (count > 1 && initialHandAxis.sqrMagnitude > .001f)
                         desired = Quaternion.FromToRotation(initialHandAxis, Destination(GetOwner(1)) - Destination(GetOwner(0))) * twoHandRotation;
                     desired *= manualRotation;
-                    if (stabilized)
-                    {
-                        smoothedRotation = Quaternion.Slerp(smoothedRotation, desired, blend);
-                        smoothedRotation = Quaternion.RotateTowards(desired, smoothedRotation, maximumRotationLag);
-                        desired = smoothedRotation;
-                    }
-                    var delta = desired * Quaternion.Inverse(body.rotation);
-                    if (delta.w < 0)
-                        delta = new Quaternion(-delta.x, -delta.y, -delta.z, -delta.w);
-                    var imaginary = new Vector3(delta.x, delta.y, delta.z);
-                    float length = imaginary.magnitude;
-                    var angularError = length > .000001f ? imaginary * (2 * Mathf.Atan2(length, Mathf.Max(0, delta.w)) / length) : Vector3.zero;
+                    var angularError = AngularDisplacement(desired * Quaternion.Inverse(body.rotation));
                     // Always damp angular velocity, including an exactly aligned orientation.
                     var acceleration = (kp * angularError - kd * body.angularVelocity) / denominator;
-                    body.AddTorque(Vector3.ClampMagnitude(acceleration, maximumAcceleration), ForceMode.Acceleration);
+                    body.AddTorque(Vector3.ClampMagnitude(acceleration, MaxCorrectiveAcceleration), ForceMode.Acceleration);
                 }
             }
         }
 
         protected override void OnCancel(InteractionActor actor)
         {
+            if (OwnerCount == 0) RestoreScale();
             GrabCollisionExclusions.Release(this, actor);
             if (OwnerCount == 0)
                 Restore();
@@ -307,6 +433,7 @@ namespace EasyInteraction
 
         protected override void OnComplete(InteractionActor actor)
         {
+            if (OwnerCount == 0) RestoreScale();
             GrabCollisionExclusions.Release(this, actor);
             if (OwnerCount == 0)
                 Restore();
@@ -320,9 +447,8 @@ namespace EasyInteraction
                 return;
             viewOffset = Quaternion.Inverse(RotationFrame(Owner).rotation) * body.rotation * Quaternion.Inverse(manualRotation);
             initialHandAxis = OwnerCount > 1 ? Destination(GetOwner(1)) - Destination(GetOwner(0)) : Vector3.zero;
-            twoHandRotation = body.rotation * Quaternion.Inverse(manualRotation);
-            smoothedRotation = body.rotation;
-            smoothedPosition = GripPosition;
+            twoHandRotation = poseMode == GrabPoseMode.AuthoredPose ? AuthoredRotation(Owner) : body.rotation * Quaternion.Inverse(manualRotation);
+            InvalidateMotionHistory();
         }
 
         protected override void OnDisable()
@@ -333,13 +459,62 @@ namespace EasyInteraction
         }
 
         private void OnDestroy() => Restore();
+        private void ApplyHeldScale()
+        {
+            if (!body) return;
+            float multiplier = float.IsFinite(heldScaleMultiplier) ? Mathf.Clamp(heldScaleMultiplier, .1f, 1) : 1;
+            var requested = oldLocalScale * multiplier;
+            if (!scaleChanged && transform.localScale == requested) return;
+            transform.localScale = requested;
+            Physics.SyncTransforms();
+            if (oldAutomaticCenterOfMass) body.ResetCenterOfMass();
+            else body.centerOfMass = oldCenterOfMass * multiplier;
+            if (oldAutomaticInertiaTensor) body.ResetInertiaTensor();
+            else
+            {
+                body.inertiaTensor = oldInertiaTensor * (multiplier * multiplier);
+                body.inertiaTensorRotation = oldInertiaTensorRotation;
+            }
+            scaleChanged = true;
+        }
+
+        private void RestoreScale()
+        {
+            if (!scaleChanged) return;
+            transform.localScale = oldLocalScale;
+            Physics.SyncTransforms();
+            if (body)
+            {
+                if (oldAutomaticCenterOfMass) body.ResetCenterOfMass();
+                else body.centerOfMass = oldCenterOfMass;
+                if (oldAutomaticInertiaTensor) body.ResetInertiaTensor();
+                else
+                {
+                    body.inertiaTensor = oldInertiaTensor;
+                    body.inertiaTensorRotation = oldInertiaTensorRotation;
+                }
+            }
+            scaleChanged = false;
+        }
+
+        private void OnValidate()
+        {
+            FollowSpeed = followSpeed;
+            MovementLag = movementLag;
+            ResetMotionTracking();
+            // Scale edits apply on the next hold; validation never writes scene physics.
+            heldScaleMultiplier = float.IsFinite(heldScaleMultiplier) ? Mathf.Clamp(heldScaleMultiplier, .1f, 1) : 1;
+        }
+
         private void Restore()
         {
+            RestoreScale();
             GrabCollisionExclusions.Release(this);
             if (!captured)
                 return;
             captured = false;
             inspecting = false;
+            InvalidateMotionHistory();
             if (!body)
                 return;
             body.useGravity = oldGravity;
