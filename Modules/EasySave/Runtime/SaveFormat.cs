@@ -47,7 +47,9 @@ namespace EasySave
             if (stream.Length > options.MaximumFileBytes) throw Corrupt("File budget exceeded.");
             return stream.ToArray();
         }
-        internal static SaveDocument Decode(byte[] data, SaveAddress expected, SaveOptions options)
+        internal static SaveDocument Decode(byte[] data, SaveAddress expected, SaveOptions options) => DecodeCore(data, expected, options);
+        internal static SaveDocument Inspect(byte[] data, SaveOptions options) => DecodeCore(data, null, options);
+        private static SaveDocument DecodeCore(byte[] data, SaveAddress? expected, SaveOptions options)
         {
             try
             {
@@ -67,7 +69,7 @@ namespace EasySave
                 var scope = (SaveScope)reader.ReadInt32();
                 var slot = Read(reader, 64);
                 var address = new SaveAddress(scope, slot);
-                if (scope != expected.Scope || slot != expected.Slot) throw Corrupt("Save belongs to a different scope or slot.");
+                if (expected.HasValue && (scope != expected.Value.Scope || slot != expected.Value.Slot)) throw Corrupt("Save belongs to a different scope or slot.");
                 var document = new SaveDocument { Address = address, DisplayName = Read(reader, 512), UtcTicks = reader.ReadInt64() };
                 if (document.UtcTicks < DateTime.MinValue.Ticks || document.UtcTicks > DateTime.MaxValue.Ticks) throw Corrupt("Invalid UTC timestamp.");
                 int count = reader.ReadInt32();

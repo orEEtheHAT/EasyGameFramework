@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -91,6 +92,105 @@ namespace EasyUI.Tests
             var button = go.GetComponent<Button>(); button.targetGraphic = go.GetComponent<Image>(); return button;
         }
         private IEnumerator Ready() { yield return null; yield return null; yield return null; }
+
+        [UnityTest] public IEnumerator AuthoredAndGeneratedLabelsUseThemeAndRenderBundledGlyphs()
+        {
+            var window = Window("Font preview", false);
+            const string content = "Счёт: Ёж 2048 × 3 ± 5 ₽ → ✓";
+            var authoredObject = New("Default label", typeof(RectTransform));
+            authoredObject.transform.SetParent(window.transform, false);
+            var authored = UIText.Add(authoredObject, content);
+            authored.rectTransform.sizeDelta = new Vector2(640, 80);
+
+            var theme = CreateTestFont();
+            var explicitFont = CreateTestFont();
+            var customObject = New("Explicit font", typeof(RectTransform));
+            customObject.transform.SetParent(window.transform, false);
+            var custom = UIText.Add(customObject, "Independent", font: explicitFont);
+            manager.Font = theme;
+
+            var handle = manager.Open(window);
+            yield return Ready();
+            Assert.AreSame(theme, authored.font);
+            Assert.AreSame(explicitFont, custom.font);
+            Assert.AreSame(window.transform.GetChild(0).gameObject, events.currentSelectedGameObject);
+
+            var generatedObject = New("Generated after open", typeof(RectTransform));
+            generatedObject.transform.SetParent(window.transform, false);
+            Assert.AreSame(theme, UIText.Add(generatedObject, "New label").font);
+            authored.ForceMeshUpdate();
+            Assert.AreEqual(content.Length, authored.textInfo.characterCount);
+            for (int i = 0; i < content.Length; i++)
+            {
+                if (content[i] == ' ') continue;
+                var glyph = authored.textInfo.characterInfo[i];
+                Assert.AreEqual(content[i], glyph.character);
+                Assert.IsTrue(glyph.isVisible, $"Glyph {content[i]} must be rendered.");
+                var expected = "₽→✓".Contains(content[i].ToString()) ? theme.fallbackFontAssetTable[0] : theme;
+                Assert.AreSame(expected, glyph.fontAsset, $"Wrong atlas for {content[i]}.");
+            }
+
+            manager.Close(handle, true);
+            manager.Font = null;
+            manager.Open(window);
+            Assert.AreSame(UIText.DefaultFont, authored.font);
+            Assert.AreSame(explicitFont, custom.font);
+        }
+
+        private TMP_FontAsset CreateTestFont()
+        {
+            // TMP destroys its atlas and material with the font object. Give each copy its own.
+            var source = UIText.DefaultFont;
+            var font = Object.Instantiate(source);
+            created.Add(font);
+            var atlas = Object.Instantiate(source.atlasTexture);
+            font.atlasTextures = new[] { atlas };
+            font.material = new Material(source.material) { mainTexture = atlas };
+            return font;
+        }
+
+        [UnityTest] public IEnumerator BackDismissesTmpEditingAndDropdownBeforeClosingWindow()
+        {
+            var window = Window("TMP controls", false);
+            var field = TMP_DefaultControls.CreateInputField(new TMP_DefaultControls.Resources()).GetComponent<TMP_InputField>();
+            field.transform.SetParent(window.transform, false);
+            var dropdown = TMP_DefaultControls.CreateDropdown(new TMP_DefaultControls.Resources()).GetComponent<TMP_Dropdown>();
+            dropdown.transform.SetParent(window.transform, false);
+            dropdown.alphaFadeSpeed = 0;
+            field.navigation = new Navigation { mode = Navigation.Mode.Explicit, selectOnDown = dropdown };
+            window.FirstSelected = field;
+
+            var handle = manager.Open(window);
+            yield return Ready();
+            field.ActivateInputField();
+            yield return null;
+            yield return null;
+            Assert.IsTrue(field.isFocused);
+            InputSystem.QueueStateEvent(gamepad, new GamepadState { leftStick = Vector2.down });
+            InputSystem.Update();
+            manager.InputModule.Process();
+            Assert.AreSame(field.gameObject, events.currentSelectedGameObject);
+            InputSystem.QueueStateEvent(gamepad, new GamepadState());
+            InputSystem.Update();
+
+            Assert.IsTrue(manager.Back());
+            Assert.IsFalse(field.isFocused);
+            Assert.IsTrue(handle.IsOpen);
+            yield return Ready();
+
+            events.SetSelectedGameObject(dropdown.gameObject);
+            dropdown.Show();
+            Assert.IsTrue(dropdown.IsExpanded);
+            Assert.IsTrue(events.currentSelectedGameObject.transform.IsChildOf(dropdown.transform));
+            Assert.IsTrue(manager.Back());
+            Assert.IsTrue(handle.IsOpen);
+            yield return Ready();
+            Assert.IsFalse(dropdown.IsExpanded);
+            Assert.AreSame(dropdown.gameObject, events.currentSelectedGameObject);
+
+            Assert.IsTrue(manager.Back());
+            Assert.IsFalse(handle.IsOpen);
+        }
 
         [UnityTest] public IEnumerator NestedBackRestoresParentSelectionAndItsLease()
         {
@@ -207,7 +307,7 @@ namespace EasyUI.Tests
             var view = window.transform.Find("Item one");
             Assert.IsTrue(radial.UpdateItem("one", "Translated"));
             Assert.AreSame(view, window.transform.Find("Item one")); Assert.AreEqual("one", radial.SelectedItem.Id);
-            Assert.AreEqual("Translated", view.Find("Label").GetComponent<Text>().text);
+            Assert.AreEqual("Translated", view.Find("Label").GetComponent<TMP_Text>().text);
             radial.SetItems(new[] { new RadialItem("two", "Two"), new RadialItem("one", "One") });
             Assert.AreEqual(1, radial.SelectedIndex);
             Assert.IsTrue(radial.ConfirmSelection()); Assert.AreEqual(1, listener.Count); Assert.IsFalse(window.gameObject.activeSelf);

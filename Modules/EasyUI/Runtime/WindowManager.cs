@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Profiling;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -16,6 +17,35 @@ namespace EasyUI
         public MonoBehaviour InputProvider;
         [Tooltip("Optional per-player EventSystem. A dedicated EventSystem is created if none exists.")]
         public EventSystem EventSystem;
+        [Tooltip("Font used by generated labels and default template text. Set it before opening windows.")]
+        public TMP_FontAsset Font;
+        [SerializeField, Tooltip("Role sizes, colors and finishes. Empty uses the standard EasyUI theme.")]
+        private UITypography typography;
+        [SerializeField] private UIReadingPreferences readingPreferences = UIReadingPreferences.Default;
+        public event Action TypographyChanged;
+        public UITypography Typography
+        {
+            get => typography;
+            set { if (typography == value) return; typography = value; RefreshTypography(); }
+        }
+        public UIReadingPreferences ReadingPreferences
+        {
+            get { var p = readingPreferences; p.scale = p.EffectiveScale; return p; }
+            set
+            {
+                value.scale = value.EffectiveScale;
+                var old = ReadingPreferences;
+                if (old.scale == value.scale && old.highContrast == value.highContrast && old.reducedMotion == value.reducedMotion) return;
+                readingPreferences = value;
+                RefreshTypography();
+            }
+        }
+        /// <summary>Refresh active role labels after editing a theme in place.</summary>
+        public void RefreshTypography() => TypographyChanged?.Invoke();
+#if UNITY_EDITOR
+        private bool typographyInspectorChanged;
+        private void OnValidate() => typographyInspectorChanged = true;
+#endif
         public int BaseSortingOrder = 100;
         public Color ModalShade = new Color(0, 0, 0, .45f);
         public WindowHandle ActiveWindow { get; private set; }
@@ -103,6 +133,7 @@ namespace EasyUI
                 window.Prepare();
                 window.transform.SetParent(transform, false);
                 window.Handle = handle;
+                window.ApplyFont(Font);
                 window.Group.alpha = handle.Alpha = policy.FadeIn > 0 ? 0 : 1;
                 if (policy.FadeIn <= 0) handle.State = WindowState.Open;
                 windows.Add(handle);
@@ -181,8 +212,26 @@ namespace EasyUI
             if (recipient == null || !recipient.IsOpen || !recipient.Window) return false;
             backFrame = Time.frameCount;
             FenceInput();
-            if (recipient.Window.ConsumeBack()) return true;
+            if (recipient.Window.ConsumeBack() || CancelTextControl(recipient)) return true;
             if (recipient.Policy.CloseOnBack) CloseCore(recipient, WindowCloseReason.Back, false);
+            return true;
+        }
+        private bool CancelTextControl(WindowHandle recipient)
+        {
+            if (!EventSystem || !recipient.Window) return false;
+            var selected = EventSystem.currentSelectedGameObject;
+            if (!recipient.Window.Available(selected)) return false;
+            if (selected.TryGetComponent<TMP_InputField>(out var field) && field.isFocused)
+            {
+                // Let TMP handle keyboard Escape and its restore-original-text setting first.
+                ExecuteEvents.Execute(selected, new BaseEventData(EventSystem), ExecuteEvents.updateSelectedHandler);
+                if (field && field.isFocused) field.DeactivateInputField();
+                return true;
+            }
+            var dropdown = selected.GetComponentInParent<TMP_Dropdown>();
+            if (!dropdown || !dropdown.IsExpanded || !recipient.Window.Available(dropdown.gameObject)) return false;
+            recipient.Selection = dropdown.gameObject;
+            dropdown.Hide();
             return true;
         }
         internal void WindowUnavailable(WindowHandle handle, WindowCloseReason reason)
@@ -363,7 +412,9 @@ namespace EasyUI
             if (ActiveWindow == null) return true;
             if (module.cancel && module.cancel.action.WasPerformedThisFrame()) { Back(); return false; }
             var selected = EventSystem.currentSelectedGameObject;
-            Vector2 move = module.move ? module.move.action.ReadValue<Vector2>() : Vector2.zero;
+            // TMP handles caret movement and keyboard events in the input module’s update-selected callback.
+            bool editing = selected && selected.TryGetComponent<TMP_InputField>(out var field) && field.isFocused;
+            Vector2 move = !editing && module.move ? module.move.action.ReadValue<Vector2>() : Vector2.zero;
             if (move.sqrMagnitude < .25f) { lastMove = Vector2.zero; nextMove = 0; }
             else if (selected && (lastMove == Vector2.zero || Vector2.Dot(lastMove, move) <= 0 || Time.unscaledTime >= nextMove))
             {
@@ -381,6 +432,9 @@ namespace EasyUI
         }
         private void Update()
         {
+#if UNITY_EDITOR
+            if (typographyInspectorChanged) { typographyInspectorChanged=false; RefreshTypography(); }
+#endif
             PollFence();
             for (int i = windows.Count - 1; i >= 0; i--)
             {

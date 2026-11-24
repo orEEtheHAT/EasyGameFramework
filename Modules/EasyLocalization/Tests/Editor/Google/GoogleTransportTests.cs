@@ -132,6 +132,29 @@ namespace EasyLocalization.Tests
             Assert.That(handler.Rows[1].Values[4].UserEnteredValue.StringValue,Is.EqualTo("KEEP"));
             Assert.That((await transport.ReadAsync(default)).Fingerprint(),Is.EqualTo(result.Fingerprint()));
         }
+        [Test]
+        public async Task OptionalContextRoundTripsWithoutOverwritingTheCellNote()
+        {
+            mapping.contextColumn = 5;
+            try
+            {
+                var mapped = new GoogleSheetsTransport(service, mapping);
+                await Throws<InvalidOperationException>(async () => await mapped.ReadAsync(default));
+                Assert.That(handler.Writes, Is.Zero);
+                handler.Rows[0].Values[4].UserEnteredValue.StringValue = "Context";
+                handler.Rows[1].Values[4].Note = "Keep translator's note";
+                var before = await mapped.ReadAsync(default);
+                Assert.That(before.rows.Single().context, Is.EqualTo("KEEP"));
+                var after = before.Copy();
+                after.rows.Single().context = "Ferryman / Arrival\nPlayer reply";
+                await mapped.WriteAsync(before, after, default);
+                Assert.That((await mapped.ReadAsync(default)).Fingerprint(), Is.EqualTo(after.Fingerprint()));
+                Assert.That(handler.Rows[1].Values[4].Note, Is.EqualTo("Keep translator's note"));
+                Assert.That(handler.Writes, Is.EqualTo(1));
+            }
+            finally { mapping.contextColumn = 0; }
+        }
+
         [Test]public async Task NumericIdsBeyondExactPrecisionAreRejected()
         {
             handler.Rows[1].Values[0].UserEnteredValue=new ExtendedValue{NumberValue=9007199254740992d};

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EasyUI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
@@ -24,10 +25,10 @@ namespace EasySettings.UI
         SettingsSession session;
         UIWindow window, confirmation;
         CanvasGroup body;
-        Text title, status, effective, confirmationText;
+        TMP_Text title, status, effective, confirmationText, keepCaption, revertCaption;
         readonly List<Action> refreshers = new List<Action>();
         readonly List<Selectable> editors = new List<Selectable>();
-        Button apply, cancel, reset, keep, revertButton;
+        Button apply, cancel, reset, keep;
         RectTransform content;
         int lastSecond = -1;
         public RectTransform ExtensionsRoot => content;
@@ -124,14 +125,23 @@ namespace EasySettings.UI
                 (!session.Capabilities.PostProcessing ? T("post_unavailable", session.Capabilities.PostProcessingReason) + "\n" : "") +
                 (!session.Capabilities.Volume ? T("volume_unavailable", session.Capabilities.VolumeReason) : ""));
             foreach (var definition in AdditionalWindows ?? Array.Empty<WindowDefinition>()) if (definition) {
-                var d = definition; var link = Button(content, d.name, () => { if (window.Handle?.IsOpen == true) window.Handle.Manager.Open(d, window.Handle); }); link.gameObject.AddComponent<LayoutElement>().preferredHeight = 38;
+                var d = definition; var link = Button(content, d.name, () => { if (window.Handle?.IsOpen == true) window.Handle.Manager.Open(d, window.Handle); }, out _); link.gameObject.AddComponent<LayoutElement>().preferredHeight = 38;
             }
             status = Label(root, "", 14); Place(status.rectTransform, new Vector2(24, -555), new Vector2(870, 58));
-            apply = Button(root, "Apply", Apply); Place((RectTransform)apply.transform, new Vector2(24, -630), new Vector2(210, 42));
-            cancel = Button(root, "Cancel edits", Cancel); Place((RectTransform)cancel.transform, new Vector2(246, -630), new Vector2(210, 42));
-            reset = Button(root, "Reset", Reset); Place((RectTransform)reset.transform, new Vector2(468, -630), new Vector2(210, 42));
-            var close = Button(root, "Close", () => window.Close()); Place((RectTransform)close.transform, new Vector2(690, -630), new Vector2(210, 42));
-            refreshers.Add(() => { apply.GetComponentInChildren<Text>().text = T("apply", "Apply"); cancel.GetComponentInChildren<Text>().text = T("cancel", "Cancel edits"); reset.GetComponentInChildren<Text>().text = T("reset", "Reset"); close.GetComponentInChildren<Text>().text = T("close", "Close"); });
+            apply = Button(root, "Apply", Apply, out var applyCaption);
+            Place((RectTransform)apply.transform, new Vector2(24, -630), new Vector2(210, 42));
+            cancel = Button(root, "Cancel edits", Cancel, out var cancelCaption);
+            Place((RectTransform)cancel.transform, new Vector2(246, -630), new Vector2(210, 42));
+            reset = Button(root, "Reset", Reset, out var resetCaption);
+            Place((RectTransform)reset.transform, new Vector2(468, -630), new Vector2(210, 42));
+            var close = Button(root, "Close", () => window.Close(), out var closeCaption);
+            Place((RectTransform)close.transform, new Vector2(690, -630), new Vector2(210, 42));
+            refreshers.Add(() => {
+                applyCaption.text = T("apply", "Apply");
+                cancelCaption.text = T("cancel", "Cancel edits");
+                resetCaption.text = T("reset", "Reset");
+                closeCaption.text = T("close", "Close");
+            });
             window.FirstSelected = apply;
 
         }
@@ -141,8 +151,13 @@ namespace EasySettings.UI
         {
             var row = Rect(key, content); row.gameObject.AddComponent<LayoutElement>().preferredHeight = 38;
             var name = Label(row, fallback, 16); Place(name.rectTransform, Vector2.zero, new Vector2(390, 38));
-            var button = Button(row, "", action); Place((RectTransform)button.transform, new Vector2(395, 0), new Vector2(430, 38)); editors.Add(button);
-            refreshers.Add(() => { name.text = T(key, fallback); button.GetComponentInChildren<Text>().text = session == null ? "—" : value() + "  ›"; button.interactable = session != null && !session.HasPreview && !session.IsFaulted && (available?.Invoke() ?? true); });
+            var button = Button(row, "", action, out var caption);
+            Place((RectTransform)button.transform, new Vector2(395, 0), new Vector2(430, 38)); editors.Add(button);
+            refreshers.Add(() => {
+                name.text = T(key, fallback);
+                caption.text = session == null ? "—" : value() + "  ›";
+                button.interactable = session != null && !session.HasPreview && !session.IsFaulted && (available?.Invoke() ?? true);
+            });
         }
         static TItem Next<TItem>(IReadOnlyList<TItem> values, TItem current) { for (int i = 0; i < values.Count; i++) if (EqualityComparer<TItem>.Default.Equals(values[i], current)) return values[(i + 1) % values.Count]; return values.Count == 0 ? current : values[0]; }
         public void Refresh()
@@ -170,25 +185,43 @@ namespace EasySettings.UI
             confirmation.Policy.BlockGameplay = window.Policy.BlockGameplay; confirmation.Policy.Cursor = window.Policy.Cursor; confirmation.Policy.BlockedActions = window.Policy.BlockedActions;
             confirmation.Closed += _ => { if (session != null && session.HasPreview && !session.IsDisposed && !session.IsFaulted) session.RequestCancel(); };
             confirmationText = Label(root, "", 20); Place(confirmationText.rectTransform, new Vector2(24, -20), new Vector2(632, 160));
-            keep = Button(root, "Keep", () => session?.Confirm()); Place((RectTransform)keep.transform, new Vector2(24, -205), new Vector2(300, 42));
-            revertButton = Button(root, "Revert", () => session?.Revert()); Place((RectTransform)revertButton.transform, new Vector2(350, -205), new Vector2(300, 42));
+            keep = Button(root, "Keep", () => session?.Confirm(), out keepCaption);
+            Place((RectTransform)keep.transform, new Vector2(24, -205), new Vector2(300, 42));
+            var revertButton = Button(root, "Revert", () => session?.Revert(), out revertCaption);
+            Place((RectTransform)revertButton.transform, new Vector2(350, -205), new Vector2(300, 42));
             confirmation.FirstSelected = revertButton;
         }
         void RefreshConfirmation()
         {
             if (!confirmationText || session == null) return;
             confirmationText.text = T("keep_question", "Keep this display configuration?") + $"\n{Mathf.CeilToInt(session.RemainingSeconds)} s\n" + T("requested", "Requested") + ": " + session.Preview.Display + "\n" + T("observed", "Observed") + ": " + session.Observed.Display;
-            keep.interactable = session.CanConfirm; keep.GetComponentInChildren<Text>().text = T("keep", "Keep");
-            revertButton.GetComponentInChildren<Text>().text = T("revert", "Revert");
+            keep.interactable = session.CanConfirm;
+            keepCaption.text = T("keep", "Keep");
+            revertCaption.text = T("revert", "Revert");
         }
         internal static RectTransform Rect(string name, Transform parent) { var go = new GameObject(name, typeof(RectTransform)); go.transform.SetParent(parent, false); return (RectTransform)go.transform; }
         internal static void Place(RectTransform rect, Vector2 position, Vector2 size) { rect.anchorMin = rect.anchorMax = new Vector2(0, 1); rect.pivot = new Vector2(0, 1); rect.anchoredPosition = position; rect.sizeDelta = size; }
-        internal static Text Label(Transform parent, string value, int size) { var rect = Rect("Label", parent); var text = rect.gameObject.AddComponent<Text>(); text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); text.text = value; text.fontSize = size; text.color = new Color(.9f, .94f, .97f); text.alignment = TextAnchor.MiddleLeft; text.raycastTarget = false; return text; }
-        internal static Button Button(Transform parent, string label, Action action) {
-            var rect = Rect(label, parent); var image = rect.gameObject.AddComponent<Image>(); image.color = new Color(.13f, .23f, .3f);
-            var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
-            var text = Label(rect, label, 16); text.alignment = TextAnchor.MiddleCenter; text.rectTransform.anchorMin = Vector2.zero; text.rectTransform.anchorMax = Vector2.one; text.rectTransform.offsetMin = new Vector2(6, 2); text.rectTransform.offsetMax = new Vector2(-6, -2);
-            button.onClick.AddListener(() => action()); return button;
+        static TMP_Text Label(Transform parent, string value, int size, TextAlignmentOptions alignment = TextAlignmentOptions.Left)
+        {
+            var rect = Rect("Label", parent);
+            var text = UIText.Add(rect.gameObject, value, size, alignment);
+            text.color = new Color(.9f, .94f, .97f);
+            return text;
+        }
+        static Button Button(Transform parent, string label, Action action, out TMP_Text caption)
+        {
+            var rect = Rect(label, parent);
+            var image = rect.gameObject.AddComponent<Image>();
+            image.color = new Color(.13f, .23f, .3f);
+            var button = rect.gameObject.AddComponent<Button>();
+            button.targetGraphic = image;
+            caption = Label(rect, label, 16, TextAlignmentOptions.Center);
+            caption.rectTransform.anchorMin = Vector2.zero;
+            caption.rectTransform.anchorMax = Vector2.one;
+            caption.rectTransform.offsetMin = new Vector2(6, 2);
+            caption.rectTransform.offsetMax = new Vector2(-6, -2);
+            button.onClick.AddListener(() => action());
+            return button;
         }
     }
 }

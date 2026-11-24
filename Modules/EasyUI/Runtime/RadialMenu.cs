@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -37,7 +38,7 @@ namespace EasyUI
         private UIWindow window;
         private RectTransform rect;
         private readonly List<Image> views = new List<Image>();
-        private readonly List<Text> labels = new List<Text>();
+        private readonly List<TMP_Text> labels = new List<TMP_Text>();
         private readonly List<Image> icons = new List<Image>();
         private Vector2 lastPointer, lastStick;
         private bool useStick;
@@ -72,10 +73,10 @@ namespace EasyUI
                 r.sizeDelta = new Vector2(140, 72);
                 var image = go.GetComponent<Image>(); image.raycastTarget = false;
                 views.Add(image);
-                var textGo = new GameObject("Label", typeof(RectTransform), typeof(Text));
+                var textGo = new GameObject("Label", typeof(RectTransform));
                 textGo.transform.SetParent(go.transform, false);
                 var tr = (RectTransform)textGo.transform; tr.anchorMin = Vector2.zero; tr.anchorMax = Vector2.one; tr.offsetMin = new Vector2(4, 4); tr.offsetMax = new Vector2(-4, -4);
-                var label = textGo.GetComponent<Text>(); label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); label.fontSize = 18; label.alignment = TextAnchor.MiddleCenter; label.raycastTarget = false; label.text = item.Label;
+                var label = UIText.Add(textGo, item.Label, 18, TextAlignmentOptions.Center);
                 labels.Add(label);
                 var icon = new GameObject("Icon", typeof(RectTransform), typeof(Image)); icon.transform.SetParent(go.transform, false);
                 var ir = (RectTransform)icon.transform; ir.sizeDelta = new Vector2(28, 28); ir.anchoredPosition = new Vector2(0, 42);

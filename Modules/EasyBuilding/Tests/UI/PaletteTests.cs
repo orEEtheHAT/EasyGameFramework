@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using EasyBuilding.UI;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace EasyBuilding.Tests.UI
 {
@@ -61,14 +63,163 @@ namespace EasyBuilding.Tests.UI
             yield return null; yield return null;
             Assert.That(ui.ConfigurationError, Is.Null); Assert.That(ui.Palette.Visible.Count, Is.EqualTo(200));
             Assert.That(ui.PooledRowCount, Is.GreaterThan(0).And.LessThan(40)); Assert.That(EventSystem.current, Is.Not.Null);
+            Assert.That(GameObject.Find("EasyBuilding Palette").GetComponentInChildren<TMP_InputField>().textComponent.font,
+                Is.SameAs(TMP_Settings.defaultFontAsset));
             ui.Palette.Filter("Building 199"); yield return null;
             Assert.That(ui.Palette.Visible.Count, Is.EqualTo(1)); Assert.That(ui.Palette.Select(catalog.Buildings[199].Id), Is.True);
             Assert.That(placer.Session.Selected, Is.SameAs(catalog.Buildings[199]));
             ui.SetMenuVisible(false); yield return null;
             Assert.That(placer.Session.Selected, Is.SameAs(catalog.Buildings[199]));
             placer.Session.Cancel(); ui.MessageResolver = new TestMessages(); yield return null;
-            bool localized = false; foreach (var text in Object.FindObjectsByType<UnityEngine.UI.Text>(FindObjectsSortMode.None)) if (text.text == "Localized NoSelection") localized = true;
+            bool localized = false; foreach (var text in Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsSortMode.None)) if (text.text == "Localized NoSelection") localized = true;
             Assert.That(localized, Is.True, "The palette should consume the injected localization adapter.");
+        }
+        [UnityTest] public IEnumerator TmpFiltersAcceptCyrillicAndNavigateWithKeyboard()
+        {
+            var prefab = Go("Prefab");
+            prefab.SetActive(false);
+            var bridge = Definition(prefab, "Мост", "Постройки");
+            var ornament = Definition(prefab, "Мостик", "Декор");
+            var wall = Definition(prefab, "Стена", "Постройки");
+            var catalog = ScriptableObject.CreateInstance<BuildingCatalog>();
+            objects.Add(catalog);
+            var definitions = new List<BuildingDefinition> { bridge, ornament, wall };
+            for (int i = 0; i < 8; i++) definitions.Add(Definition(prefab, "Extra " + i, "Extra category " + i));
+            catalog.Buildings = definitions.ToArray();
+
+            Assert.That(TMP_Settings.LoadDefaultSettings(), Is.Not.Null);
+            TMP_FontAsset projectFont = TMP_Settings.defaultFontAsset;
+            Assert.That(projectFont, Is.Not.Null);
+            // The override has its own empty atlas. Every visible glyph must come from the project's fallback chain.
+            var overrideFont = Object.Instantiate(projectFont);
+            var emptyAtlas = new Texture2D(1, 1, TextureFormat.Alpha8, false);
+            overrideFont.atlasTextures = new[] { emptyAtlas };
+            overrideFont.material = new Material(projectFont.material) { mainTexture = emptyAtlas };
+            objects.Add(overrideFont);
+            Assert.That(overrideFont.characterTable, Is.Not.SameAs(projectFont.characterTable));
+            overrideFont.characterTable.Clear();
+            overrideFont.atlasPopulationMode = AtlasPopulationMode.Static;
+            overrideFont.fallbackFontAssetTable = new List<TMP_FontAsset> { projectFont };
+            overrideFont.ReadFontAssetDefinition();
+            Assert.That(overrideFont.HasCharacter('м'), Is.False, "The primary fixture font must need a Cyrillic fallback.");
+
+            var root = Go("Controls");
+            var placer = root.AddComponent<BuildingPlacer>();
+            placer.ShowHelp = false;
+            placer.ExternalTargeting = true;
+            var ui = root.AddComponent<BuildingPaletteUI>();
+            ui.Catalog = catalog;
+            ui.Controller = placer;
+            ui.PreferencesKey = "";
+            ui.Font = overrideFont;
+            ui.MenuVisible = false;
+            yield return null;
+            yield return null;
+
+            Assert.That(ui.ConfigurationError, Is.Null);
+            var canvas = GameObject.Find("EasyBuilding Palette");
+            Assert.That(canvas, Is.Not.Null);
+            Assert.That(canvas.GetComponentsInChildren<Text>(true), Is.Empty);
+            Assert.That(canvas.GetComponentsInChildren<InputField>(true), Is.Empty);
+            Assert.That(canvas.GetComponentsInChildren<Dropdown>(true), Is.Empty);
+            var search = canvas.GetComponentInChildren<TMP_InputField>(true);
+            var dropdown = canvas.GetComponentInChildren<TMP_Dropdown>(true);
+            Assert.That(search, Is.Not.Null);
+            Assert.That(dropdown, Is.Not.Null);
+            Assert.That(search.textViewport.GetComponent<RectMask2D>(), Is.Not.Null);
+            Assert.That(search.textComponent.rectTransform.parent, Is.SameAs(search.textViewport));
+            Assert.That(search.placeholder, Is.TypeOf<TextMeshProUGUI>());
+            Assert.That(search.placeholder.rectTransform.parent, Is.SameAs(search.textViewport));
+            Assert.That(search.textComponent.font, Is.SameAs(overrideFont));
+            Assert.That(dropdown.captionText.font, Is.SameAs(overrideFont));
+            Assert.That(dropdown.itemText.font, Is.SameAs(overrideFont));
+            var templateScroll = dropdown.template.GetComponent<ScrollRect>();
+            Assert.That(templateScroll.viewport.GetComponent<RectMask2D>(), Is.Not.Null);
+            Assert.That(templateScroll.content.parent, Is.SameAs(templateScroll.viewport));
+            Assert.That(dropdown.itemText.GetComponentInParent<Toggle>(true).transform.parent, Is.SameAs(templateScroll.content));
+
+            yield return Press(Key.B);
+            Assert.That(ui.MenuVisible, Is.True);
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.SameAs(search.gameObject));
+            Assert.That(search.isFocused, Is.False, "Opening the catalog should select search without entering text mode.");
+            yield return Press(Key.Enter);
+            Assert.That(search.isFocused, Is.True);
+            yield return Press(Key.B);
+            yield return Press(Key.Digit1);
+            Assert.That(ui.MenuVisible, Is.True, "Editing a filter must not consume the menu key as a shortcut.");
+            Assert.That(placer.Session.Selected, Is.Null, "Editing a filter must not select a hotbar slot.");
+
+            const string query = "мост";
+            foreach (char c in query) search.ProcessEvent(new Event { type = EventType.KeyDown, character = c });
+            // ProcessEvent supplies the text edit directly. Normally OnUpdateSelected also refreshes the label.
+            search.ForceLabelUpdate();
+            yield return null;
+            Assert.That(search.text, Is.EqualTo(query));
+            Assert.That(search.placeholder.enabled, Is.False, "The placeholder must hide after text input.");
+            CollectionAssert.AreEquivalent(new[] { bridge, ornament }, ui.Palette.Visible);
+            AssertRenderedByFallback(search.textComponent, query, overrideFont);
+
+            yield return Press(Key.Enter);
+            Assert.That(search.isFocused, Is.False, "Submitting the search should finish editing.");
+            yield return Press(Key.DownArrow);
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.SameAs(dropdown.gameObject));
+            yield return Press(Key.Enter);
+            Assert.That(dropdown.IsExpanded, Is.True);
+            var popup = dropdown.transform.Find("Dropdown List").GetComponent<ScrollRect>();
+            Assert.That(popup.viewport.GetComponent<RectMask2D>(), Is.Not.Null);
+            Assert.That(popup.content.rect.height, Is.GreaterThan(popup.viewport.rect.height));
+            int bridgeCategory = dropdown.options.FindIndex(option => option.text == bridge.Category);
+            Assert.That(bridgeCategory, Is.GreaterThan(6), "Keyboard navigation must cross the edge of the dropdown viewport.");
+            for (int i = 0; i < bridgeCategory; i++) yield return Press(Key.DownArrow);
+            var focusedOption = EventSystem.current.currentSelectedGameObject.GetComponent<Toggle>();
+            Assert.That(focusedOption.transform.parent, Is.SameAs(popup.content));
+            Assert.That(popup.content.anchoredPosition.y, Is.GreaterThan(0), "The dropdown must reveal the option reached by keyboard.");
+            var focusedBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(popup.viewport, focusedOption.transform);
+            Assert.That(focusedBounds.min.y, Is.GreaterThanOrEqualTo(popup.viewport.rect.yMin - 0.5f));
+            Assert.That(focusedBounds.max.y, Is.LessThanOrEqualTo(popup.viewport.rect.yMax + 0.5f));
+            var optionLabel = focusedOption.GetComponentInChildren<TextMeshProUGUI>();
+            Assert.That(optionLabel.text, Is.EqualTo(bridge.Category));
+            AssertRenderedByFallback(optionLabel, bridge.Category, overrideFont);
+            yield return Press(Key.Enter);
+            Assert.That(dropdown.captionText.text, Is.EqualTo(bridge.Category));
+            CollectionAssert.AreEqual(new[] { bridge }, ui.Palette.Visible);
+            double deadline = Time.realtimeSinceStartupAsDouble + 2;
+            while (dropdown.IsExpanded && Time.realtimeSinceStartupAsDouble < deadline) yield return null;
+            Assert.That(dropdown.IsExpanded, Is.False);
+            Assert.That(EventSystem.current.currentSelectedGameObject, Is.SameAs(dropdown.gameObject));
+            yield return Press(Key.DownArrow);
+            Assert.That(EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TMP_Text>().text, Is.EqualTo(bridge.Name));
+            yield return Press(Key.Enter);
+            Assert.That(placer.Session.Selected, Is.SameAs(bridge));
+        }
+        private BuildingDefinition Definition(GameObject prefab, string name, string category)
+        {
+            var definition = ScriptableObject.CreateInstance<BuildingDefinition>();
+            objects.Add(definition);
+            definition.Prefab = prefab;
+            definition.RequireSurface = false;
+            definition.DisplayName = name;
+            definition.Category = category;
+            return definition;
+        }
+        private IEnumerator Press(Key key)
+        {
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(key));
+            yield return null;
+            yield return null;
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            yield return null;
+        }
+        private static void AssertRenderedByFallback(TMP_Text text, string expected, TMP_FontAsset primary)
+        {
+            text.ForceMeshUpdate();
+            Assert.That(text.textInfo.characterCount, Is.GreaterThanOrEqualTo(expected.Length));
+            for (int i = 0; i < expected.Length; i++)
+            {
+                var character = text.textInfo.characterInfo[i];
+                Assert.That(character.textElement.unicode, Is.EqualTo((uint)expected[i]), $"Expected the {expected[i]} glyph, not a replacement character.");
+                Assert.That(character.fontAsset, Is.Not.SameAs(primary));
+            }
         }
         private sealed class TestMessages : IBuildingMessageResolver
         { public string Resolve(in PlacementResult result) => "Localized " + result.Failure; }

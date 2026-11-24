@@ -1,0 +1,19 @@
+{
+  "name": "EasyNarrative.Localization.Editor.Tests",
+  "references": [
+    "EasyQuests.Runtime",
+    "EasyNarrative.Dialogue",
+    "EasyNarrative.Localization.Editor",
+    "EasyLocalization.Runtime",
+    "EasyLocalization.Editor",
+    "Unity.Localization",
+    "Unity.Localization.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

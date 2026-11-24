@@ -1,0 +1,1 @@
+{"name":"EasyNarrative.Dialogue.Editor","references":["EasyNarrative.Dialogue","EasyQuests.Runtime","EasyResources.Runtime","EasyQuests.Editor","EasyNarrative.Localization.Editor","EasyNarrative.Dialogue.UI"],"includePlatforms":["Editor"]}

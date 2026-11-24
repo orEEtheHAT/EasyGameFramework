@@ -2,6 +2,7 @@
   "name": "EasyUI.Runtime",
   "rootNamespace": "EasyUI",
   "references": [
+    "Unity.TextMeshPro",
     "UnityEngine.UI",
     "Unity.InputSystem"
   ]

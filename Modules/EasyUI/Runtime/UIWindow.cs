@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -25,6 +26,21 @@ namespace EasyUI
         internal Canvas Canvas;
         private readonly List<Selectable> selectables = new List<Selectable>();
         private readonly List<MonoBehaviour> backHandlers = new List<MonoBehaviour>();
+
+        private TMP_FontAsset appliedFont;
+
+        internal void ApplyFont(TMP_FontAsset font)
+        {
+            if (!font && !appliedFont) return;
+            var defaultFont = UIText.DefaultFont;
+            if (!font) font = defaultFont;
+            foreach (var label in GetComponentsInChildren<TextMeshProUGUI>(true))
+            {
+                if (label.font == defaultFont || (appliedFont && label.font == appliedFont))
+                    label.font = font;
+            }
+            appliedFont = font;
+        }
 
         public void Close() => Handle?.Close();
         public void RefreshNavigation() { GetComponentsInChildren(true, selectables); }

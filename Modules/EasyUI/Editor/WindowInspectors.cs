@@ -1,4 +1,5 @@
 using UnityEditor;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,8 @@ namespace EasyUI.Editor
         {
             DrawDefaultInspector();
             var manager = (WindowManager)target;
+            if (!Resources.Load<TMP_Settings>("TMP Settings"))
+                EditorGUILayout.HelpBox("Import TMP Essential Resources from Window > TextMeshPro to display EasyUI text.", MessageType.Warning);
             if (manager.InputProvider && !(manager.InputProvider is IWindowInputProvider))
                 EditorGUILayout.HelpBox("Input Provider must implement IWindowInputProvider. Use Standalone Input Provider or the EasyInput adapter.", MessageType.Error);
             if (!manager.InputProvider) EditorGUILayout.HelpBox("UI-only windows work immediately. For gameplay or cursor control, add and assign an Input Provider.", MessageType.Info);

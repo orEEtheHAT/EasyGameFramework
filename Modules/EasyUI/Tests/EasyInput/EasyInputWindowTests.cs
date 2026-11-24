@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using EasyInput;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -110,10 +111,10 @@ namespace EasyUI.Integrations.Input.Tests
             int built = 0; settings.ViewBuilt += rect => { Assert.IsNotNull(rect); built++; };
             var h = manager.Open(window); yield return Ready(); Assert.AreEqual(1, built); Assert.IsNotNull(settings.ExtrasRoot);
             source.Change("RU "); yield return null; yield return null;
-            Assert.IsTrue(System.Array.Exists(window.GetComponentsInChildren<UnityEngine.UI.Text>(), x => x.text == "RU Controls"));
+            Assert.IsTrue(System.Array.Exists(window.GetComponentsInChildren<TMP_Text>(), x => x.text == "RU Controls"));
             h.Close(); source.Change("DE "); manager.Open(window); yield return Ready(); Assert.AreEqual(2, built);
             Assert.AreEqual(1, window.GetComponentsInChildren<UnityEngine.UI.ScrollRect>().Length);
-            Assert.IsTrue(System.Array.Exists(window.GetComponentsInChildren<UnityEngine.UI.Text>(), x => x.text == "DE Controls"));
+            Assert.IsTrue(System.Array.Exists(window.GetComponentsInChildren<TMP_Text>(), x => x.text == "DE Controls"));
         }
         [UnityTest] public IEnumerator SettingsWindowUsesRuntimeCaptureRestoreAndPresentation()
         {

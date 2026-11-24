@@ -39,10 +39,10 @@ namespace EasyUI.Tests.Setup
         {
             Assert.IsFalse(FrameworkSetupCatalog.IsLegacyModulePackage(packageName));
         }
-        [Test] public void CatalogContainsTwelveUniqueBuiltInModulesWithGuides()
+        [Test] public void CatalogContainsThirteenUniqueBuiltInModulesWithGuides()
         {
             var modules = FrameworkSetupCatalog.Modules;
-            Assert.AreEqual(12, modules.Count); Assert.AreEqual(12, modules.Select(m => m.Name).Distinct().Count());
+            Assert.AreEqual(13, modules.Count); Assert.AreEqual(13, modules.Select(m => m.Name).Distinct().Count());
             var package = FrameworkSetupCatalog.FindPackage(); Assert.IsNotNull(package, "Run after framework CUTOVER.");
             foreach (var module in modules) Assert.IsNotNull(FrameworkSetupCatalog.DocumentationPath(package, module.Guide), module.Name);
             Assert.IsNull(FrameworkSetupCatalog.DocumentationPath(package, "../manifest.json"), "Links cannot escape the package.");

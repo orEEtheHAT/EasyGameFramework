@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.EasyLocalization.Tests",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyUI.EasyLocalization",
     "EasyLocalization.Runtime",

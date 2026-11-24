@@ -1,13 +1,13 @@
 # EasyGameFramework
 
-An integrated Unity 6.3 URP toolkit with twelve focused modules. Install one package, use the components and ScriptableObject definitions needed by your game, and connect them through the supplied integrations.
+An integrated Unity 6.3 URP toolkit with thirteen focused modules. Install one package, use the components and ScriptableObject definitions needed by your game, and connect them through the supplied integrations.
 
 ## First project
 
 1. Create a Unity 6.3 **URP** project and install your licensed **Easy Character Movement 2 (ECM2)** asset.
-2. In Package Manager, choose **Install package from git URL** and enter `https://github.com/orEEtheHAT/EasyGameFramework.git#v0.2.0`. Unity Input System, Cinemachine, VFX Graph, Localization and the other declared Unity dependencies are resolved by the package manifest.
+2. In Package Manager, choose **Install package from git URL** and enter `https://github.com/orEEtheHAT/EasyGameFramework.git#v0.3.0`. Unity Input System, Cinemachine, VFX Graph, Localization and the other declared Unity dependencies are resolved by the package manifest.
 3. Select **Input System Package (New)** for Active Input Handling if the project does not already use it; complete Unity's requested restart.
-4. Open **Tools > EasyGameFramework > Setup**. Resolve the actionable diagnostics. Projectile processing defaults to **Parallel**; select **Single Thread** when needed. Setup opens automatically once per project; later access is through the menu. Closing it does not overwrite your choice.
+4. For game UI, import **Window > TextMeshPro > Import TMP Essential Resources** once if the project has no TMP Settings. Open **Tools > EasyGameFramework > Setup**. Resolve the actionable diagnostics. Projectile processing defaults to **Parallel**; select **Single Thread** when needed. Setup opens automatically once per project; later access is through the menu. Closing it does not overwrite your choice.
 5. Import **Framework Playground** from this package's Samples tab, then choose **Tools > EasyGameFramework > Examples > Create or Update Framework Playground**. Enter Play Mode. The example creates its own definitions, feedbacks and localization content.
 
 The standalone Easy packages and this framework define overlapping assemblies. Use the framework as the single source of these modules in a project. Existing standalone EasyFeedbacks installations in other projects can continue using their own releases.
@@ -26,6 +26,7 @@ The standalone Easy packages and this framework define overlapping assemblies. U
 | [EasyResources](Modules/EasyResources/README.md) | Resource database, containers, reservations and ranged rewards |
 | [EasyFeedbacks](Modules/EasyFeedbacks/README.md) | Audio, visuals, camera shake, haptics and music |
 | [EasyInput](Modules/EasyInput/README.md) | Player input, rebinding, sensitivity, devices and button presentation |
+| [EasyNarrative](Modules/EasyNarrative/README.md) | World facts, visual quest and dialogue graphs, conditional replies, a journal and screen-space markers |
 | [EasyUI](Modules/EasyUI/README.md) | Windows, focus, nested navigation, dialogs and radial menus |
 | [EasyLocalization](Modules/EasyLocalization/README.md) | Unity Localization authoring and Editor Google Sheets synchronization |
 | [EasySave](Modules/EasySave/README.md) | Slots, validated persistence, versions and storage contracts |

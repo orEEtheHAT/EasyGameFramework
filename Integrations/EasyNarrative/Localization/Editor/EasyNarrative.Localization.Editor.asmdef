@@ -1,0 +1,5 @@
+{
+    "name": "EasyNarrative.Localization.Editor",
+    "references": ["EasyQuests.Runtime", "EasyNarrative.Dialogue", "EasyLocalization.Runtime", "EasyLocalization.Editor", "Unity.Localization", "Unity.Localization.Editor"],
+    "includePlatforms": ["Editor"]
+}

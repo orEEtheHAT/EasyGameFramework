@@ -1,11 +1,13 @@
 # EasyUI в EasyGameFramework
 
+[Роли, шейдеры и параметры чтения](Documentation~/Typography.ru.md)
+
 Окна, фокус, диалоги и круговые меню на uGUI и New Input System. Один WindowManager управляет UI игрока. Все интеграции с другими модулями уже поставляются в Integrations/EasyUI; импорт адаптеров не нужен.
 
 ## Первый запуск
 
 1. Откройте Tools → EasyGameFramework → Setup и устраните диагностические ошибки.
-2. В Samples импортируйте UI Getting Started. Откройте GettingStarted.unity внутри импортированного примера и нажмите Play.
+2. В новом проекте один раз выполните Window → TextMeshPro → Import TMP Essential Resources. В Samples импортируйте UI Getting Started. Откройте GettingStarted.unity внутри импортированного примера и нажмите Play.
 3. I / Start открывает инвентарь; Settings → Apply settings открывает подтверждение. Стрелки / D-pad / левый стик выбирают, Enter / A подтверждает, Esc / B возвращает на один уровень.
 4. Tab / RB переключает круг; удержание R / LB открывает его до отпускания. Мышь или стик выбирают сектор. Центр и недоступный сектор ничего не выбирают.
 5. Space увеличивает игровой счётчик только после закрытия UI и отпускания удерживаемого ввода. Закрытие ребёнка сохраняет запрос ввода родителя.
@@ -43,12 +45,22 @@ ui.Open(window);
 
 InputSettingsWindow владеет только представлением и вызывает EasyInput; аудио вызывает FeedbackSettings, язык — Localization, графика — SettingsWindow.Bind(SettingsController). Графический controller живёт независимо от окна и сам управляет подтверждением/откатом. Capture/Restore и запись через EasySave остаются у соответствующих владельцев. Дочерние окна получают отдельные UI-контексты, обратную связь и переводы до открытия.
 
+## Текст и шрифт
+
+Штатные окна и шаблоны используют TextMeshProUGUI. Пакетный шрифт содержит латиницу, кириллицу и цифры. Его запасной атлас содержит распространённые знаки интерфейса, валюты и стрелки.
+
+Чтобы поменять шрифт для набора окон, назначьте TMP Font Asset в поле Font у WindowManager перед открытием. Шрифт получат созданные в коде подписи и подписи префабов, использующие пакетный шрифт. У подписи со своим явно выбранным ассетом сохранится её шрифт. Добавьте Default Font из Modules/EasyUI/Runtime/Resources/EasyUI в список Fallback Font Assets своего шрифта, чтобы использовать пакетные глифы при отсутствии нужных символов.
+
+Чтобы создать подпись из кода, после размещения объекта вызовите `UIText.Add(labelObject, "Ресурсы: 128 ₽")`. Для поля ввода и выпадающего списка используйте TMP_InputField и TMP_Dropdown. Back сначала снимает фокус редактирования или сворачивает открытый список. В ConfirmationDialog.Message назначьте TMP-подпись. Для адаптеров ResourceBalanceLabel и LocalizedWindowText используйте TextMeshProUGUI на том же объекте.
+
+Пакетные атласы запечены из DejaVu Sans. Лицензия расположена в Runtime/Fonts.
+
 ## Интеграции и владение
 
 - InteractionMenuWindow.Bind(presenter) показывает актуальные binding/glyph/toggle через InteractionPresenter. Select выбирает действие; ActivateSelected/ReleaseSelected предназначены для явных press/hold-кнопок. Back сначала отменяет активную операцию.
 - BuildingCatalogWindow.Bind(placer,catalog) всегда использует текущую Placer.Session. UI не создаёт и не Dispose заимствованную сессию. Добавление RadialMenu на тот же объект переключает представление на круг. CloseOnSelection=true по умолчанию.
 - BuildingCatalogPresentation.Bind(resources,cache) показывает авторскую базовую цену и доступные actor accounts. Итоговую цену размещения с модификаторами вычисляет Building. После замены источников вызвать RefreshSources().
-- ResourceBalanceLabel.Presentation принимает LocalizedResourceLabelProvider. Один Text имеет одного писателя; не добавляйте LocalizedWindowText поверх того же ресурсного label.
+- ResourceBalanceLabel.Presentation принимает LocalizedResourceLabelProvider. У одной TMP-подписи один писатель; не добавляйте LocalizedWindowText поверх того же ресурсного label.
 - WindowFeedbacks.ContextProvider принимает IFeedbackContextProvider, например PlayerFeedbackContext. UI не выбирает gamepad самостоятельно.
 - Для UI без PlayerInputSettings есть StandaloneInputProvider с GameplayActions/GameplayGates. Его контракт описан в Documentation~/InputProvider.md.
 

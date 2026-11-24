@@ -49,6 +49,7 @@ namespace EasyGameFramework.Editor
             new FrameworkModuleInfo("EasyBuilding", "Placement and construction", "EasyBuilding.Runtime"),
             new FrameworkModuleInfo("EasyResources", "Inventories, costs and reservations", "EasyResources.Runtime"),
             new FrameworkModuleInfo("EasyLocalization", "Language, tables and translated data", "EasyLocalization.Runtime"),
+            new FrameworkModuleInfo("EasyNarrative", "World facts, quests, dialogue, journal and markers", "EasyQuests.Runtime", "EasyNarrative.Dialogue"),
             new FrameworkModuleInfo("EasyUI", "Windows, focus, dialogs and radial menus", "EasyUI.Runtime")
         };
         public static IReadOnlyList<FrameworkModuleInfo> Modules { get; } = Array.AsReadOnly(modules);
@@ -73,6 +74,10 @@ namespace EasyGameFramework.Editor
                 results.Add(new SetupDiagnostic(entry.Item2, package != null ? "Installed · " + package.version
                     : "Missing " + entry.Item1 + ". Resolve the framework dependencies in Package Manager.", package != null ? MessageType.None : MessageType.Error));
             }
+            bool tmpReady = Resources.Load<TMPro.TMP_Settings>("TMP Settings") != null;
+            results.Add(new SetupDiagnostic("TextMeshPro", tmpReady ? "TMP Essential Resources are available."
+                : "Choose Window > TextMeshPro > Import TMP Essential Resources before creating game UI.",
+                tmpReady ? MessageType.None : MessageType.Warning));
             bool ecm = AppDomain.CurrentDomain.GetAssemblies().Any(a => a.GetType("ECM2.Character", false) != null);
             results.Add(new SetupDiagnostic("ECM2", ecm ? "Character runtime loaded" : "Import your licensed Easy Character Movement 2 asset into this project.", ecm ? MessageType.None : MessageType.Error));
             var pipeline = QualitySettings.renderPipeline ? QualitySettings.renderPipeline : GraphicsSettings.defaultRenderPipeline;

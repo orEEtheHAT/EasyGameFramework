@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using EasyInteraction;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,12 +21,12 @@ namespace EasyUI.Integrations.Interaction
         private UIWindow window;
         private RadialMenu radial;
         private RectTransform panel, rowsRoot;
-        private Text title, hint, reason;
+        private TMP_Text title, hint, reason;
         private Image glyph;
         private readonly List<InteractionAction> actions = new List<InteractionAction>();
         private readonly List<InteractionAction> next = new List<InteractionAction>();
         private readonly List<Button> buttons = new List<Button>();
-        private readonly List<Text> labels = new List<Text>();
+        private readonly List<TMP_Text> labels = new List<TMP_Text>();
         private readonly List<Image> icons = new List<Image>();
         private bool dirty;
         private float nextCheck;
@@ -68,7 +69,7 @@ namespace EasyUI.Integrations.Interaction
         private void LateUpdate()
         {
             // Unselected conditions expose no aggregate event. Check them at the presenter's cadence;
-            // unchanged views are retained and unchanged Text values are never assigned again.
+            // unchanged views are retained and unchanged TMP_Text values are never assigned again.
             if (dirty || Time.unscaledTime >= nextCheck) Refresh();
         }
         public void Refresh()
@@ -189,10 +190,10 @@ namespace EasyUI.Integrations.Interaction
             }
             rowsRoot.sizeDelta = new Vector2(550, Mathf.Max(400, actions.Count * 54)); window.RefreshNavigation();
         }
-        private static void SetText(Text label, string value) { if (label.text != value) label.text = value; }
+        private static void SetText(TMP_Text label, string value) { if (label.text != value) label.text = value; }
         private static RectTransform Rect(string name, Transform parent, Vector2 position, Vector2 size)
         { var r = (RectTransform)new GameObject(name, typeof(RectTransform)).transform; r.SetParent(parent, false); r.anchoredPosition = position; r.sizeDelta = size; return r; }
-        private static Text Label(Transform parent, string name, Vector2 position, Vector2 size, int font)
-        { var t = Rect(name, parent, position, size).gameObject.AddComponent<Text>(); t.font = UnityEngine.Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); t.fontSize = font; t.alignment = TextAnchor.MiddleCenter; t.color = Color.white; t.raycastTarget = false; return t; }
+        private static TMP_Text Label(Transform parent, string name, Vector2 position, Vector2 size, int font)
+        => UIText.Add(Rect(name, parent, position, size).gameObject, string.Empty, font, TextAlignmentOptions.Center);
     }
 }

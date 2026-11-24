@@ -16,6 +16,7 @@ namespace EasySuite.Example
         public void Bind(EasySuiteLab owner, WindowHandle window)
         {
             lab = owner; handle = window;
+            if (lab.TryGetComponent<EasySuiteTypography>(out var typography)) typography.AddMenuEntry(window.Window);
             foreach (var button in GetComponentsInChildren<EasySuiteButton>(true)) button.Bind(this);
         }
         public void Invoke(EasySuiteCommand command)

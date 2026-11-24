@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -20,6 +21,8 @@ namespace EasyBuilding.UI
         [Tooltip("Optional component implementing IBuildingMessageResolver, for example an application localization adapter.")]
         public MonoBehaviour MessageProvider;
         public IBuildingMessageResolver MessageResolver { get; set; }
+        [Tooltip("Optional TextMeshPro font for the whole palette. Assign before initialization. Empty uses the TMP Settings default font and its fallbacks.")]
+        public TMP_FontAsset Font;
         [Tooltip("Empty disables PlayerPrefs persistence.")] public string PreferencesKey = "EasyBuilding.Palette";
         [Min(180)] public float PanelWidth = 340;
         public bool MenuVisible = true;
@@ -33,16 +36,18 @@ namespace EasyBuilding.UI
         private GameObject canvasObject;
         private RectTransform canvasRect, panel, viewport, content, hotbar, settings;
         private ScrollRect scroll;
-        private InputField search;
-        private Dropdown categories;
-        private Text status, favoriteLabel;
-        private Font font;
+        private TMP_InputField search;
+        private TMP_Dropdown categories;
+        private GameObject lastFocusedCategory;
+        private TextMeshProUGUI status, favoriteLabel;
+        private TMP_FontAsset font;
+        private string favoriteMark, unfavoriteMark;
         private readonly List<string> categoryNames = new List<string>();
         private readonly List<Row> rows = new List<Row>();
-        private readonly List<Text> bindingLabels = new List<Text>();
+        private readonly List<TextMeshProUGUI> bindingLabels = new List<TextMeshProUGUI>();
         private readonly List<BuildingControl> bindingControls = new List<BuildingControl>();
         private readonly List<Button> hotbarButtons = new List<Button>();
-        private readonly List<Text> hotbarLabels = new List<Text>();
+        private readonly List<TextMeshProUGUI> hotbarLabels = new List<TextMeshProUGUI>();
         private readonly List<InputAction> numberActions = new List<InputAction>();
         private InputAction toggle;
         private bool initialized, started, viewDirty, favoritesOnly, gamepadMode, previousHelp;
@@ -52,7 +57,7 @@ namespace EasyBuilding.UI
         private int firstRow = -1, suppressUntil;
         private const float RowHeight = 44;
         private static readonly Color Background = new Color(0.08f, 0.105f, 0.14f, 0.97f), Item = new Color(0.16f, 0.20f, 0.25f), Accent = new Color(0.12f, 0.42f, 0.43f);
-        private sealed class Row { internal RectTransform Root; internal Button Button; internal Text Name, Star; internal Image Icon; internal BuildingDefinition Definition; }
+        private sealed class Row { internal RectTransform Root; internal Button Button; internal TextMeshProUGUI Name, Star; internal Image Icon; internal BuildingDefinition Definition; }
         [Serializable] private sealed class Preferences { public BuildingPaletteState Palette; public BuildingInputPreferences Input; }
         private void Start() { started = true; if (!initialized) Initialize(out _); }
         private void OnEnable() { if (started && !initialized) Initialize(out _); }
@@ -63,6 +68,17 @@ namespace EasyBuilding.UI
             input = Controller as IBuildingPlacementInput;
             if (Catalog == null || input?.Session == null) { reason = ConfigurationError = "Assign a Building Catalog and an enabled placement controller."; return false; }
             if (MessageProvider != null && !(MessageProvider is IBuildingMessageResolver)) { reason = ConfigurationError = "Message Provider must implement IBuildingMessageResolver."; return false; }
+            if (TMP_Settings.LoadDefaultSettings() == null)
+            {
+                reason = ConfigurationError = "Import TMP Essential Resources (Window > TextMeshPro) before opening the building palette.";
+                return false;
+            }
+            font = Font != null ? Font : TMP_Settings.defaultFontAsset;
+            if (font == null)
+            {
+                reason = ConfigurationError = "Assign a Font on Building Palette or a Default Font Asset in TMP Settings.";
+                return false;
+            }
             try
             {
                 Registry = new BuildingRegistry(); Registry.Register("base", Catalog);
@@ -87,11 +103,18 @@ namespace EasyBuilding.UI
                 input.SetInputBlocked(this, false); status.text = "Connect an active building session.";
                 if (viewDirty) RefreshRows(); return;
             }
-            if (toggle.WasPressedThisFrame() && !rebinding.IsRunning) SetMenuVisible(!MenuVisible);
             if (Mouse.current != null && (Mouse.current.delta.ReadValue().sqrMagnitude > 0 || Mouse.current.leftButton.wasPressedThisFrame)) gamepadMode = false;
             if (Gamepad.current != null && (Gamepad.current.dpad.ReadValue().sqrMagnitude > 0.1f || Gamepad.current.leftStick.ReadValue().sqrMagnitude > 0.25f || Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.buttonNorth.wasPressedThisFrame)) gamepadMode = true;
+            bool editingFilters = search.isFocused || categories.IsExpanded;
+            if (toggle.WasPressedThisFrame() && !editingFilters && !rebinding.IsRunning)
+            {
+                bool openedByKeyboard = toggle.activeControl?.device is Keyboard;
+                if (openedByKeyboard) gamepadMode = false;
+                SetMenuVisible(!MenuVisible);
+                if (MenuVisible && openedByKeyboard) search.Select();
+            }
             Layout();
-            if (!search.isFocused && !rebinding.IsRunning)
+            if (!editingFilters && !rebinding.IsRunning)
                 for (int i = 0; i < numberActions.Count; i++) if (numberActions[i].WasPressedThisFrame())
                 {
                     if (Keyboard.current != null && Keyboard.current.shiftKey.isPressed)
@@ -100,8 +123,10 @@ namespace EasyBuilding.UI
                 }
             Vector2 pointer = Pointer.current != null ? Pointer.current.position.ReadValue() : new Vector2(-1, -1);
             bool overUI = Contains(panel, pointer) || Contains(hotbar, pointer) || Contains(settings, pointer);
-            bool focused = EventSystem.current != null && EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.transform.IsChildOf(canvasObject.transform);
-            input.SetInputBlocked(this, overUI || search.isFocused || rebinding.IsRunning || gamepadMode && focused || Time.frameCount <= suppressUntil);
+            var selected = EventSystem.current != null ? EventSystem.current.currentSelectedGameObject : null;
+            bool focused = selected != null && selected.transform.IsChildOf(canvasObject.transform);
+            RevealFocusedCategory(selected);
+            input.SetInputBlocked(this, overUI || editingFilters || rebinding.IsRunning || gamepadMode && focused || Time.frameCount <= suppressUntil);
             string currentName = current.Selected != null ? current.Selected.Name : null;
             if (current.Selected != lastSelected || currentName != selectionName)
             {
@@ -138,10 +163,47 @@ namespace EasyBuilding.UI
         }
         private static bool Contains(RectTransform rect, Vector2 point) => rect != null && rect.gameObject.activeInHierarchy && RectTransformUtility.RectangleContainsScreenPoint(rect, point);
         private void Dirty() { viewDirty = true; if (scroll != null) scroll.verticalNormalizedPosition = 1; }
-        private void ApplyFilter() => Palette.Filter(search.text, categories.value == 0 ? "" : categoryNames[categories.value], favoritesOnly);
+        private void ApplyFilter()
+        {
+            if (Palette == null) return;
+            int selected = categories.value;
+            string category = selected > 0 && selected < categoryNames.Count ? categoryNames[selected] : "";
+            Palette.Filter(search.text, category, favoritesOnly);
+        }
+        private void RevealFocusedCategory(GameObject selected)
+        {
+            if (!categories.IsExpanded || selected == null || !selected.transform.IsChildOf(categories.transform))
+            {
+                lastFocusedCategory = null;
+                return;
+            }
+            if (lastFocusedCategory == selected) return;
+            lastFocusedCategory = selected;
+            if (!selected.TryGetComponent<Toggle>(out var option)) return;
+
+            // TMP_Dropdown moves focus between toggles but does not scroll the focused toggle into view.
+            var list = option.GetComponentInParent<ScrollRect>();
+            if (list == null || list.content == null || list.viewport == null) return;
+            var item = (RectTransform)option.transform;
+            var view = list.viewport;
+            var viewRect = view.rect;
+            float bottom = view.InverseTransformPoint(item.TransformPoint(new Vector3(0, item.rect.yMin, 0))).y;
+            float top = view.InverseTransformPoint(item.TransformPoint(new Vector3(0, item.rect.yMax, 0))).y;
+            var position = list.content.anchoredPosition;
+            if (bottom < viewRect.yMin) position.y += viewRect.yMin - bottom;
+            else if (top > viewRect.yMax) position.y -= top - viewRect.yMax;
+            else return;
+
+            list.StopMovement();
+            position.y = Mathf.Clamp(position.y, 0, Mathf.Max(0, list.content.rect.height - viewRect.height));
+            list.content.anchoredPosition = position;
+        }
         private void BuildUI()
         {
-            font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            bool hasStars = font.HasCharacter('★', searchFallbacks: true, tryAddCharacter: true) &&
+                font.HasCharacter('☆', searchFallbacks: true, tryAddCharacter: true);
+            favoriteMark = hasStars ? "★" : "-";
+            unfavoriteMark = hasStars ? "☆" : "+";
             canvasObject = new GameObject("EasyBuilding Palette", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             canvasRect = (RectTransform)canvasObject.transform; canvasObject.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay; canvasObject.GetComponent<Canvas>().sortingOrder = 100;
             var scaler = canvasObject.GetComponent<CanvasScaler>(); scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize; scaler.referenceResolution = new Vector2(1280, 720); scaler.matchWidthOrHeight = 0.5f;
@@ -152,13 +214,10 @@ namespace EasyBuilding.UI
                 events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
             }
             panel = Node("Catalog", canvasRect); panel.anchorMin = Vector2.zero; panel.anchorMax = Vector2.up; panel.pivot = Vector2.up; panel.sizeDelta = new Vector2(PanelWidth, 0); Image(panel, Background);
-            Label("Build", panel, 20, FontStyle.Bold, 12, 12, 200, 32);
-            var searchRoot = Node("Search", panel); Position(searchRoot, 12, 52, 316, 34); var searchImage = Image(searchRoot, Item);
-            search = searchRoot.gameObject.AddComponent<InputField>(); search.targetGraphic = searchImage; search.characterLimit = 80;
-            search.textComponent = Label("", searchRoot, 15, FontStyle.Normal, 8, 2, 290, 30);
-            var placeholder = Label("Search buildings", searchRoot, 15, FontStyle.Italic, 8, 2, 290, 30); placeholder.color = new Color(0.6f, 0.67f, 0.73f); search.placeholder = placeholder;
-            search.onValueChanged.AddListener(value => ApplyFilter());
+            Label("Build", panel, 20, FontStyles.Bold, 12, 12, 200, 32);
+            search = CreateSearch(panel);
             categories = CreateCategories(panel); Position((RectTransform)categories.transform, 12, 96, 170, 32);
+            search.navigation = new Navigation { mode = Navigation.Mode.Explicit, selectOnDown = categories };
             var favorites = Button("Favorites", panel, out favoriteLabel, () => { favoritesOnly = !favoritesOnly; favoriteLabel.text = favoritesOnly ? "Favorites only" : "All buildings"; ApplyFilter(); }); Position((RectTransform)favorites.transform, 190, 96, 138, 32);
             favoriteLabel.text = "All buildings";
             var list = Node("Building list", panel); Stretch(list, 12, 140, 12, 88); scroll = list.gameObject.AddComponent<ScrollRect>(); scroll.horizontal = false; scroll.movementType = ScrollRect.MovementType.Clamped; scroll.scrollSensitivity = 28;
@@ -170,13 +229,13 @@ namespace EasyBuilding.UI
             var handle = Node("Handle", barRoot); Stretch(handle); bar.handleRect = handle; bar.targetGraphic = Image(handle, new Color(0.35f, 0.43f, 0.49f));
             scroll.verticalScrollbar = bar;
             var controls = Button("Controls", panel, out _, () => { settings.gameObject.SetActive(!settings.gameObject.activeSelf); RefreshBindings(); }); Bottom((RectTransform)controls.transform, 12, 12, 110, 32);
-            var hint = Label("1–0 select  ·  Shift+number assigns\nB / Y opens or closes this catalog", panel, 12, FontStyle.Normal, 0, 0, 300, 38); Bottom(hint.rectTransform, 12, 46, 300, 38);
+            var hint = Label("1–0 select  ·  Shift+number assigns\nB / Y opens or closes this catalog", panel, 12, FontStyles.Normal, 0, 0, 300, 38); Bottom(hint.rectTransform, 12, 46, 300, 38);
             settings = Node("Input bindings", canvasRect); Position(settings, PanelWidth + 12, 12, 310, 280); Image(settings, Background);
-            Label("Controls", settings, 20, FontStyle.Bold, 12, 10, 270, 28);
+            Label("Controls", settings, 20, FontStyles.Bold, 12, 10, 270, 28);
             foreach (BuildingControl control in Enum.GetValues(typeof(BuildingControl)))
             {
                 var action = input.InputActionFor(control); if (action == null || action.bindings.Count == 0) continue;
-                int index = bindingLabels.Count; var label = Label("", settings, 13, FontStyle.Normal, 12, 46 + index * 42, 204, 38); bindingLabels.Add(label); bindingControls.Add(control);
+                int index = bindingLabels.Count; var label = Label("", settings, 13, FontStyles.Normal, 12, 46 + index * 42, 204, 38); bindingLabels.Add(label); bindingControls.Add(control);
                 var current = control; var button = Button("Change", settings, out _, () => { try { rebinding.Begin(current); } catch (Exception exception) { Debug.LogWarning(exception.Message, this); } }); Position((RectTransform)button.transform, 224, 48 + index * 42, 74, 32);
             }
             settings.gameObject.SetActive(false);
@@ -184,12 +243,12 @@ namespace EasyBuilding.UI
             hotbar.anchorMin = hotbar.anchorMax = new Vector2(1, 0); hotbar.pivot = new Vector2(1, 0); hotbar.anchoredPosition = new Vector2(-12, 12);
             for (int i = 0; i < Palette.SlotCount; i++)
             {
-                int slot = i; var button = Button("", hotbar, out var label, () => Palette.SelectSlot(slot)); label.fontSize = 12; label.alignment = TextAnchor.MiddleCenter;
-                label.resizeTextForBestFit = true; label.resizeTextMinSize = 9; label.resizeTextMaxSize = 12;
+                int slot = i; var button = Button("", hotbar, out var label, () => Palette.SelectSlot(slot)); label.fontSize = 12; label.alignment = TextAlignmentOptions.Center;
+                label.enableAutoSizing = true; label.fontSizeMin = 9; label.fontSizeMax = 12;
                 hotbarButtons.Add(button); hotbarLabels.Add(label);
             }
             var statusRoot = Node("Placement status", canvasRect); Image(statusRoot, Background).raycastTarget = false;
-            status = Label("Select a building", statusRoot, 14, FontStyle.Normal, 0, 0, 300, 44); Stretch(status.rectTransform, 10, 6, 10, 6);
+            status = Label("Select a building", statusRoot, 14, FontStyles.Normal, 0, 0, 300, 44); Stretch(status.rectTransform, 10, 6, 10, 6);
             statusRoot.anchorMin = statusRoot.anchorMax = new Vector2(1, 0); statusRoot.pivot = new Vector2(1, 0);
         }
         private void Layout()
@@ -199,7 +258,7 @@ namespace EasyBuilding.UI
             if (Mathf.Approximately(width, previousWidth) && Mathf.Approximately(height, previousHeight)) return;
             previousWidth = width; previousHeight = height;
             float panelWidth = Mathf.Min(PanelWidth, width * 0.55f); panel.sizeDelta = new Vector2(panelWidth, 0);
-            ((RectTransform)search.transform).sizeDelta = new Vector2(panelWidth - 24, 34); Stretch(search.textComponent.rectTransform, 8, 2, 8, 2); Stretch(((Text)search.placeholder).rectTransform, 8, 2, 8, 2);
+            ((RectTransform)search.transform).sizeDelta = new Vector2(panelWidth - 24, 34);
             ((RectTransform)categories.transform).sizeDelta = new Vector2((panelWidth - 32) * 0.54f, 32);
             var favoriteRoot = (RectTransform)favoriteLabel.transform.parent; Position(favoriteRoot, 20 + (panelWidth - 32) * 0.54f, 96, (panelWidth - 32) * 0.46f, 32); favoriteLabel.fontSize = 12;
             settings.anchoredPosition = new Vector2(Mathf.Min(panelWidth + 12, Mathf.Max(0, width - settings.rect.width)), -12);
@@ -221,7 +280,7 @@ namespace EasyBuilding.UI
                 var row = rows[i]; int index = firstRow + i; row.Root.gameObject.SetActive(i < needed && index < Palette.Visible.Count);
                 if (!row.Root.gameObject.activeSelf) continue;
                 var definition = Palette.Visible[index]; row.Definition = definition; row.Root.anchoredPosition = new Vector2(0, -index * RowHeight);
-                row.Name.text = definition.Name; row.Star.text = Palette.IsFavorite(definition.Id) ? "★" : "☆";
+                row.Name.text = definition.Name; row.Star.text = Palette.IsFavorite(definition.Id) ? favoriteMark : unfavoriteMark;
                 row.Icon.sprite = definition.Icon; row.Icon.enabled = definition.Icon != null;
                 row.Name.rectTransform.offsetMin = new Vector2(definition.Icon != null ? 46 : 10, 4);
                 row.Button.image.color = Palette.Session?.Selected == definition ? Accent : Item;
@@ -238,33 +297,122 @@ namespace EasyBuilding.UI
             row.Root.anchorMin = Vector2.up; row.Root.anchorMax = Vector2.one; row.Root.pivot = Vector2.up; row.Root.sizeDelta = new Vector2(0, RowHeight - 4);
             Stretch(row.Name.rectTransform, 46, 4, 42, 4); row.Name.fontSize = 14;
             var icon = Node("Icon", row.Root); Position(icon, 8, 6, 28, 28); row.Icon = Image(icon, Color.white); row.Icon.preserveAspect = true; row.Icon.raycastTarget = false;
-            var star = Button("☆", row.Root, out row.Star, () => { if (row.Definition != null) { Palette.ToggleFavorite(row.Definition.Id); SavePreferences(); } });
-            var starRect = (RectTransform)star.transform; starRect.anchorMin = starRect.anchorMax = Vector2.one; starRect.pivot = Vector2.one; starRect.anchoredPosition = new Vector2(-4, -4); starRect.sizeDelta = new Vector2(32, 32); row.Star.alignment = TextAnchor.MiddleCenter;
+            var star = Button(unfavoriteMark, row.Root, out row.Star, () => { if (row.Definition != null) { Palette.ToggleFavorite(row.Definition.Id); SavePreferences(); } });
+            var starRect = (RectTransform)star.transform; starRect.anchorMin = starRect.anchorMax = Vector2.one; starRect.pivot = Vector2.one; starRect.anchoredPosition = new Vector2(-4, -4); starRect.sizeDelta = new Vector2(32, 32); row.Star.alignment = TextAlignmentOptions.Center;
             return row;
         }
-        private Dropdown CreateCategories(RectTransform parent)
+        private TMP_InputField CreateSearch(RectTransform parent)
         {
-            var root = Node("Category", parent); var dropdown = root.gameObject.AddComponent<Dropdown>(); dropdown.targetGraphic = Image(root, Item);
-            var caption = Label("All categories", root, 13, FontStyle.Normal, 8, 2, 140, 28); Stretch(caption.rectTransform, 8, 2, 28, 2); dropdown.captionText = caption;
-            var arrow = Label("▾", root, 15, FontStyle.Normal, 0, 0, 16, 24); arrow.rectTransform.anchorMin = arrow.rectTransform.anchorMax = new Vector2(1, 0.5f); arrow.rectTransform.pivot = new Vector2(1, 0.5f); arrow.rectTransform.anchoredPosition = new Vector2(-8, 0);
-            var template = Node("Template", root); template.anchorMin = Vector2.zero; template.anchorMax = Vector2.right; template.pivot = Vector2.up; template.sizeDelta = new Vector2(0, 180); Image(template, Background);
-            var list = template.gameObject.AddComponent<ScrollRect>(); list.horizontal = false; list.movementType = ScrollRect.MovementType.Clamped;
-            var view = Node("Viewport", template); Stretch(view); Image(view, Background); view.gameObject.AddComponent<RectMask2D>();
-            var listContent = Node("Content", view); listContent.anchorMin = Vector2.up; listContent.anchorMax = Vector2.one; listContent.pivot = Vector2.up; listContent.sizeDelta = new Vector2(0, 30);
-            var item = Node("Item", listContent); Stretch(item); var itemToggle = item.gameObject.AddComponent<Toggle>(); itemToggle.targetGraphic = Image(item, Item);
-            var check = Node("Selected", item); Position(check, 4, 8, 12, 12); itemToggle.graphic = Image(check, Accent);
-            var itemText = Label("Category", item, 14, FontStyle.Normal, 22, 0, 140, 30); Stretch(itemText.rectTransform, 22, 0, 4, 0);
-            list.viewport = view; list.content = listContent; dropdown.template = template; dropdown.itemText = itemText; template.gameObject.SetActive(false);
-            categoryNames.Add("All categories"); var unique = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var definition in Registry.Definitions) if (!string.IsNullOrEmpty(definition.Category) && unique.Add(definition.Category)) categoryNames.Add(definition.Category);
-            dropdown.ClearOptions(); dropdown.AddOptions(categoryNames); dropdown.onValueChanged.AddListener(value => ApplyFilter()); return dropdown;
+            var root = Node("Search", parent);
+            Position(root, 12, 52, 316, 34);
+            var background = Image(root, Item);
+            var textArea = Node("Text Area", root);
+            Stretch(textArea, 8, 2, 8, 2);
+            textArea.gameObject.AddComponent<RectMask2D>();
+
+            var placeholder = Label("Search buildings", textArea, 15, FontStyles.Italic, 0, 0, 0, 0);
+            Stretch(placeholder.rectTransform);
+            placeholder.textWrappingMode = TextWrappingModes.NoWrap;
+            placeholder.overflowMode = TextOverflowModes.Ellipsis;
+            placeholder.color = new Color(0.6f, 0.67f, 0.73f);
+            var text = Label("", textArea, 15, FontStyles.Normal, 0, 0, 0, 0);
+            Stretch(text.rectTransform);
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.extraPadding = true;
+
+            var field = root.gameObject.AddComponent<TMP_InputField>();
+            field.targetGraphic = background;
+            field.textViewport = textArea;
+            field.textComponent = text;
+            field.placeholder = placeholder;
+            field.lineType = TMP_InputField.LineType.SingleLine;
+            field.richText = false;
+            field.characterLimit = 80;
+            field.shouldActivateOnSelect = false;
+            field.onValueChanged.AddListener(_ => ApplyFilter());
+            return field;
+        }
+        private TMP_Dropdown CreateCategories(RectTransform parent)
+        {
+            var root = Node("Category", parent);
+            var dropdown = root.gameObject.AddComponent<TMP_Dropdown>();
+            dropdown.targetGraphic = Image(root, Item);
+
+            var caption = Label("All categories", root, 13, FontStyles.Normal, 0, 0, 0, 0);
+            Stretch(caption.rectTransform, 8, 2, 28, 2);
+            caption.textWrappingMode = TextWrappingModes.NoWrap;
+            caption.overflowMode = TextOverflowModes.Ellipsis;
+            dropdown.captionText = caption;
+
+            var arrow = Label("▼", root, 11, FontStyles.Normal, 0, 0, 16, 24);
+            arrow.rectTransform.anchorMin = arrow.rectTransform.anchorMax = new Vector2(1, 0.5f);
+            arrow.rectTransform.pivot = new Vector2(1, 0.5f);
+            arrow.rectTransform.anchoredPosition = new Vector2(-8, 0);
+            arrow.alignment = TextAlignmentOptions.Center;
+
+            var template = Node("Template", root);
+            template.anchorMin = Vector2.zero;
+            template.anchorMax = Vector2.right;
+            template.pivot = new Vector2(0.5f, 1);
+            template.anchoredPosition = new Vector2(0, -2);
+            template.sizeDelta = new Vector2(0, 180);
+            Image(template, Background);
+            var list = template.gameObject.AddComponent<ScrollRect>();
+            list.horizontal = false;
+            list.movementType = ScrollRect.MovementType.Clamped;
+            var view = Node("Viewport", template);
+            Stretch(view);
+            view.gameObject.AddComponent<RectMask2D>();
+
+            var listContent = Node("Content", view);
+            listContent.anchorMin = Vector2.up;
+            listContent.anchorMax = Vector2.one;
+            listContent.pivot = new Vector2(0.5f, 1);
+            listContent.sizeDelta = new Vector2(0, 30);
+            var item = Node("Item", listContent);
+            item.anchorMin = new Vector2(0, 0.5f);
+            item.anchorMax = new Vector2(1, 0.5f);
+            item.sizeDelta = new Vector2(0, 30);
+            var itemToggle = item.gameObject.AddComponent<Toggle>();
+            itemToggle.targetGraphic = Image(item, Item);
+            var check = Node("Selected", item);
+            Position(check, 5, 9, 12, 12);
+            var checkImage = Image(check, Accent);
+            checkImage.raycastTarget = false;
+            itemToggle.graphic = checkImage;
+            var itemText = Label("Category", item, 14, FontStyles.Normal, 0, 0, 0, 0);
+            Stretch(itemText.rectTransform, 22, 0, 4, 0);
+            itemText.textWrappingMode = TextWrappingModes.NoWrap;
+            itemText.overflowMode = TextOverflowModes.Ellipsis;
+
+            list.viewport = view;
+            list.content = listContent;
+            dropdown.template = template;
+            dropdown.itemText = itemText;
+            template.gameObject.SetActive(false);
+            PopulateCategories(dropdown, null);
+            dropdown.onValueChanged.AddListener(_ => ApplyFilter());
+            return dropdown;
         }
         private void RefreshCategories()
         {
-            string current = categories.value > 0 && categories.value < categoryNames.Count ? categoryNames[categories.value] : "";
-            categoryNames.Clear(); categoryNames.Add("All categories"); var unique = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var definition in Registry.Definitions) if (!string.IsNullOrEmpty(definition.Category) && unique.Add(definition.Category)) categoryNames.Add(definition.Category);
-            categories.ClearOptions(); categories.AddOptions(categoryNames); categories.SetValueWithoutNotify(Mathf.Max(0, categoryNames.IndexOf(current))); ApplyFilter();
+            int selected = categories.value;
+            string current = selected > 0 && selected < categoryNames.Count ? categoryNames[selected] : null;
+            if (categories.IsExpanded) categories.Hide();
+            PopulateCategories(categories, current);
+            ApplyFilter();
+        }
+        private void PopulateCategories(TMP_Dropdown dropdown, string current)
+        {
+            categoryNames.Clear();
+            categoryNames.Add("All categories");
+            var unique = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var definition in Registry.Definitions)
+                if (!string.IsNullOrEmpty(definition.Category) && unique.Add(definition.Category)) categoryNames.Add(definition.Category);
+
+            dropdown.ClearOptions();
+            dropdown.AddOptions(categoryNames);
+            dropdown.SetValueWithoutNotify(current == null ? 0 : Mathf.Max(0, categoryNames.IndexOf(current, 1)));
         }
         private void RefreshBindings()
         { for (int i = 0; i < bindingLabels.Count; i++) bindingLabels[i].text = bindingControls[i] + "\n" + input.InputActionFor(bindingControls[i]).GetBindingDisplayString(0); }
@@ -295,10 +443,32 @@ namespace EasyBuilding.UI
         }
         private RectTransform Node(string name, Transform parent) { var go = new GameObject(name, typeof(RectTransform)); var rect = (RectTransform)go.transform; rect.SetParent(parent, false); return rect; }
         private static Image Image(RectTransform rect, Color color) { var image = rect.gameObject.AddComponent<Image>(); image.color = color; return image; }
-        private Text Label(string text, RectTransform parent, int size, FontStyle style, float x, float y, float width, float height)
-        { var rect = Node("Label", parent); Position(rect, x, y, width, height); var label = rect.gameObject.AddComponent<Text>(); label.font = font; label.text = text; label.fontSize = size; label.fontStyle = style; label.color = new Color(0.94f, 0.96f, 0.98f); label.raycastTarget = false; label.alignment = TextAnchor.MiddleLeft; return label; }
-        private Button Button(string text, RectTransform parent, out Text label, UnityEngine.Events.UnityAction click)
-        { var rect = Node(text.Length == 0 ? "Building" : text, parent); var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = Image(rect, Item); label = Label(text, rect, 14, FontStyle.Normal, 0, 0, 100, 32); Stretch(label.rectTransform, 8, 2, 8, 2); button.onClick.AddListener(click); return button; }
+        private TextMeshProUGUI Label(string text, RectTransform parent, int size, FontStyles style, float x, float y, float width, float height)
+        {
+            var rect = Node("Label", parent);
+            Position(rect, x, y, width, height);
+            var label = rect.gameObject.AddComponent<TextMeshProUGUI>();
+            label.font = font;
+            label.text = text;
+            label.fontSize = size;
+            label.fontStyle = style;
+            label.color = new Color(0.94f, 0.96f, 0.98f);
+            label.raycastTarget = false;
+            label.alignment = TextAlignmentOptions.MidlineLeft;
+            label.richText = true;
+            label.parseCtrlCharacters = false;
+            return label;
+        }
+        private Button Button(string text, RectTransform parent, out TextMeshProUGUI label, UnityEngine.Events.UnityAction click)
+        {
+            var rect = Node(text.Length == 0 ? "Building" : text, parent);
+            var button = rect.gameObject.AddComponent<Button>();
+            button.targetGraphic = Image(rect, Item);
+            label = Label(text, rect, 14, FontStyles.Normal, 0, 0, 100, 32);
+            Stretch(label.rectTransform, 8, 2, 8, 2);
+            button.onClick.AddListener(click);
+            return button;
+        }
         private static void Position(RectTransform rect, float x, float y, float width, float height) { rect.anchorMin = rect.anchorMax = Vector2.up; rect.pivot = Vector2.up; rect.anchoredPosition = new Vector2(x, -y); rect.sizeDelta = new Vector2(width, height); }
         private static void Bottom(RectTransform rect, float x, float y, float width, float height) { rect.anchorMin = rect.anchorMax = Vector2.zero; rect.pivot = Vector2.zero; rect.anchoredPosition = new Vector2(x, y); rect.sizeDelta = new Vector2(width, height); }
         private static void Stretch(RectTransform rect, float left = 0, float top = 0, float right = 0, float bottom = 0) { rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = new Vector2(left, bottom); rect.offsetMax = new Vector2(-right, -top); }

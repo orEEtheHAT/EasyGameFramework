@@ -42,7 +42,7 @@ namespace EasyLocalization.Editor
         public async Task<SyncSnapshot> ReadAsync(CancellationToken cancellation)
         {
             CheckMapping();
-            int width = Math.Max(Math.Max(mapping.idColumn, mapping.keyColumn), mapping.languages.Max(c => c.column));
+            int width = Math.Max(Math.Max(mapping.contextColumn, Math.Max(mapping.idColumn, mapping.keyColumn)), mapping.languages.Max(c => c.column));
             var metadataRequest = service.Spreadsheets.Get(mapping.spreadsheetId);
             metadataRequest.Fields = "sheets.properties";
             var metadata = await ReadWithRetry(token => metadataRequest.ExecuteAsync(token), cancellation);
@@ -72,6 +72,11 @@ namespace EasyLocalization.Editor
             positions.Clear(); nextRow = mapping.headerRow;
             var result = new SyncSnapshot();
             if (grid.Count == 0) return result;
+            if (mapping.contextColumn > 0)
+            {
+                string heading = Value(Cell(mapping.headerRow - 1, mapping.contextColumn));
+                if (heading.Length > 0 && heading != "Context") throw new InvalidOperationException("Expected Context header in the mapped context column.");
+            }
             foreach (var language in mapping.languages)
             {
                 string heading = Value(Cell(mapping.headerRow - 1, language.column));
@@ -84,7 +89,8 @@ namespace EasyLocalization.Editor
                 var keyCell = Cell(index, mapping.keyColumn);
                 string key = Value(keyCell);
                 string idText = mapping.idColumn == 0 ? keyCell.Note : Value(Cell(index, mapping.idColumn));
-                bool hasValues = mapping.languages.Any(c => !string.IsNullOrEmpty(Value(Cell(index, c.column))));
+                bool hasValues = mapping.languages.Any(c => !string.IsNullOrEmpty(Value(Cell(index, c.column)))) ||
+                    (mapping.contextColumn > 0 && !string.IsNullOrEmpty(Value(Cell(index, mapping.contextColumn))));
                 if (string.IsNullOrEmpty(key) && string.IsNullOrEmpty(idText) && !hasValues) continue;
                 if (index >= mapping.headerRow + mapping.maximumRows)
                     throw new InvalidOperationException("Read limit reached. Increase Maximum Rows and preview again; no partial sheet will be applied.");
@@ -92,7 +98,7 @@ namespace EasyLocalization.Editor
                     throw new InvalidOperationException($"Row {index + 1}: missing or invalid stable ID. Create the row in Unity and send it, or enter a unique positive Int64 ID as plain text.");
                 if (positions.ContainsKey(id)) throw new InvalidOperationException($"Row {index + 1}: duplicate ID {id}. Restore the original unique IDs.");
                 positions.Add(id, index); nextRow = index + 1;
-                var row = new TranslationRow { id = id, key = key };
+                var row = new TranslationRow { id = id, key = key, context = mapping.contextColumn > 0 ? Value(Cell(index, mapping.contextColumn)) : null };
                 foreach (var language in mapping.languages)
                 {
                     var cell = Cell(index, language.column);
@@ -117,6 +123,7 @@ namespace EasyLocalization.Editor
             var before = expected.rows.ToDictionary(r => r.id);
             var after = result.rows.ToDictionary(r => r.id);
             SetCell(requests, mapping.headerRow - 1, mapping.keyColumn, "Key", Cell(mapping.headerRow - 1, mapping.keyColumn).Note);
+            if (mapping.contextColumn > 0) SetCell(requests, mapping.headerRow - 1, mapping.contextColumn, "Context", Cell(mapping.headerRow - 1, mapping.contextColumn).Note);
             if (mapping.idColumn > 0) SetCell(requests, mapping.headerRow - 1, mapping.idColumn, "ID", Cell(mapping.headerRow - 1, mapping.idColumn).Note);
             foreach (var language in mapping.languages) SetCell(requests, mapping.headerRow - 1, language.column, language.languageCode, Cell(mapping.headerRow - 1, language.column).Note);
             foreach (var id in before.Keys.Union(after.Keys))
@@ -126,6 +133,7 @@ namespace EasyLocalization.Editor
                 int index = positions.TryGetValue(id, out var found) ? found : nextRow++;
                 if (index >= mapping.headerRow + mapping.maximumRows) throw new InvalidOperationException("Write exceeds Maximum Rows. Increase the mapping limit.");
                 SetCell(requests, index, mapping.keyColumn, row?.key ?? "", mapping.idColumn == 0 ? row?.id.ToString(CultureInfo.InvariantCulture) ?? "" : Cell(index, mapping.keyColumn).Note);
+                if (mapping.contextColumn > 0) SetCell(requests, index, mapping.contextColumn, row?.context ?? "", Cell(index, mapping.contextColumn).Note);
                 if (mapping.idColumn > 0) SetCell(requests, index, mapping.idColumn, row?.id.ToString(CultureInfo.InvariantCulture) ?? "", Cell(index, mapping.idColumn).Note);
                 foreach (var language in mapping.languages)
                 {

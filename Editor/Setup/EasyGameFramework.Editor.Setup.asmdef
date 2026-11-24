@@ -1,6 +1,6 @@
 {
   "name": "EasyGameFramework.Editor.Setup",
   "rootNamespace": "EasyGameFramework.Editor",
-  "references": ["EasyCombat.Editor", "EasyCombat.Runtime", "Unity.RenderPipelines.Universal.Runtime"],
+  "references": ["EasyCombat.Editor", "EasyCombat.Runtime", "Unity.TextMeshPro", "Unity.RenderPipelines.Universal.Runtime"],
   "includePlatforms": ["Editor"]
 }

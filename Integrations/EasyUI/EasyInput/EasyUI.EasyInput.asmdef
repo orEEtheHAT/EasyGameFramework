@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.EasyInput",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyInput.Runtime",
     "Unity.InputSystem",

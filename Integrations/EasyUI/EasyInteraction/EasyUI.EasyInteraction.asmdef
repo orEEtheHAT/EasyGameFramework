@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.EasyInteraction",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyInteraction.Runtime",
     "UnityEngine.UI"

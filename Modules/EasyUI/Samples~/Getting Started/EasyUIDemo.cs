@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ namespace EasyUI.Samples
         public DemoGameplayGate Gameplay;
         public UIWindow HUD;
         public WindowDefinition Inventory, Settings, Confirmation, Radial;
-        public Text Status, InputStatus, PulseStatus;
+        public TMP_Text Status, InputStatus, PulseStatus;
         private InputAction inventory, radialPress, radialHold, pulse;
         private WindowHandle radialHandle;
         private int pulses;

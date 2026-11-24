@@ -1,6 +1,6 @@
 using EasyLocalization;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 namespace EasySuite.Example
 {
@@ -9,12 +9,12 @@ namespace EasySuite.Example
     {
         public Vector2 MeshBounds;
         private LocalizedText source;
-        private Text text;
+        private TMP_Text text;
         private TextMesh mesh;
         private bool fitMesh;
         private void OnEnable()
         {
-            source = GetComponent<LocalizedText>(); text = GetComponent<Text>(); mesh = GetComponent<TextMesh>();
+            source = GetComponent<LocalizedText>(); text = GetComponent<TMP_Text>(); mesh = GetComponent<TextMesh>();
             source.textChanged.AddListener(Render); Render(source.Value);
         }
         private void OnDisable() { if (source) source.textChanged.RemoveListener(Render); }

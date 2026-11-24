@@ -3,6 +3,7 @@ using System.Threading;
 using EasyLocalization;
 using EasyUI.Integrations.Input;
 using EasyUI.Integrations.Feedbacks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using LocalizationApi = EasyLocalization.Localization;
@@ -32,7 +33,7 @@ namespace EasyUI.Integrations
         public void BindGraphics(EasySettings.SettingsController controller) { GraphicsController = controller; Refresh(); }
         public string GetText(string key, string fallback)
         {
-            // InputSettingsWindow remains the sole writer of its status Text.
+            // InputSettingsWindow remains the sole writer of its status TMP_Text.
             if (key == "status.help" && !string.IsNullOrEmpty(LanguageStatus)) return LanguageStatus;
             return Cache ? Cache.Get("ui.settings." + key, fallback) : fallback;
         }
@@ -67,7 +68,9 @@ namespace EasyUI.Integrations
             if (extension == root && language) return;
             extension = root;
             language = SettingsView.Button(root, "Language", new Vector2(-205, 0), new Vector2(200, 30), NextLanguage);
-            var languageText = language.GetComponentInChildren<Text>(); languageText.resizeTextForBestFit = true; languageText.resizeTextMinSize = 12; languageText.resizeTextMaxSize = 18;
+            var languageText = language.GetComponentInChildren<TMP_Text>(); languageText.enableAutoSizing = true;
+            languageText.fontSizeMin = 12;
+            languageText.fontSizeMax = 18;
             audioButton = SettingsView.Button(root, "Audio", new Vector2(0, 0), new Vector2(200, 30), OpenAudio);
             graphicsButton = SettingsView.Button(root, "Graphics", new Vector2(205, 0), new Vector2(200, 30), OpenGraphics);
             Refresh(); GetComponent<UIWindow>().RefreshNavigation();
@@ -93,11 +96,11 @@ namespace EasyUI.Integrations
                     foreach (var locale in LocalizationApi.Languages) if (locale.Identifier.Code == code) { name = locale.LocaleName; break; }
                     caption = GetText("language", "Language") + ": " + (Cache ? Cache.Get("language." + code, name) : name);
                 }
-                language.GetComponentInChildren<Text>().text = caption;
+                language.GetComponentInChildren<TMP_Text>().text = caption;
                 language.interactable = CanChangeLanguage;
             }
-            if (audioButton) { audioButton.GetComponentInChildren<Text>().text = GetText("audio.title", "Audio & vibration"); audioButton.interactable = AudioWindow; }
-            if (graphicsButton) { graphicsButton.GetComponentInChildren<Text>().text = GetText("graphics.title", "Graphics & display"); graphicsButton.interactable = GraphicsWindow && GraphicsController; }
+            if (audioButton) { audioButton.GetComponentInChildren<TMP_Text>().text = GetText("audio.title", "Audio & vibration"); audioButton.interactable = AudioWindow; }
+            if (graphicsButton) { graphicsButton.GetComponentInChildren<TMP_Text>().text = GetText("graphics.title", "Graphics & display"); graphicsButton.interactable = GraphicsWindow && GraphicsController; }
             Changed?.Invoke();
         }
         public async void NextLanguage()

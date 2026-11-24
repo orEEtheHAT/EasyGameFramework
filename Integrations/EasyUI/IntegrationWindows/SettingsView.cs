@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +8,8 @@ namespace EasyUI.Integrations
     {
         internal static RectTransform Rect(string name, Transform parent, Vector2 position, Vector2 size)
         { var r = (RectTransform)new GameObject(name, typeof(RectTransform)).transform; r.SetParent(parent, false); r.anchoredPosition = position; r.sizeDelta = size; return r; }
-        internal static Text Label(Transform parent, string name, Vector2 position, Vector2 size, int font = 18)
-        { var t = Rect(name, parent, position, size).gameObject.AddComponent<Text>(); t.font = UnityEngine.Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); t.fontSize = font; t.alignment = TextAnchor.MiddleCenter; t.color = Color.white; t.raycastTarget = false; return t; }
+        internal static TMP_Text Label(Transform parent, string name, Vector2 position, Vector2 size, int font = 18)
+        => UIText.Add(Rect(name, parent, position, size).gameObject, string.Empty, font, TextAlignmentOptions.Center);
         internal static Button Button(Transform parent, string label, Vector2 position, Vector2 size, UnityEngine.Events.UnityAction click)
         {
             var r = Rect(label, parent, position, size); var image = r.gameObject.AddComponent<Image>(); image.color = new Color(.12f, .22f, .3f);

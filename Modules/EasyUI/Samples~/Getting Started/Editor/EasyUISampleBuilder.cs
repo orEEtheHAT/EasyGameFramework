@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -91,8 +92,8 @@ namespace EasyUI.Samples.Editor
         {
             var window = UIFactory.Window("Radial", 660, 580); var radial = window.gameObject.AddComponent<RadialMenu>();
             radial.Items = new[] { new RadialItem("build", "Build"), new RadialItem("inspect", "Inspect"), new RadialItem("repair", "Repair"), new RadialItem("locked", "Locked", false), new RadialItem("craft", "Craft"), new RadialItem("equip", "Equip") };
-            UIFactory.Label("Hint", window.transform, "CHOOSE\nCenter cancels", Vector2.zero, new Vector2(180, 100), 18, TextAnchor.MiddleCenter).color = UIFactory.Teal;
-            UIFactory.Label("Footer", window.transform, "Mouse / stick  ·  Click / Enter / A  ·  Esc / B cancels", new Vector2(0, -255), new Vector2(600, 38), 17, TextAnchor.MiddleCenter);
+            UIFactory.Label("Hint", window.transform, "CHOOSE\nCenter cancels", Vector2.zero, new Vector2(180, 100), 18, TextAlignmentOptions.Center).color = UIFactory.Teal;
+            UIFactory.Label("Footer", window.transform, "Mouse / stick  ·  Click / Enter / A  ·  Esc / B cancels", new Vector2(0, -255), new Vector2(600, 38), 17, TextAlignmentOptions.Center);
             return Save(window, folder, "Radial");
         }
     }

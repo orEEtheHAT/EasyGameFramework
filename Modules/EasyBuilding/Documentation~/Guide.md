@@ -154,7 +154,9 @@ var response = authority.Execute(session, command);
 
 Addons~/Networking/EasyBuilding содержит ограниченный TCP localhost с поздним подключением и дельтами, без службы аккаунтов/лобби. Интернет-транспорт и интерес клиента предоставляет игра. CellState и TerrainState имеют отдельные API и передаются собственным серверным протоколом.
 
-BuildingPaletteUI требует uGUI, Controller и Catalog. Есть поиск, категории, избранное, 10 слотов: B/gamepad Y открывает меню, 1–0 выбирают, Shift+цифра назначает слот. Controls — Input System rebinding. Пустой Preferences Key отключает PlayerPrefs; для разных профилей задавайте разные ключи.
+BuildingPaletteUI требует uGUI, TMP Essential Resources, Controller и Catalog. При пустом поле Font используется Default Font Asset из TMP Settings. Для общего оформления назначьте палитре тот же TMP Font Asset, что используется в ваших окнах. Для кириллицы добавьте нужные глифы в шрифт или его TMP fallback. Назначьте Font перед включением палитры.
+
+B и Y на геймпаде открывают каталог. При открытии клавишей B фокус переходит на поиск. Enter начинает и завершает редактирование, стрелка вниз переводит фокус на категории. Enter раскрывает список, стрелки перемещают фокус по вариантам и прокручивают список. Enter применяет категорию. 1–0 выбирают слот, Shift+цифра назначает его. Эти сочетания приостановлены во время ввода поиска и выбора категории. Controls открывает переназначение Input System. Пустой Preferences Key отключает PlayerPrefs. Для разных профилей задавайте разные ключи.
 
 BuildingMessages переводит причины размещения. MessageProvider либо MessageResolver принимает IBuildingMessageResolver, в том числе отдельный адаптер Unity Localization/EasyLocalization. Подписи стандартного UI английские. BuildingPalette можно использовать со своим интерфейсом. EasyInput может владеть общими действиями/профилями; подключайте их через InputActionReference или IBuildingPlacementInput и используйте экран настроек EasyInput. Адаптер локализованной подсказки кнопки принадлежит EasyInput.
 

@@ -57,6 +57,8 @@ namespace EasyLocalization.Editor
             var grid = Parse(text);
             string Cell(int row, int column) => row < grid.Count && column > 0 && column <= grid[row].Count ? grid[row][column - 1] : "";
             if (grid.Count < mapping.headerRow) throw new InvalidOperationException("CSV has no configured header row.");
+            if (mapping.contextColumn > 0 && Cell(mapping.headerRow - 1, mapping.contextColumn) != "Context")
+                throw new InvalidOperationException("Expected Context header in the mapped context column.");
             foreach (var language in mapping.languages)
                 if (Cell(mapping.headerRow - 1, language.column) != language.languageCode)
                     throw new InvalidOperationException($"CSV column {language.column} must have header '{language.languageCode}'.");
@@ -67,7 +69,7 @@ namespace EasyLocalization.Editor
                 if (snapshot.rows.Count >= mapping.maximumRows) throw new InvalidOperationException("CSV exceeds Maximum Rows. Increase the limit.");
                 if (!long.TryParse(Cell(i, mapping.idColumn), NumberStyles.None, CultureInfo.InvariantCulture, out var id) || id <= 0)
                     throw new InvalidOperationException($"CSV row {i + 1}: supply a stable positive ID as plain text.");
-                var row = new TranslationRow { id = id, key = Cell(i, mapping.keyColumn) };
+                var row = new TranslationRow { id = id, key = Cell(i, mapping.keyColumn), context = mapping.contextColumn > 0 ? Cell(i, mapping.contextColumn) : null };
                 foreach (var language in mapping.languages)
                     row.cells.Add(new TranslationCell { language = language.languageCode, text = Cell(i, language.column),
                         present = language.column <= grid[i].Count,

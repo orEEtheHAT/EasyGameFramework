@@ -14,7 +14,7 @@ namespace EasyLocalization.Editor
             var result = new SyncSnapshot();
             foreach (var shared in mapping.collection.SharedData.Entries)
             {
-                var row = new TranslationRow { id = shared.Id, key = shared.Key };
+                var row = new TranslationRow { id = shared.Id, key = shared.Key, context = mapping.contextColumn > 0 ? TranslationComments.Read(shared) : null };
                 foreach (var language in mapping.languages)
                 {
                     var table = mapping.collection.GetTable(language.languageCode) as StringTable;
@@ -57,6 +57,7 @@ namespace EasyLocalization.Editor
                     var existing = collection.SharedData.GetEntry(row.id);
                     if (existing == null) collection.SharedData.AddKey(row.key, row.id);
                     else if (existing.Key != row.key) collection.SharedData.RenameKey(row.id, row.key);
+                    if (mapping.contextColumn > 0) TranslationComments.Write(collection.SharedData.GetEntry(row.id), row.context);
                     foreach (var cell in row.cells)
                     {
                         var table = collection.GetTable(cell.language) as StringTable;

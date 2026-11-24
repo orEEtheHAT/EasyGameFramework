@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.EasyResources",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyResources.Runtime",
     "UnityEngine.UI"

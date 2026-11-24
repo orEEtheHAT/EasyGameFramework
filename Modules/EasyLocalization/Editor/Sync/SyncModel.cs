@@ -21,10 +21,11 @@ namespace EasyLocalization.Editor
     {
         public long id;
         public string key;
+        public string context;
         public List<TranslationCell> cells = new List<TranslationCell>();
         public TranslationRow Copy() => JsonUtility.FromJson<TranslationRow>(JsonUtility.ToJson(this));
         public string Fingerprint() => SyncSnapshot.Hash(JsonUtility.ToJson(new TranslationRow
-        { id = id, key = key, cells = cells.OrderBy(c => c.language, StringComparer.Ordinal).ToList() }));
+        { id = id, key = key, context = context ?? "", cells = cells.OrderBy(c => c.language, StringComparer.Ordinal).ToList() }));
     }
 
     [Serializable]

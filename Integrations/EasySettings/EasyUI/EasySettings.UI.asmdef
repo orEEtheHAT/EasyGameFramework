@@ -1,1 +1,1 @@
-{"name":"EasySettings.UI","references":["EasySettings.Runtime","EasyUI.Runtime","UnityEngine.UI","Unity.InputSystem","Unity.RenderPipelines.Universal.Runtime"]}
+{"name":"EasySettings.UI","references":["EasySettings.Runtime","EasyUI.Runtime","UnityEngine.UI","Unity.TextMeshPro","Unity.InputSystem","Unity.RenderPipelines.Universal.Runtime"]}

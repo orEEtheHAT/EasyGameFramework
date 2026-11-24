@@ -1,0 +1,1 @@
+{"name":"EasyQuests.Editor.Tests","references":["EasyQuests.Runtime","EasyQuests.Editor","EasyQuests.Gameplay","EasyResources.Runtime","EasyCombat.Runtime","EasyNarrative.Dialogue","EasyNarrative.Dialogue.Interaction","EasyInteraction.Runtime"],"optionalUnityReferences":["TestAssemblies"],"autoReferenced":false,"includePlatforms":["Editor"]}

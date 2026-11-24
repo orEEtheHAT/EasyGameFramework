@@ -21,6 +21,7 @@ using EasyLocalization.Integrations;
 using EasyMovement.FirstPerson;
 using EasyResources;
 using EasyUI;
+using TMPro;
 using EasyUI.Integrations;
 using EasyUI.Integrations.Editor;
 using EasyUI.Integrations.Feedbacks;
@@ -51,7 +52,7 @@ namespace EasySuite.Example.Editor
         private const string MovementPlayer = "Packages/com.oreethehat.easy-game-framework/Modules/EasyMovement/FirstPerson/Prefabs/FP_Player_Sample.prefab";
         private const string MovementCamera = "Packages/com.oreethehat.easy-game-framework/Modules/EasyMovement/FirstPerson/Prefabs/FP_MainCamera_Sample.prefab";
         private const string CollectionName = "Framework Playground";
-        public const int ContentRevision = 10;
+        public const int ContentRevision = 23;
         private const string CarryControlsSignKey = "sign.carry.controls9";
         private const string CarryControlsSignEnglish = "01 / CARRY\nWalking lag: authored values\nTab · walking lag / Follow Speed";
         private const string CarryControlsSignRussian = "01 / ПЕРЕНОС\nИнерция ходьбы: из настроек\nTab · ходьба / Follow Speed";
@@ -99,6 +100,8 @@ namespace EasySuite.Example.Editor
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode)
                 throw new InvalidOperationException("Leave Play Mode before creating or updating the Framework Playground.");
+            if (!Resources.Load<TMP_Settings>("TMP Settings"))
+                throw new InvalidOperationException("Choose Window > TextMeshPro > Import TMP Essential Resources, then create the Playground again.");
             if (File.Exists(ScenePath))
             {
                 UpdateExisting();
@@ -279,6 +282,7 @@ namespace EasySuite.Example.Editor
         private static void ApplyContentUpdates(EasySuiteLab lab)
         {
             if (lab.ContentRevision >= ContentRevision) return;
+            if (lab.ContentRevision < 11) FrameworkPlaygroundTypography.Upgrade(lab);
             EnsureCarryControlsTranslations(lab);
             if (lab.ContentRevision < 1) ApplyCarryPoseRevision(lab);
             if (lab.ContentRevision < 2) ApplyInteractionUxRevision(lab);
@@ -291,6 +295,26 @@ namespace EasySuite.Example.Editor
             if (lab.ContentRevision < 8) ApplyWalkingDefaultRevision(lab);
             if (lab.ContentRevision < 9) ApplyCarrySimplifyRevision(lab);
             if (lab.ContentRevision < 10) ApplyHalfWalkingDefaultRevision(lab);
+            if (lab.ContentRevision < 12) FrameworkQuestPlayground.Apply(lab);
+            if (lab.ContentRevision < 13) FrameworkDialoguePlayground.Apply(lab);
+            if (lab.ContentRevision < 14) FrameworkTypographyStudio.Apply(lab);
+            if (lab.ContentRevision < 15) FrameworkTypographyStudio.AddRevealTranslations(lab);
+            if (lab.ContentRevision < 16) FrameworkBridgeReactions.Apply(lab);
+            if (lab.ContentRevision < 17) FrameworkBridgeReactions.UpgradeAuthoring(lab);
+            if (lab.ContentRevision < 18) FrameworkDeliveryRule.Apply(lab);
+            if (lab.ContentRevision < 19) FrameworkMarkerIcons.Apply(lab);
+            if (lab.ContentRevision < 20) FrameworkPatrolMarkers.Apply(lab);
+            if (lab.ContentRevision < 21) FrameworkQuestHud.Apply(lab);
+            if (lab.ContentRevision < 22) FrameworkWorkshopQuest.Apply(lab);
+            if (lab.ContentRevision < 23)
+            {
+                FrameworkNarrativeSuite.Apply(lab);
+                FrameworkRoleOrders.Apply(lab);
+                FrameworkConversationSuite.Apply(lab);
+                FrameworkNarrativeText.Apply(lab);
+            }
+            lab.ContentRevision = ContentRevision;
+            EditorUtility.SetDirty(lab);
         }
 
         private static void ApplyCarryPoseRevision(EasySuiteLab lab)
@@ -1079,7 +1103,7 @@ namespace EasySuite.Example.Editor
                 {
                     settings.GetComponent<InputSettingsWindow>().Actions = new[] { "Gameplay/Interact", "Gameplay/Jump", "Gameplay/Move", "Gameplay/Fire",
                         "Gameplay/Look", "Gameplay/Sprint", "Gameplay/Crouch", "Gameplay/ThrowItem", "Gameplay/RotateItem",
-                        "Suite/Menu", "Suite/Build", "Suite/InteractionMenu", "Suite/Save", "Suite/Load" };
+                        "Suite/Menu", "Suite/Build", "Suite/InteractionMenu", "Suite/Save", "Suite/Load", "Narrative/Journal" };
                     PrefabUtility.SaveAsPrefabAsset(settings, settingsPath);
                 }
                 finally { PrefabUtility.UnloadPrefabContents(settings); }
@@ -1251,7 +1275,7 @@ namespace EasySuite.Example.Editor
                 label.fallback = "Carry walking lag: all axes";
                 changed = true;
             }
-            var preview = label.GetComponent<Text>();
+            var preview = label.GetComponent<TMP_Text>();
             if (preview && preview.text != label.fallback) { preview.text = label.fallback; changed = true; }
             return changed;
         }
@@ -1260,7 +1284,7 @@ namespace EasySuite.Example.Editor
         {
             var label = WalkingDefaultLabel(root);
             var entry = collection ? collection.SharedData.GetEntry(EasySuiteLab.CarryWalkingLagAllKey) : null;
-            var preview = label.GetComponent<Text>();
+            var preview = label.GetComponent<TMP_Text>();
             if (entry == null || label.text.TableReference.TableCollectionNameGuid != collection.SharedData.TableCollectionNameGuid ||
                 label.text.TableEntryReference.KeyId != entry.Id || label.fallback != "Carry walking lag: all axes" || (preview && preview.text != label.fallback))
                 throw new InvalidOperationException("The saved walking-lag button must retain its identity and reference the existing All translation.");
@@ -1315,7 +1339,6 @@ namespace EasySuite.Example.Editor
             RectTransform cycleRect;
             if (cycleButtons.Length == 0)
             {
-                if (!font) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
                 cycleRect = Rect(EasySuiteCommand.CycleCarryWalkingLag.ToString(), root.transform, new Vector2(.5f, 1), new Vector2(0, -582), new Vector2(674, 44));
                 var image = cycleRect.gameObject.AddComponent<Image>(); image.color = new Color(.12f, .2f, .27f);
                 var button = cycleRect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
@@ -1336,7 +1359,7 @@ namespace EasySuite.Example.Editor
             changed |= SetMenuRect(cycleLabel, Vector2.zero, new Vector2(twoColumns ? 308 : 656, 38), true);
             if (twoColumns)
             {
-                var cycleText = cycleLabel.GetComponent<Text>();
+                var cycleText = cycleLabel.GetComponent<TMP_Text>();
                 if (cycleText && cycleText.fontSize != 16) { cycleText.fontSize = 16; changed = true; }
             }
             if (includeFollow) changed |= ConfigureCarryFollowButton(root, collection, buttons);
@@ -1351,7 +1374,6 @@ namespace EasySuite.Example.Editor
             RectTransform rect;
             if (matching.Length == 0)
             {
-                if (!font) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
                 rect = Rect(EasySuiteCommand.CycleCarryFollowSpeed.ToString(), root.transform, new Vector2(.5f, 1), new Vector2(174, -582), new Vector2(326, 44));
                 var image = rect.gameObject.AddComponent<Image>(); image.color = new Color(.12f, .2f, .27f);
                 var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
@@ -1376,7 +1398,7 @@ namespace EasySuite.Example.Editor
                 translated.fallback = "Follow speed: authored";
                 changed = true;
             }
-            var previewText = translated.GetComponent<Text>();
+            var previewText = translated.GetComponent<TMP_Text>();
             if (previewText && previewText.text != translated.fallback) { previewText.text = translated.fallback; changed = true; }
             changed |= SetMenuRect(rect, new Vector2(174, -582), new Vector2(326, 44));
             var text = rect.Find("Label") as RectTransform;
@@ -1390,7 +1412,7 @@ namespace EasySuite.Example.Editor
             var button = root.GetComponentsInChildren<EasySuiteButton>(true).SingleOrDefault(item => item.Command == EasySuiteCommand.CycleCarryFollowSpeed);
             var label = button ? button.transform.Find("Label")?.GetComponent<LocalizedText>() : null;
             var entry = collection ? collection.SharedData.GetEntry(EasySuiteLab.CarryFollowAuthoredKey) : null;
-            var preview = label ? label.GetComponent<Text>() : null;
+            var preview = label ? label.GetComponent<TMP_Text>() : null;
             if (!label || entry == null || label.text.TableReference.TableCollectionNameGuid != collection.SharedData.TableCollectionNameGuid || label.text.TableEntryReference.KeyId != entry.Id ||
                 label.fallback != "Follow speed: authored" || (preview && preview.text != label.fallback))
                 throw new InvalidOperationException("The saved Follow Speed button must retain its identity and reference the authored follow translation.");
@@ -1412,11 +1434,13 @@ namespace EasySuite.Example.Editor
             value.anchorMin = value.anchorMax = anchor; value.pivot = new Vector2(.5f, .5f); value.anchoredPosition = position; value.sizeDelta = size; return value;
         }
 
-        private static Text Text(string name, Transform parent, Vector2 anchor, Vector2 position, Vector2 size, int pointSize, TextAnchor alignment)
+        private static TextMeshProUGUI Text(string name, Transform parent, Vector2 anchor, Vector2 position, Vector2 size, int pointSize, TextAnchor alignment)
         {
-            var rect = Rect(name, parent, anchor, position, size); var text = rect.gameObject.AddComponent<Text>();
-            text.font = font; text.fontSize = pointSize; text.alignment = alignment; text.color = new Color(.9f, .94f, .98f);
-            text.horizontalOverflow = HorizontalWrapMode.Wrap; text.verticalOverflow = VerticalWrapMode.Truncate; text.raycastTarget = false;
+            var rect = Rect(name, parent, anchor, position, size);
+            var text = UIText.Add(rect.gameObject, string.Empty, pointSize, FrameworkPlaygroundTypography.Alignment(alignment));
+            text.color = new Color(.9f, .94f, .98f);
+            text.overflowMode = TextOverflowModes.Truncate;
+            text.raycastTarget = false;
             return text;
         }
 

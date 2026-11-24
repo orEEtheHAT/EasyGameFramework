@@ -14,7 +14,17 @@ namespace EasySuite.Example
     // The sample owns the gameplay pause/boundary; EasySave owns the storage and restore protocol.
     public sealed class EasySuiteSave : IDisposable
     {
-        [Serializable] private sealed class CrateState { public Vector3 Position; public Quaternion Rotation; }
+        [Serializable] private sealed class DeliveryState
+        {
+            public Vector3 Position;
+            public Quaternion Rotation;
+            public EasyQuests.QuestSnapshot Quests;
+        }
+        [Serializable] private sealed class PresentationPreferences
+        {
+            public string graphics;
+            public EasyUI.UIReadingPreferences reading;
+        }
         private readonly EasySuiteLab lab;
         private readonly SaveService service;
         private readonly CancellationTokenSource lifetime = new CancellationTokenSource();
@@ -31,22 +41,78 @@ namespace EasySuite.Example
             service = new SaveService(new LocalFileStorage(Path.Combine(Application.persistentDataPath, "easygameframework-playground")));
             try
             {
+                var questWorld = lab.GetComponent<EasyQuests.QuestWorld>();
                 service.RegisterAll(
                     ResourceLedgerSave.Create("world/resources", new[] { "wallet", "stock" }, new[] { lab.Wallet.Store, lab.Stock.Store }, lab.ResourceDatabase.Resources),
                     EasySaveAdapters.Buildings("world/buildings", lab.Placer.System, lab.Buildings),
                     EasySaveAdapters.Combat("world/combat", lab.CombatCatalog, references),
                     EasySaveAdapters.Interaction("world/workbench", lab.SaveWorkbench),
                     EasySaveAdapters.Movement("player/movement", lab.Character),
-                    new JsonSaveParticipant<CrateState>("world/crate", SaveScope.Progress, 1,
-                        () => new CrateState { Position = lab.Crate.position, Rotation = lab.Crate.rotation },
-                        s => lab.Crate && Finite(s.Position) && Finite(s.Rotation) ? SaveValidation.Valid : SaveValidation.Invalid("Missing crate or invalid crate pose."),
-                        s => { lab.Crate.SetPositionAndRotation(s.Position, s.Rotation); if (lab.Crate.TryGetComponent<Rigidbody>(out var body)) { body.position = s.Position; body.rotation = s.Rotation; body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero; } }, 40),
+                    DeliveryParticipant(questWorld),
                     EasySaveAdapters.Input("player/input", lab.Player),
                     EasySaveAdapters.Feedbacks("global/audio"), EasySaveAdapters.Language("global/language"),
-                    SettingsSaveAdapter.Create(lab.GraphicsSettings, "global/graphics"));
+                    PresentationParticipant());
+                service.RegisterMigration(SaveScope.Preferences,"global/graphics",1, old =>
+                    JsonUtility.ToJson(new PresentationPreferences { graphics=old, reading=EasyUI.UIReadingPreferences.Default }));
+                if (questWorld)
+                {
+                    // v1 saved only the crate. Keep the stable key and initialize quests from authored defaults.
+                    var fresh = new EasyQuests.QuestSession(questWorld.database, questWorld.quests);
+                    fresh.StartAvailable();
+                    var initial = fresh.Capture();
+                    service.RegisterMigration(SaveScope.Progress, "world/crate", 1, old =>
+                    {
+                        var state = JsonUtility.FromJson<DeliveryState>(old);
+                        state.Quests = initial;
+                        return JsonUtility.ToJson(state);
+                    });
+                }
             }
             catch { service.Dispose(); lifetime.Dispose(); throw; }
         }
+        // Keep the existing slot key so a pre-typography global preferences file still restores.
+        private ISaveParticipant PresentationParticipant()
+        {
+            var graphics=SettingsSaveAdapter.Create(lab.GraphicsSettings,"global/graphics");
+            return new JsonSaveParticipant<PresentationPreferences>(graphics.Key,SaveScope.Preferences,2,
+                () => new PresentationPreferences { graphics=graphics.Capture(),reading=lab.Windows.ReadingPreferences },
+                snapshot => snapshot.reading.IsValid && !string.IsNullOrEmpty(snapshot.graphics)
+                    ? graphics.Validate(snapshot.graphics) : SaveValidation.Invalid("Invalid graphics or text preferences."),
+                async (snapshot, token) => {
+                    await graphics.RestoreAsync(snapshot.graphics,token);
+                    lab.Windows.ReadingPreferences=snapshot.reading;
+                },graphics.RestoreOrder);
+        }
+
+        private ISaveParticipant DeliveryParticipant(EasyQuests.QuestWorld world)
+        {
+            return new JsonSaveParticipant<DeliveryState>("world/crate", SaveScope.Progress, world ? 2 : 1,
+                () => new DeliveryState { Position = lab.Crate.position, Rotation = lab.Crate.rotation, Quests = world ? world.Session.Capture() : null },
+                state =>
+                {
+                    if (!lab.Crate || !Finite(state.Position) || !Finite(state.Rotation))
+                        return SaveValidation.Invalid("Missing crate or invalid crate pose.");
+                    if (world)
+                    {
+                        try { world.Session.Validate(state.Quests); }
+                        catch (ArgumentException e) { return SaveValidation.Invalid(e.Message); }
+                    }
+                    return SaveValidation.Valid;
+                },
+                state =>
+                {
+                    lab.Crate.SetPositionAndRotation(state.Position, state.Rotation);
+                    if (lab.Crate.TryGetComponent<Rigidbody>(out var body))
+                    {
+                        body.position = state.Position;
+                        body.rotation = state.Rotation;
+                        body.linearVelocity = Vector3.zero;
+                        body.angularVelocity = Vector3.zero;
+                    }
+                    if (world) world.Session.Restore(state.Quests);
+                }, 95);
+        }
+
         private void Check()
         {
             if (disposed) throw new ObjectDisposedException(nameof(EasySuiteSave));

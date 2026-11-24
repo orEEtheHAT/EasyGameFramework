@@ -18,6 +18,7 @@ using EasyUI.Integrations.Input;
 using EasyUI.Integrations.Interaction;
 using EasyUI.Integrations.Feedbacks;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -191,7 +192,7 @@ namespace EasyUI.IntegrationWave1.Tests
             var h = manager.Open(window); yield return Ready();
             player.Action("Gameplay/Interact").ApplyBindingOverride(0, "<Keyboard>/k"); presenter.Refresh(); menu.Refresh();
             Assert.AreEqual(player.GetPresentation("Gameplay/Interact").Text, menu.Prompt.Binding);
-            Assert.IsTrue(window.GetComponentsInChildren<Text>().Any(x => x.text.Contains("Toggle") && x.text.Contains(menu.Prompt.Binding)));
+            Assert.IsTrue(window.GetComponentsInChildren<TMP_Text>().Any(x => x.text.Contains("Toggle") && x.text.Contains(menu.Prompt.Binding)));
             Assert.IsTrue(menu.ActivateSelected()); Assert.IsFalse(menu.ActivateSelected()); Assert.AreEqual(1, action.Executed); Assert.IsTrue(presenter.Actor.GetTicket(action).IsActive);
             Assert.IsTrue(manager.Back()); Assert.IsFalse(presenter.Actor.GetTicket(action).IsActive); Assert.IsTrue(h.IsOpen);
             yield return Ready(); Assert.IsTrue(manager.Back()); Assert.IsFalse(h.IsOpen); Assert.AreEqual(0, player.ContextRequestCount);
@@ -266,7 +267,7 @@ namespace EasyUI.IntegrationWave1.Tests
             Assert.AreSame(sprite, window.transform.Find("Interaction view/Binding glyph").GetComponent<Image>().sprite);
             Assert.AreSame(item, window.transform.Find("Item " + action.GetInstanceID())); Assert.AreEqual(0, radial.SelectedIndex);
             action.Available = false; menu.Refresh(); Assert.AreEqual(-1, radial.SelectedIndex); Assert.AreSame(item, window.transform.Find("Item " + action.GetInstanceID()));
-            var text = window.transform.Find("Interaction view/Binding").GetComponent<Text>(); string before = text.text;
+            var text = window.transform.Find("Interaction view/Binding").GetComponent<TMP_Text>(); string before = text.text;
             h.Close(); source.BindingLabel = "After close"; source.Refresh(); presenter.Refresh(); yield return null; Assert.AreEqual(before, text.text);
         }
         [UnityTest] public IEnumerator AudioChildUsesRuntimeStateAndRebindCancelLeavesParentContext()
@@ -308,7 +309,7 @@ namespace EasyUI.IntegrationWave1.Tests
             {
                 Assert.IsFalse(combined.CanChangeLanguage); Assert.IsNotEmpty(combined.LanguageStatus);
                 var languageButton = parentWindow.GetComponentsInChildren<Button>().Single(b => b.name == "Language");
-                Assert.IsFalse(languageButton.interactable); Assert.That(languageButton.GetComponentInChildren<Text>().text, Does.Contain("unavailable"));
+                Assert.IsFalse(languageButton.interactable); Assert.That(languageButton.GetComponentInChildren<TMP_Text>().text, Does.Contain("unavailable"));
                 combined.NextLanguage(); yield return Ready();
                 Assert.AreSame(localizationBefore, UnityEngine.Localization.Settings.LocalizationSettings.GetInstanceDontCreateDefault());
                 Assert.IsFalse(EasyLocalization.Localization.IsReady);
@@ -338,18 +339,18 @@ namespace EasyUI.IntegrationWave1.Tests
             var payment = placer.gameObject.AddComponent<EasyBuilding.Integrations.BuildingResources>(); payment.Resources = new[] { wood }; payment.Containers = new[] { wallet }; placer.System.Economy = payment;
             var definition = Building("Paid wall"); definition.Payment = BuildingPayment.Paid; definition.Costs = new[] { new BuildingCost(wood.Id, 3) };
             var catalog = Asset<BuildingCatalog>(); catalog.Buildings = new[] { definition };
-            var labelObject = Go("Wallet label", false, typeof(RectTransform), typeof(Text));
+            var labelObject = Go("Wallet label", false, typeof(RectTransform), typeof(TextMeshProUGUI));
             var label = labelObject.AddComponent<EasyUI.Integrations.Resources.ResourceBalanceLabel>(); label.Container = wallet; label.Resource = wood; labelObject.SetActive(true);
             using var external = player.AcquireContext(root, new InputContextRequest { BlockedActions = new[] { "Gameplay/Look" } });
             var parent = manager.Open(Window("Workshop")); var window = Window("Build choice"); var radial = window.gameObject.AddComponent<RadialMenu>();
             window.gameObject.AddComponent<BuildingCatalogWindow>().Bind(placer, catalog); manager.Open(window, parent); yield return Ready();
-            wallet.Add(wood, 5); yield return null; Assert.That(labelObject.GetComponent<Text>().text, Does.Contain("17"));
+            wallet.Add(wood, 5); yield return null; Assert.That(labelObject.GetComponent<TMP_Text>().text, Does.Contain("17"));
             radial.SelectDirection(Vector2.up, .2f); Assert.IsTrue(radial.ConfirmSelection()); Assert.IsFalse(radial.ConfirmSelection());
             Assert.AreEqual(2, player.ContextRequestCount); parent.Close(); yield return Ready(); Assert.AreEqual(1, player.ContextRequestCount);
             Assert.IsTrue(placer.Session.TryConfirm(new PlacementRequest(new Vector3(3, 0, 2), Quaternion.identity), out var placed, out var result), result.Reason);
             objects.Add(placed.gameObject); Assert.AreEqual(14, wallet.GetAvailable(wood));
             Assert.IsFalse(placer.Session.TryConfirm(new PlacementRequest(new Vector3(5, 0, 2), Quaternion.identity), out _, out _));
-            yield return null; Assert.That(labelObject.GetComponent<Text>().text, Does.Contain("14"));
+            yield return null; Assert.That(labelObject.GetComponent<TMP_Text>().text, Does.Contain("14"));
         }
         [UnityTest] public IEnumerator GraphicsChildUsesOwnerSessionAndCancelsDraftWithoutClosingControls()
         {

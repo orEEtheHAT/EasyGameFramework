@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.Sample.Editor",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyUI.Sample",
     "UnityEngine.UI",

@@ -12,6 +12,7 @@ using EasyInteraction;
 using EasyLocalization;
 using EasyResources;
 using EasyUI;
+using TMPro;
 using EasyUI.Integrations;
 using EasyUI.Integrations.Building;
 using EasyUI.Integrations.Interaction;
@@ -54,7 +55,7 @@ namespace EasySuite.Example
         public MovementField SlowField;
         public CombatDefinitionCatalog CombatCatalog;
         public Transform Crate;
-        public Text Hud, Prompt, Notice, Performance;
+        public TMP_Text Hud, Prompt, Notice, Performance;
         public Image PromptIcon;
         public MonoBehaviour FeedbackContextProvider;
         public FeedbackPreset ShotFeedback, HitFeedback, UiFeedback;
@@ -87,7 +88,7 @@ namespace EasySuite.Example
         private bool carryWalkingLagCaptured;
         private CancellationTokenSource lifetime;
         private bool worldInitialized, subscribed, closeAfterSelection;
-        private InputAction menu, build, save, load, interactionMenu;
+        private InputAction menu, build, save, load, interactionMenu, journalAction;
         private bool hudDirty = true;
         private float nextTelemetry;
         private float frameTime;
@@ -106,11 +107,17 @@ namespace EasySuite.Example
         {
             try
             {
+                if (Windows.Font)
+                {
+                    foreach (var label in Windows.GetComponentsInChildren<TextMeshProUGUI>(true))
+                        if (label.font == UIText.DefaultFont) label.font = Windows.Font;
+                }
                 Wallet.Add(Wood, checked(InitialWood * Wood.UnitsPerWhole)); Wallet.Add(Mana, checked(InitialMana * Mana.UnitsPerWhole));
                 Stock.Add(Wood, checked(StockWood * Wood.UnitsPerWhole)); Stock.Add(Mana, 40 * Mana.UnitsPerWhole);
                 if (Abilities && PaidAbility) Abilities.Configure(new[] { PaidAbility });
                 menu = Player.Action("Suite/Menu"); build = Player.Action("Suite/Build");
                 save = Player.Action("Suite/Save"); load = Player.Action("Suite/Load"); interactionMenu = Player.Action("Suite/InteractionMenu");
+                journalAction = Player.Actions.FindAction("Narrative/Journal", false);
                 CaptureCarryWalkingLagBaseline();
                 Saves = new EasySuiteSave(this);
                 worldInitialized = true; Connect(); InitializePresentation(lifetime.Token);
@@ -384,6 +391,8 @@ namespace EasySuite.Example
             var prompt = Presenter.Prompt;
             Prompt.text = prompt.Action ? (prompt.Available ? "[" + prompt.Binding + "] " : "") + prompt.Label + (prompt.Running ? "  " + (prompt.Progress * 100).ToString("F0") + "%" : "") +
                 (prompt.Available ? "" : "\n" + prompt.Reason) : T("lab.hint", "E · interact   H · actions   T · build   Tab · menu   F5 / F9 · save / load");
+            if (!prompt.Action && journalAction != null && Player.DeviceFamily == InputDeviceFamily.KeyboardMouse)
+                Prompt.text += "   " + Player.GetPresentation(journalAction).Text + " · " + T("quest.journal.shortHint", "journal");
             if (PromptIcon) { PromptIcon.sprite = prompt.BindingIcon; PromptIcon.enabled = prompt.Action && prompt.BindingIcon; }
         }
         private void OnDisable()

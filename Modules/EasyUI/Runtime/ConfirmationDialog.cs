@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ namespace EasyUI
     [RequireComponent(typeof(UIWindow)), AddComponentMenu("EasyUI/Confirmation Dialog")]
     public sealed class ConfirmationDialog : MonoBehaviour
     {
-        public Text Message;
+        public TMP_Text Message;
         public Button ConfirmButton;
         public Button CancelButton;
         public ConfirmationResult? Result { get; private set; }

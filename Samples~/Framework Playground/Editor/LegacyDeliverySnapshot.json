@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "facts": [
+    {
+      "id": "bridge.repaired",
+      "value": 0
+    }
+  ],
+  "quests": [
+    {
+      "id": "suite.delivery",
+      "path": [
+        "start",
+        "pickup"
+      ],
+      "progress": [],
+      "rewardClaimed": false,
+      "rewardSeed": 433
+    }
+  ],
+  "tracked": "suite.delivery"
+}

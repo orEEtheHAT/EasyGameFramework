@@ -1,0 +1,1 @@
+{"name":"EasyNarrative.Dialogue.Tests","references":["EasyNarrative.Dialogue","EasyQuests.Runtime","EasyResources.Runtime"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"],"autoReferenced":false}

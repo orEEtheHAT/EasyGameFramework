@@ -35,6 +35,8 @@ namespace EasyLocalization.Editor
         [Min(0), Tooltip("ID column, A = 1. Use 0 to store IDs in Key cell notes, as in Unity's KeyColumn.")]
         public int idColumn = 1;
         [Min(1)] public int keyColumn = 2;
+        [Min(0), Tooltip("Optional translator context column. Zero leaves spreadsheet comments and context unmapped.")]
+        public int contextColumn;
         public List<LanguageColumn> languages = new List<LanguageColumn>();
         [Min(10), Tooltip("Maximum data rows read in one request. Increase if the sheet reaches this limit.")]
         public int maximumRows = 10000;
@@ -61,7 +63,7 @@ namespace EasyLocalization.Editor
             connection = connection, publishedCsvUrl = publishedCsvUrl,
             spreadsheetId = spreadsheetId, sheetId = sheetId, headerRow = headerRow,
             idColumn = idColumn, keyColumn = keyColumn, maximumRows = maximumRows, languages = languages
-        }));
+        }) + (contextColumn > 0 ? "|Context=" + contextColumn.ToString(System.Globalization.CultureInfo.InvariantCulture) : ""));
 
         [Serializable] private class MappingIdentity
         {
@@ -87,6 +89,8 @@ namespace EasyLocalization.Editor
                 throw new InvalidOperationException("Check Header Row, Key Column, ID Column, Sheet ID and Maximum Rows.");
             var columns = new HashSet<int> { keyColumn };
             if (idColumn > 0 && !columns.Add(idColumn)) throw new InvalidOperationException("ID and Key columns must be different.");
+            if (contextColumn < 0 || (contextColumn > 0 && !columns.Add(contextColumn)))
+                throw new InvalidOperationException("Context column must be unused, or zero to disable it.");
             var codes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (languages.Count == 0) throw new InvalidOperationException("Add at least one language column.");
             foreach (var language in languages)

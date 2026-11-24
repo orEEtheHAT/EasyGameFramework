@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.EasyLocalization",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyLocalization.Runtime",
     "Unity.Localization",

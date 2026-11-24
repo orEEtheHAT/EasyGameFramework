@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EasyInput;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -27,7 +28,7 @@ namespace EasyUI.Integrations.Input
         private IInputSettingsTextProvider subscribedText;
         private string statusKey;
         private readonly List<Caption> captions = new List<Caption>();
-        private sealed class Caption { internal Text Label; internal string Key, Fallback; }
+        private sealed class Caption { internal TMP_Text Label; internal string Key, Fallback; }
         private void BindTextProvider()
         {
             if (subscribedText != null) subscribedText.Changed -= Refresh;
@@ -40,7 +41,7 @@ namespace EasyUI.Integrations.Input
             try { return string.Format(T(key, fallback), values); }
             catch (FormatException) { return string.Format(fallback, values); }
         }
-        private void CaptionFor(Text label, string key, string fallback)
+        private void CaptionFor(TMP_Text label, string key, string fallback)
         { captions.Add(new Caption { Label = label, Key = key, Fallback = fallback }); }
         private void SetStatus(string key, string fallback) { statusKey = key; Status = fallback; dirty = true; }
         public InputSettingsSnapshot CapturedSettings { get; private set; }
@@ -50,7 +51,7 @@ namespace EasyUI.Integrations.Input
         private RectTransform content, viewport;
         private GameObject generated;
         private ScrollRect scroll;
-        private Text status, mouseLabel, gamepadLabel;
+        private TMP_Text status, mouseLabel, gamepadLabel;
         private Button invert, device;
         private Slider mouse, gamepad, deadzone;
         private bool refreshing, dirty;
@@ -58,7 +59,7 @@ namespace EasyUI.Integrations.Input
         private readonly List<Row> rows = new List<Row>();
         private readonly List<Selectable> editControls = new List<Selectable>();
         private readonly List<InputRebind> ownedRebinds = new List<InputRebind>();
-        private sealed class Row { internal InputAction Action; internal int Binding; internal Text Label; internal Image Icon; }
+        private sealed class Row { internal InputAction Action; internal int Binding; internal TMP_Text Label; internal Image Icon; }
 
         private void OnEnable()
         {
@@ -110,8 +111,8 @@ namespace EasyUI.Integrations.Input
                     foreach (var caption in captions) if (caption.Label) caption.Label.text = T(caption.Key, caption.Fallback);
                     mouseLabel.text = Format("mouseSensitivity", "Mouse sensitivity  {0:0.00}", settings.MouseSensitivity);
                     gamepadLabel.text = Format("gamepadSensitivity", "Gamepad sensitivity  {0:0.00}", settings.GamepadSensitivity);
-                    invert.GetComponentInChildren<Text>().text = Format("invertY", "Invert Y: {0}", settings.InvertY ? T("on", "On") : T("off", "Off"));
-                    device.GetComponentInChildren<Text>().text = Format("devices", "Devices: {0}", T("device." + settings.DevicePreference, settings.DevicePreference.ToString()));
+                    invert.GetComponentInChildren<TMP_Text>().text = Format("invertY", "Invert Y: {0}", settings.InvertY ? T("on", "On") : T("off", "Off"));
+                    device.GetComponentInChildren<TMP_Text>().text = Format("devices", "Devices: {0}", T("device." + settings.DevicePreference, settings.DevicePreference.ToString()));
                     foreach (var row in rows)
                     {
                         var presentation = Player.GetPresentation(row.Action, row.Binding); var binding = row.Action.bindings[row.Binding];
@@ -176,8 +177,8 @@ namespace EasyUI.Integrations.Input
                     var button = Button(content, name, new Vector2(-42, -22 - rowIndex * 44), new Vector2(490, 38), () => BeginRebind(name, binding));
                     ((RectTransform)button.transform).anchorMin = ((RectTransform)button.transform).anchorMax = new Vector2(.5f, 1);
                     var icon = Rect("Glyph", button.transform, new Vector2(-220, 0), new Vector2(25, 25)).gameObject.AddComponent<Image>(); icon.raycastTarget = false;
-                    var bindingLabel = button.GetComponentInChildren<Text>(); bindingLabel.rectTransform.anchoredPosition = new Vector2(14, 0); bindingLabel.rectTransform.sizeDelta -= new Vector2(32, 0);
-                    rows.Add(new Row { Action = action, Binding = binding, Label = button.GetComponentInChildren<Text>(), Icon = icon });
+                    var bindingLabel = button.GetComponentInChildren<TMP_Text>(); bindingLabel.rectTransform.anchoredPosition = new Vector2(14, 0); bindingLabel.rectTransform.sizeDelta -= new Vector2(32, 0);
+                    rows.Add(new Row { Action = action, Binding = binding, Label = button.GetComponentInChildren<TMP_Text>(), Icon = icon });
                     var reset = Button(content, "Reset", new Vector2(255, -22 - rowIndex * 44), new Vector2(80, 38), () => Player.ResetBinding(action, binding));
                     ((RectTransform)reset.transform).anchorMin = ((RectTransform)reset.transform).anchorMax = new Vector2(.5f, 1);
                     rowIndex++;
@@ -197,14 +198,14 @@ namespace EasyUI.Integrations.Input
         }
         private static RectTransform Rect(string name, Transform parent, Vector2 position, Vector2 size)
         { var r = (RectTransform)new GameObject(name, typeof(RectTransform)).transform; r.SetParent(parent, false); r.anchoredPosition = position; r.sizeDelta = size; return r; }
-        private static Text Label(Transform parent, string text, Vector2 position, Vector2 size, int font = 18)
-        { var label = Rect(text, parent, position, size).gameObject.AddComponent<Text>(); label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); label.fontSize = font; label.color = Color.white; label.text = text; label.alignment = TextAnchor.MiddleLeft; label.raycastTarget = false; return label; }
+        private static TMP_Text Label(Transform parent, string text, Vector2 position, Vector2 size, int font = 18)
+        => UIText.Add(Rect(text, parent, position, size).gameObject, text, font, TextAlignmentOptions.MidlineLeft);
         private Button Button(Transform parent, string label, Vector2 position, Vector2 size, UnityEngine.Events.UnityAction click)
         {
             var r = Rect(label, parent, position, size); var image = r.gameObject.AddComponent<Image>(); image.color = new Color(.12f, .22f, .3f);
             var button = r.gameObject.AddComponent<Button>(); button.targetGraphic = image; button.onClick.AddListener(click);
             var colors = button.colors; colors.selectedColor = new Color(.2f, 1, .8f); colors.highlightedColor = colors.selectedColor; button.colors = colors;
-            var text = Label(r, label, Vector2.zero, size - new Vector2(16, 0)); text.alignment = TextAnchor.MiddleCenter;
+            var text = Label(r, label, Vector2.zero, size - new Vector2(16, 0)); text.alignment = TextAlignmentOptions.Center;
             if (label == "Reset" || label == "Capture" || label == "Restore" || label == "Defaults" || label == "Back")
                 CaptionFor(text, label.ToLowerInvariant(), label);
             editControls.Add(button); return button;

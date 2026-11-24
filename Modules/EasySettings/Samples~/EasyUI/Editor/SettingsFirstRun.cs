@@ -1,5 +1,6 @@
 using System.IO;
 using EasyUI;
+using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace EasySettings.UI.Editor
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new System.InvalidOperationException("Exit Play Mode first.");
             if (!(GraphicsSettings.currentRenderPipeline is UniversalRenderPipelineAsset)) throw new System.InvalidOperationException("Use a Unity 6.3 URP project and assign its pipeline before creating this scene.");
+            if (!TMP_Settings.LoadDefaultSettings()) throw new System.InvalidOperationException("Choose Window > TextMeshPro > Import TMP Essential Resources before creating this scene.");
             if (File.Exists(ScenePath)) { EditorSceneManager.OpenScene(ScenePath); return; }
             for (int i = 0; i < SceneManager.sceneCount; i++) if (SceneManager.GetSceneAt(i).isDirty) throw new System.InvalidOperationException("Save the current scene before creating the EasySettings first-run scene.");
             Directory.CreateDirectory(Folder); AssetDatabase.Refresh();
@@ -43,7 +45,10 @@ namespace EasySettings.UI.Editor
             var demo = canvas.AddComponent<SettingsDemo>(); demo.Controller = controller; demo.Manager = manager; demo.Window = view;
             var reopen = new GameObject("Open graphics", typeof(RectTransform), typeof(Image), typeof(Button)); reopen.transform.SetParent(canvas.transform, false);
             var rect = (RectTransform)reopen.transform; rect.anchorMin = rect.anchorMax = new Vector2(0, 1); rect.pivot = new Vector2(0, 1); rect.anchoredPosition = new Vector2(12, -12); rect.sizeDelta = new Vector2(165, 36);
-            var label = new GameObject("Text", typeof(RectTransform), typeof(Text)); label.transform.SetParent(reopen.transform, false); var text = label.GetComponent<Text>(); text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); text.text = "Graphics settings"; text.color = Color.black; text.alignment = TextAnchor.MiddleCenter;
+            var label = new GameObject("Label", typeof(RectTransform));
+            label.transform.SetParent(reopen.transform, false);
+            var text = UIText.Add(label, "Graphics settings", 14, TextAlignmentOptions.Center);
+            text.color = Color.black;
             var tr = (RectTransform)label.transform; tr.anchorMin = Vector2.zero; tr.anchorMax = Vector2.one; tr.offsetMin = tr.offsetMax = Vector2.zero;
             UnityEditor.Events.UnityEventTools.AddPersistentListener(reopen.GetComponent<Button>().onClick, demo.Open);
             AssetDatabase.SaveAssets(); EditorSceneManager.SaveScene(scene, ScenePath);

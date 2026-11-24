@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.IntegrationWave1.Tests",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyUI.EasyInput",
     "EasyUI.EasyInteraction",

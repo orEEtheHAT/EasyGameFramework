@@ -6,7 +6,9 @@
 2. Добавьте **EasyGameFramework → Settings → Settings Controller** на отдельный объект сцены; назначьте Defaults и камеру.
 3. Подключите `SettingsWindow` к EasyUI WindowManager и вызовите `Bind(controller)`. Контроллер оставьте вне отключаемого окна: закрытие меню не завершает графическую сессию.
 
-Общее меню, окна ввода/аудио/языка и их input contexts предоставляет EasyUI. Settings владеет только графикой; общий Apply не изображает атомарную транзакцию чужих настроек. Демонстрация графики: импортировать только **Settings Demo** (имя в общем Package Manager задаёт root), затем **Tools → EasyGameFramework → Settings → Create first-run scene**.
+Общее меню, окна ввода/аудио/языка и их input contexts предоставляет EasyUI. Settings владеет только графикой; общий Apply не изображает атомарную транзакцию чужих настроек.
+
+Окно графики использует TextMesh Pro и берёт шрифт из `WindowManager.Font`. Если поле пустое, EasyUI использует шрифт пакета. Для отдельного примера импортируйте **Settings - Graphics Settings Demo**, затем выберите **Tools → EasyGameFramework → Settings → Create first-run scene**.
 
 ```csharp
 var draft = graphics.Draft;

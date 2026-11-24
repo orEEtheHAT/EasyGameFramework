@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Localization;
@@ -131,8 +132,8 @@ namespace EasyUI.Integrations.Localization.Tests
             var config = ScriptableObject.CreateInstance<EasyLocalization.LocalizationConfig>(); created.Add(config); config.fallbackLanguage = "en";
             {
                 yield return Wait(EasyLocalization.Localization.ReinitializeAsync(config));
-                go = new GameObject("Localized UI", typeof(RectTransform), typeof(Text)); go.SetActive(false);
-                var label = go.GetComponent<Text>(); var adapter = go.AddComponent<LocalizedWindowText>(); adapter.Text = new LocalizedString("EasyUI Test", 7001); go.SetActive(true);
+                go = new GameObject("Localized UI", typeof(RectTransform), typeof(TextMeshProUGUI)); go.SetActive(false);
+                var label = go.GetComponent<TMP_Text>(); var adapter = go.AddComponent<LocalizedWindowText>(); adapter.Text = new LocalizedString("EasyUI Test", 7001); go.SetActive(true);
                 yield return null; yield return null; Assert.AreEqual("Inventory", label.text);
                 yield return Wait(EasyLocalization.Localization.SetLanguageAsync("ru")); yield return null; Assert.AreEqual("Инвентарь", label.text);
                 adapter.enabled = false; yield return Wait(EasyLocalization.Localization.SetLanguageAsync("en")); yield return null; Assert.AreEqual("Инвентарь", label.text);

@@ -1,6 +1,36 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 — 2026-11-24
+
+- Narrative Studio adds World Facts, preset filtering, readers and writers of named facts, links to the exact dialogue reply and per-quest test scenarios.
+- The package includes the ready-to-assign Quest Markers library (Main, Side, Enemy and a directional edge sprite), the Wayfinder and Icon Finish shaders, and Shimmer and Soft Pulse materials.
+
+- Narrative Studio brings the character, dialogue and quest catalogs, graph editors, asset settings and scene connections together. Double-clicking a quest, dialogue or speaker opens the studio. The Playground includes a shortcut to the ferryman's negotiation.
+
+- EasyNarrative adds graph branch editing, scene diagnostics and regression scenarios, repeatable orders with scoped facts, a searchable journal and marker clusters. Dialogue supports grouped requirements, paid choices, skill outcomes, voices, interruption and transcripts. Narrative localization can collect and review quest and conversation text with translator context.
+
+- The quest graph can wire scene objectives, count incoming or held resources, and author resource hand-ins. Each ending can grant its own resource profile automatically or at a bound recipient. Framework Playground includes the two-route Workshop order.
+
+- Quest marker captions default to hidden, search regions use a compact centre marker, and icon shimmer follows sprite UVs. The optional tracked-quest HUD is enabled by default. Narrative/Journal (J) toggles the journal and supports rebinding.
+
+- Quest markers support group anchors, per-icon caption and edge behaviour, objective overrides and caption distance. EasyUI includes shared pulse and shimmer sprite materials. The Playground patrol exercise demonstrates ten live markers and restores individual inspections.
+
+- Quest markers support named sprite libraries, quest defaults, objective overrides and per-icon screen-edge margins. The Playground demonstrates Main, Side and Enemy presets.
+
+- Optional quest-wide fact rules redirect active quests, preserve interrupted progress and expose the rule and destination in the graph. The Playground delivery can be redirected to an assistant.
+
+- Narrative authoring adds searchable event and marker keys, two visibility slots for scene reactions, a scene-object quest creation command and isolated interactive dialogue previews. The Playground includes the Survey post and the simplified bridge setup.
+
+- EasyNarrative exposes ordered quest and step transitions, inspector bindings for persistent world state and one-shot events, and a playable bridge repair example with save/load.
+
+- Wayfinder draws target badges, edge chevrons and search regions. Spoken lines and standalone TMP subtitles support a skippable, unscaled reveal with per-player motion preferences.
+
+- EasyUI adds a theme with six text roles, shared Letterpress SDF materials and per-player text scale, reduced motion and high contrast. Framework Playground previews these in Tab → Text and includes reading preferences in its global save.
+
+- EasyNarrative now includes branching dialogue, localized replies, a Talk Action and the ferryman conversation. Quests and conversations share one world state.
+- The quest subsystem adds world facts, visual quest graphs, scoped event progress, persistence, rewards, a journal, and HUD markers. The Playground includes a branching parcel delivery.
+
+- EGF-007: Built-in EasyUI windows, graphics settings and the Framework Playground HUD and menu use TextMeshPro. Set a window set’s font on its Window Manager.
 
 ## 0.2.0 — 2026-11-17
 

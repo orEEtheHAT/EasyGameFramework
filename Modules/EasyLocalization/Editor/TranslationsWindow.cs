@@ -52,6 +52,8 @@ namespace EasyLocalization.Editor
             EditorGUILayout.HelpBox(status, MessageType.Info);
             if (busy && GUILayout.Button("Cancel request")) Cancel();
             using (new EditorGUI.DisabledScope(busy || EditorApplication.isPlayingOrWillChangePlaymode))
+                if (GUILayout.Button("Collect narrative text…")) EditorApplication.ExecuteMenuItem("Tools/EasyGameFramework/Narrative/Collect text for translation");
+            using (new EditorGUI.DisabledScope(busy || EditorApplication.isPlayingOrWillChangePlaymode))
             {
                 setup = EditorGUILayout.Foldout(setup, "First setup", true);
                 if (setup) DrawSetup();
@@ -152,6 +154,11 @@ namespace EasyLocalization.Editor
                 EditorGUILayout.LabelField($"{change.Kind} · ID {change.Id}", EditorStyles.boldLabel);
                 EditorGUILayout.LabelField("Unity key", change.Local?.key ?? "<missing row>");
                 EditorGUILayout.LabelField("Google key", change.Remote?.key ?? "<missing row>");
+                if (mapping.contextColumn > 0)
+                {
+                    EditorGUILayout.LabelField("Context · Unity", change.Local?.context ?? "", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField("Context · Google", change.Remote?.context ?? "", EditorStyles.wordWrappedLabel);
+                }
                 foreach (var code in mapping.languages.Select(l => l.languageCode))
                 {
                     string Describe(TranslationRow row)

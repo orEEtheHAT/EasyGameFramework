@@ -1,5 +1,6 @@
 using EasyFeedbacks;
 using EasyUI.Integrations.Input;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,8 +14,8 @@ namespace EasyUI.Integrations
         public FeedbackSettingsState CapturedSettings { get; private set; }
         private IInputSettingsTextProvider text;
         private RectTransform panel;
-        private Text title;
-        private readonly Text[] labels = new Text[4];
+        private TMP_Text title;
+        private readonly TMP_Text[] labels = new TMP_Text[4];
         private readonly Slider[] sliders = new Slider[4];
         private Button haptics, restore, defaults, back;
         private static readonly string[] Keys = { "audio.master", "audio.music", "audio.sfx", "audio.hapticsIntensity" };
@@ -43,8 +44,8 @@ namespace EasyUI.Integrations
             title.text = T("audio.title", "Audio & vibration");
             float[] values = { state.MasterVolume, state.MusicVolume, state.SoundEffectsVolume, state.HapticsIntensity };
             for (int i = 0; i < 4; i++) { sliders[i].SetValueWithoutNotify(values[i]); labels[i].text = T(Keys[i], Fallback[i]) + "  " + Mathf.RoundToInt(values[i] * 100) + "%"; }
-            haptics.GetComponentInChildren<Text>().text = T("audio.haptics", "Vibration") + ": " + (state.HapticsEnabled ? T("on", "On") : T("off", "Off"));
-            restore.GetComponentInChildren<Text>().text = T("restore", "Restore"); defaults.GetComponentInChildren<Text>().text = T("defaults", "Defaults"); back.GetComponentInChildren<Text>().text = T("back", "Back");
+            haptics.GetComponentInChildren<TMP_Text>().text = T("audio.haptics", "Vibration") + ": " + (state.HapticsEnabled ? T("on", "On") : T("off", "Off"));
+            restore.GetComponentInChildren<TMP_Text>().text = T("restore", "Restore"); defaults.GetComponentInChildren<TMP_Text>().text = T("defaults", "Defaults"); back.GetComponentInChildren<TMP_Text>().text = T("back", "Back");
         }
         private void Build()
         {

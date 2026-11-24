@@ -1,6 +1,7 @@
 {
   "name": "EasyUI.IntegrationWindows",
   "references": [
+    "Unity.TextMeshPro",
     "EasyUI.Runtime",
     "EasyUI.EasyInput",
     "EasyUI.EasyBuilding",

@@ -12,6 +12,7 @@ using EasyUI.Integrations.Building;
 using EasyUI.Integrations.Input;
 using EasyUI.Integrations.Resources;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
@@ -103,7 +104,7 @@ namespace EasyUI.IntegrationWave1.Tests
         { var go = Go(name, false, typeof(RectTransform)); var w = go.AddComponent<UIWindow>(); w.Policy = new WindowPolicy { FadeIn = 0, FadeOut = 0 }; return w; }
         [UnityTest] public IEnumerator ResourceAndCatalogDataUseOneTextWriterAcrossLanguageAndReservations()
         {
-            var labelGo = Go("Balance", false, typeof(RectTransform), typeof(Text)); var source = labelGo.AddComponent<LocalizedResourceLabelProvider>(); source.Cache = cache;
+            var labelGo = Go("Balance", false, typeof(RectTransform), typeof(TextMeshProUGUI)); var source = labelGo.AddComponent<LocalizedResourceLabelProvider>(); source.Cache = cache;
             var balance = labelGo.AddComponent<ResourceBalanceLabel>(); balance.Container = wallet; balance.Resource = wood; balance.Presentation = source; labelGo.SetActive(true);
             var world = Go("World", false); world.AddComponent<BuildingSystem>(); var placer = world.AddComponent<BuildingPlacer>(); placer.ExternalTargeting = true; placer.ShowHelp = false; world.SetActive(true);
             var economy = world.AddComponent<BuildingResources>(); economy.Resources = new[] { wood }; economy.Containers = new[] { wallet };
@@ -113,13 +114,13 @@ namespace EasyUI.IntegrationWave1.Tests
             var catalog = Asset<BuildingCatalog>(); catalog.Buildings = new[] { definition };
             var window = Window("Building"); var presentation = window.gameObject.AddComponent<BuildingCatalogPresentation>(); presentation.Bind(economy, cache);
             var view = window.gameObject.AddComponent<BuildingCatalogWindow>(); view.Presentation = presentation; view.Bind(placer, catalog); manager.Open(window); yield return null; yield return null;
-            Assert.That(labelGo.GetComponent<Text>().text, Does.Contain("Wood").And.Contain("10"));
+            Assert.That(labelGo.GetComponent<TMP_Text>().text, Does.Contain("Wood").And.Contain("10"));
             Assert.IsTrue(wallet.TryReserve(new ResourceCost(new ResourceAmount(wood, 3)), out var reservation)); yield return Wait(LocalizationApi.SetLanguageAsync("ru")); yield return Wait(cache.RefreshAsync()); yield return null; yield return null;
-            Assert.That(labelGo.GetComponent<Text>().text, Does.Contain("Дерево").And.Contain("7"));
-            Assert.IsTrue(window.GetComponentsInChildren<Text>().Any(x => x.text.Contains("Стена") && x.text.Contains("Дерево") && x.text.Contains("7 / 3")));
+            Assert.That(labelGo.GetComponent<TMP_Text>().text, Does.Contain("Дерево").And.Contain("7"));
+            Assert.IsTrue(window.GetComponentsInChildren<TMP_Text>().Any(x => x.text.Contains("Стена") && x.text.Contains("Дерево") && x.text.Contains("7 / 3")));
             int refreshes = balance.RefreshCount; labelGo.SetActive(false); reservation.Cancel(); yield return Wait(LocalizationApi.SetLanguageAsync("en")); yield return Wait(cache.RefreshAsync()); yield return null;
             Assert.AreEqual(refreshes, balance.RefreshCount); labelGo.SetActive(true); yield return null; yield return null;
-            Assert.That(labelGo.GetComponent<Text>().text, Does.Contain("Wood").And.Contain("10"));
+            Assert.That(labelGo.GetComponent<TMP_Text>().text, Does.Contain("Wood").And.Contain("10"));
         }
         [UnityTest] public IEnumerator OpenSettingsObserveExplicitLocalizationInitializationAndThenEnableLanguage()
         {
@@ -150,7 +151,7 @@ namespace EasyUI.IntegrationWave1.Tests
             manager.Open(window); yield return null; yield return null; Assert.AreEqual(1, window.GetComponentsInChildren<ScrollRect>().Length); Assert.IsNotNull(controls.ExtrasRoot);
             combined.NextLanguage(); float deadline = Time.realtimeSinceStartup + 10; while (LocalizationApi.LanguageCode != "ru" && Time.realtimeSinceStartup < deadline) yield return null;
             Assert.AreEqual("ru", LocalizationApi.LanguageCode); yield return Wait(cache.RefreshAsync()); yield return null; yield return null;
-            Assert.IsTrue(window.GetComponentsInChildren<Text>().Any(x => x.text == "Управление"));
+            Assert.IsTrue(window.GetComponentsInChildren<TMP_Text>().Any(x => x.text == "Управление"));
             manager.CloseAll(); Assert.AreEqual(0, player.ContextRequestCount);
         }
     }

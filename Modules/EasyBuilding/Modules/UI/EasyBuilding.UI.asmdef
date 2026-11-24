@@ -1,7 +1,7 @@
 {
   "name": "EasyBuilding.UI",
   "rootNamespace": "EasyBuilding.UI",
-  "references": ["EasyBuilding.Runtime", "Unity.InputSystem", "UnityEngine.UI"],
+  "references": ["EasyBuilding.Runtime", "Unity.InputSystem", "UnityEngine.UI", "Unity.TextMeshPro"],
   "defineConstraints": ["EASYBUILDING_UGUI"],
   "versionDefines": [{ "name": "com.unity.ugui", "expression": "0.0.0", "define": "EASYBUILDING_UGUI" }]
 }

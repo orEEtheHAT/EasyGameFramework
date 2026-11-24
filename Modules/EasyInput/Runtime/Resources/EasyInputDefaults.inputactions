@@ -1062,6 +1062,34 @@
           "isPartOfComposite": false
         }
       ]
+    },
+    {
+      "name": "Narrative",
+      "id": "76377898-b33d-4464-8d2d-c8e350741626",
+      "actions": [
+        {
+          "name": "Journal",
+          "type": "Button",
+          "id": "e3b5eaed-25e8-4ed0-87bd-7135ebb36f3c",
+          "expectedControlType": "Button",
+          "processors": "",
+          "interactions": "",
+          "initialStateCheck": false
+        }
+      ],
+      "bindings": [
+        {
+          "name": "",
+          "id": "fe58598b-084a-4ac0-b64c-37eb9f99ca40",
+          "path": "<Keyboard>/j",
+          "interactions": "",
+          "processors": "",
+          "groups": "KeyboardMouse",
+          "action": "Journal",
+          "isComposite": false,
+          "isPartOfComposite": false
+        }
+      ]
     }
   ],
   "controlSchemes": [
